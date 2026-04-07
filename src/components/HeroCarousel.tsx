@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState, useEffect, useCallback } from "react";
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 import CarouselCard from "./CarouselCard";
 import ProjectCursorPill from "./ProjectCursorPill";
@@ -11,12 +11,19 @@ export default function HeroCarousel() {
   const containerRef = useRef<HTMLDivElement>(null);
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const [isMobile, setIsMobile] = useState(false);
-  const mouseX = useMotionValue(0);
 
-  // Global tilt based on mouse X position
+  // Raw mouse position for global tilt
+  const rawMouseX = useMotionValue(0.5);
+  const rawMouseY = useMotionValue(0.5);
+
+  // Global tilt — entire stack rotates based on cursor position
   const globalRotateY = useSpring(
-    useTransform(mouseX, [0, typeof window !== "undefined" ? window.innerWidth : 1440], [-8, 8]),
-    { stiffness: 60, damping: 20 }
+    useTransform(rawMouseX, [0, 1], [-12, 12]),
+    { stiffness: 50, damping: 25 }
+  );
+  const globalRotateX = useSpring(
+    useTransform(rawMouseY, [0, 1], [6, -6]),
+    { stiffness: 50, damping: 25 }
   );
 
   useEffect(() => {
@@ -26,17 +33,15 @@ export default function HeroCarousel() {
     return () => window.removeEventListener("resize", check);
   }, []);
 
-  const handleMouseMove = (e: React.MouseEvent) => {
-    mouseX.set(e.clientX);
-  };
-
-  // Drag constraints
-  const cardWidth = 420;
-  const gap = 24;
-  const totalWidth = projects.length * (cardWidth + gap);
-  const viewWidth = typeof window !== "undefined" ? window.innerWidth : 1440;
-  const dragRight = 200;
-  const dragLeft = -(totalWidth - viewWidth + 200);
+  const handleMouseMove = useCallback(
+    (e: React.MouseEvent) => {
+      const rect = containerRef.current?.getBoundingClientRect();
+      if (!rect) return;
+      rawMouseX.set((e.clientX - rect.left) / rect.width);
+      rawMouseY.set((e.clientY - rect.top) / rect.height);
+    },
+    [rawMouseX, rawMouseY]
+  );
 
   // Mobile: snap scroll slider
   if (isMobile) {
@@ -44,7 +49,7 @@ export default function HeroCarousel() {
       <section className="relative w-full min-h-screen flex flex-col pt-24">
         <div className="flex-1 flex flex-col justify-center px-6">
           <div
-            className="flex gap-4 overflow-x-auto pb-6"
+            className="flex gap-4 overflow-x-auto pb-6 no-scrollbar"
             style={{ scrollSnapType: "x mandatory", WebkitOverflowScrolling: "touch" }}
           >
             {projects.map((project) => (
@@ -62,7 +67,6 @@ export default function HeroCarousel() {
             ))}
           </div>
         </div>
-        {/* Mobile bio */}
         <div className="p-10 pt-0">
           <p className="text-lg font-medium leading-tight tracking-tight text-[#1A1A1A]">
             Hi, I&apos;m Marlay. I help brands translate strategy into clear,
@@ -73,39 +77,54 @@ export default function HeroCarousel() {
     );
   }
 
+  // Visible cards = 5 centered, stacked with Z offset and slight X spread
+  const visibleCount = 5;
+  const centerIndex = Math.floor(visibleCount / 2);
+
   return (
     <section
       className="relative w-full h-screen flex flex-col"
       onMouseMove={handleMouseMove}
     >
-      {/* Pill cursor */}
+      {/* Magnetic pill — only visible when hovering a card */}
       <ProjectCursorPill visible={hoveredIndex !== null} />
 
-      {/* 3D Carousel */}
+      {/* 3D Stack Carousel */}
       <div
         ref={containerRef}
-        className="flex-1 flex items-center overflow-hidden"
-        style={{ perspective: "1500px" }}
+        className="flex-1 flex items-center justify-center"
+        style={{ perspective: "1200px" }}
       >
         <motion.div
-          className="flex gap-6 pl-[calc(50vw-210px)]"
-          style={{ rotateY: globalRotateY, transformStyle: "preserve-3d" }}
-          drag="x"
-          dragConstraints={{ left: dragLeft, right: dragRight }}
-          dragElastic={0.1}
-          transition={{ type: "spring", stiffness: 100, damping: 20 }}
+          className="relative"
+          style={{
+            rotateY: globalRotateY,
+            rotateX: globalRotateX,
+            transformStyle: "preserve-3d",
+          }}
         >
-          {projects.map((project, index) => (
-            <CarouselCard
-              key={project.slug}
-              project={project}
-              index={index}
-              isHovered={hoveredIndex === index}
-              isOtherHovered={hoveredIndex !== null && hoveredIndex !== index}
-              onHoverStart={() => setHoveredIndex(index)}
-              onHoverEnd={() => setHoveredIndex(null)}
-            />
-          ))}
+          {projects.slice(0, visibleCount).map((project, index) => {
+            // Stack layout: cards fan out from center with Z-depth overlap
+            const offset = index - centerIndex;
+            const xSpread = offset * 180; // horizontal spread
+            const zDepth = -Math.abs(offset) * 80; // push non-center cards back
+            const rotateCard = offset * -4; // slight fan rotation
+
+            return (
+              <CarouselCard
+                key={project.slug}
+                project={project}
+                index={index}
+                isHovered={hoveredIndex === index}
+                isOtherHovered={hoveredIndex !== null && hoveredIndex !== index}
+                onHoverStart={() => setHoveredIndex(index)}
+                onHoverEnd={() => setHoveredIndex(null)}
+                stackX={xSpread}
+                stackZ={zDepth}
+                stackRotateY={rotateCard}
+              />
+            );
+          })}
         </motion.div>
       </div>
 
@@ -135,7 +154,6 @@ export default function HeroCarousel() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.5 }}
         >
-          {/* Avatar */}
           <div className="w-9 h-9 rounded-full bg-gray-700 flex items-center justify-center">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="white">
               <circle cx="12" cy="8" r="4" />

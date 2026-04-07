@@ -13,6 +13,9 @@ interface Props {
   isOtherHovered: boolean;
   onHoverStart: () => void;
   onHoverEnd: () => void;
+  stackX: number;
+  stackZ: number;
+  stackRotateY: number;
 }
 
 export default function CarouselCard({
@@ -22,47 +25,59 @@ export default function CarouselCard({
   isOtherHovered,
   onHoverStart,
   onHoverEnd,
+  stackX,
+  stackZ,
+  stackRotateY,
 }: Props) {
   const cardRef = useRef<HTMLDivElement>(null);
-  const mouseX = useMotionValue(0);
-  const mouseY = useMotionValue(0);
+  const localMouseX = useMotionValue(0);
+  const localMouseY = useMotionValue(0);
 
-  const rotateX = useSpring(
-    useTransform(mouseY, [-150, 150], [8, -8]),
-    { stiffness: 150, damping: 20 }
+  // Per-card tilt relative to card center
+  const tiltX = useSpring(
+    useTransform(localMouseY, [-150, 150], [10, -10]),
+    { stiffness: 200, damping: 20 }
   );
-  const rotateY = useSpring(
-    useTransform(mouseX, [-200, 200], [-8, 8]),
-    { stiffness: 150, damping: 20 }
+  const tiltY = useSpring(
+    useTransform(localMouseX, [-200, 200], [-10, 10]),
+    { stiffness: 200, damping: 20 }
   );
 
   const handleMouseMove = (e: React.MouseEvent) => {
     if (!cardRef.current) return;
     const rect = cardRef.current.getBoundingClientRect();
-    mouseX.set(e.clientX - (rect.left + rect.width / 2));
-    mouseY.set(e.clientY - (rect.top + rect.height / 2));
+    localMouseX.set(e.clientX - (rect.left + rect.width / 2));
+    localMouseY.set(e.clientY - (rect.top + rect.height / 2));
   };
 
   const handleMouseLeave = () => {
-    mouseX.set(0);
-    mouseY.set(0);
+    localMouseX.set(0);
+    localMouseY.set(0);
     onHoverEnd();
   };
 
   return (
     <motion.div
       ref={cardRef}
-      className="flex-shrink-0 w-[420px] h-[300px] rounded-xl overflow-hidden relative"
+      className="absolute w-[420px] h-[300px] rounded-xl overflow-hidden"
       style={{
-        rotateX: isHovered ? 0 : rotateX,
-        rotateY: isHovered ? 0 : rotateY,
+        rotateX: isHovered ? tiltX : 0,
+        rotateY: isHovered ? tiltY : 0,
         transformStyle: "preserve-3d",
-        boxShadow: "0 25px 60px rgba(0,0,0,0.15)",
+        boxShadow: isHovered
+          ? "0 35px 80px rgba(0,0,0,0.25)"
+          : "0 25px 60px rgba(0,0,0,0.15)",
+        left: "50%",
+        top: "50%",
+        marginLeft: "-210px",
+        marginTop: "-150px",
       }}
       animate={{
-        scale: isHovered ? 1.05 : 1,
-        z: isHovered ? 50 : isOtherHovered ? -30 : 0,
-        opacity: isOtherHovered ? 0.6 : 1,
+        x: isHovered ? stackX : stackX,
+        z: isHovered ? stackZ + 80 : isOtherHovered ? stackZ - 30 : stackZ,
+        rotateY: isHovered ? 0 : stackRotateY,
+        scale: isHovered ? 1.08 : 1,
+        opacity: isOtherHovered ? 0.5 : 1,
         y: [0, -15, 0],
       }}
       transition={{
@@ -70,7 +85,7 @@ export default function CarouselCard({
           duration: 6,
           repeat: Infinity,
           ease: "easeInOut",
-          delay: index * 0.5,
+          delay: index * 0.6,
         },
         default: { type: "spring", stiffness: 100, damping: 20 },
       }}

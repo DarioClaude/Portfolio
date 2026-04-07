@@ -3,7 +3,7 @@
 import { motion, useMotionValue, useSpring, AnimatePresence } from "framer-motion";
 import { useEffect, useCallback } from "react";
 
-const springConfig = { stiffness: 120, damping: 20 };
+const springConfig = { stiffness: 80, damping: 15, mass: 0.5 };
 
 export default function ProjectCursorPill({ visible }: { visible: boolean }) {
   const x = useMotionValue(-100);
