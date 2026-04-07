@@ -59,19 +59,20 @@ export default function CursorFollower() {
 
   return (
     <motion.div
-      className="fixed top-0 left-0 z-[10000] pointer-events-none mix-blend-difference"
+      className="fixed top-0 left-0 z-[10000] pointer-events-none"
       style={{
         x: smoothX,
         y: smoothY,
         translateX: "-50%",
         translateY: "-50%",
+        mixBlendMode: "difference",
       }}
     >
       <motion.div
-        className="rounded-full border-[1.5px] border-[#1A1A1A]"
+        className="rounded-full bg-white"
         animate={{
-          width: isHovering ? 40 : 16,
-          height: isHovering ? 40 : 16,
+          width: isHovering ? 48 : 16,
+          height: isHovering ? 48 : 16,
           opacity: isVisible ? 1 : 0,
         }}
         transition={{ type: "spring", stiffness: 300, damping: 25 }}

@@ -1,30 +1,22 @@
 "use client";
 
-import { useRef, useState, useEffect, useCallback } from "react";
-import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
-import CarouselCard from "./CarouselCard";
+import { useState, useEffect, useCallback } from "react";
+import { motion } from "framer-motion";
+import Link from "next/link";
 import ProjectCursorPill from "./ProjectCursorPill";
+import ProjectCardVisual from "./ProjectCardVisual";
 import SocialIcons from "./SocialIcons";
 import { projects } from "@/lib/projects";
 
 export default function HeroCarousel() {
-  const containerRef = useRef<HTMLDivElement>(null);
+  const [currentAngle, setCurrentAngle] = useState(0);
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const [isMobile, setIsMobile] = useState(false);
+  const [isAutoRotating, setIsAutoRotating] = useState(true);
 
-  // Raw mouse position for global tilt
-  const rawMouseX = useMotionValue(0.5);
-  const rawMouseY = useMotionValue(0.5);
-
-  // Global tilt — entire stack rotates based on cursor position
-  const globalRotateY = useSpring(
-    useTransform(rawMouseX, [0, 1], [-12, 12]),
-    { stiffness: 50, damping: 25 }
-  );
-  const globalRotateX = useSpring(
-    useTransform(rawMouseY, [0, 1], [6, -6]),
-    { stiffness: 50, damping: 25 }
-  );
+  const cardCount = projects.length;
+  const angleStep = 360 / cardCount; // 40deg per card
+  const radius = 600; // translateZ radius for the cylinder
 
   useEffect(() => {
     const check = () => setIsMobile(window.innerWidth < 768);
@@ -33,23 +25,53 @@ export default function HeroCarousel() {
     return () => window.removeEventListener("resize", check);
   }, []);
 
-  const handleMouseMove = useCallback(
-    (e: React.MouseEvent) => {
-      const rect = containerRef.current?.getBoundingClientRect();
-      if (!rect) return;
-      rawMouseX.set((e.clientX - rect.left) / rect.width);
-      rawMouseY.set((e.clientY - rect.top) / rect.height);
+  // Auto-rotation
+  useEffect(() => {
+    if (!isAutoRotating || isMobile) return;
+    const interval = setInterval(() => {
+      setCurrentAngle((prev) => prev - 0.15);
+    }, 16);
+    return () => clearInterval(interval);
+  }, [isAutoRotating, isMobile]);
+
+  // Pause auto-rotation on hover
+  useEffect(() => {
+    if (hoveredIndex !== null) {
+      setIsAutoRotating(false);
+    } else {
+      const timer = setTimeout(() => setIsAutoRotating(true), 1500);
+      return () => clearTimeout(timer);
+    }
+  }, [hoveredIndex]);
+
+  // Keyboard navigation
+  const handleKeyDown = useCallback(
+    (e: KeyboardEvent) => {
+      if (e.key === "ArrowLeft") {
+        setIsAutoRotating(false);
+        setCurrentAngle((prev) => prev + angleStep);
+        setTimeout(() => setIsAutoRotating(true), 3000);
+      } else if (e.key === "ArrowRight") {
+        setIsAutoRotating(false);
+        setCurrentAngle((prev) => prev - angleStep);
+        setTimeout(() => setIsAutoRotating(true), 3000);
+      }
     },
-    [rawMouseX, rawMouseY]
+    [angleStep]
   );
 
-  // Mobile: snap scroll slider
+  useEffect(() => {
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [handleKeyDown]);
+
+  // Mobile: horizontal snap slider
   if (isMobile) {
     return (
-      <section className="relative w-full min-h-screen flex flex-col pt-24">
+      <section className="relative w-full h-screen flex flex-col pt-24">
         <div className="flex-1 flex flex-col justify-center px-6">
           <div
-            className="flex gap-4 overflow-x-auto pb-6 no-scrollbar"
+            className="flex gap-4 overflow-x-auto pb-6"
             style={{ scrollSnapType: "x mandatory", WebkitOverflowScrolling: "touch" }}
           >
             {projects.map((project) => (
@@ -58,79 +80,111 @@ export default function HeroCarousel() {
                 className="flex-shrink-0 w-[300px] h-[200px] rounded-xl overflow-hidden"
                 style={{ scrollSnapAlign: "center" }}
               >
-                <a href={`/work/${project.slug}`} className="block w-full h-full">
-                  <div className={`w-full h-full ${project.bg} flex items-center justify-center`}>
-                    <p className={`text-lg font-bold ${project.textColor}`}>{project.name}</p>
-                  </div>
-                </a>
+                <Link href={`/work/${project.slug}`} className="block w-full h-full">
+                  <ProjectCardVisual project={project} />
+                </Link>
               </div>
             ))}
           </div>
         </div>
         <div className="p-10 pt-0">
           <p className="text-lg font-medium leading-tight tracking-tight text-[#1A1A1A]">
-            Hi, I&apos;m Marlay. I help brands translate strategy into clear,
-            impactful digital experiences.
+            Hi, I&apos;m <span className="font-bold">Dario</span>, a{" "}
+            <span className="font-bold">French photographer</span> dedicated to
+            capturing raw emotions and minimalist digital aesthetics.
           </p>
         </div>
       </section>
     );
   }
 
-  // Visible cards = 5 centered, stacked with Z offset and slight X spread
-  const visibleCount = 5;
-  const centerIndex = Math.floor(visibleCount / 2);
-
   return (
-    <section
-      className="relative w-full h-screen flex flex-col"
-      onMouseMove={handleMouseMove}
-    >
-      {/* Magnetic pill — only visible when hovering a card */}
+    <section className="relative w-full h-screen flex flex-col overflow-hidden">
+      {/* Magnetic pill — only when hovering a card */}
       <ProjectCursorPill visible={hoveredIndex !== null} />
 
-      {/* 3D Stack Carousel */}
+      {/* 3D Cylinder Carousel */}
       <div
-        ref={containerRef}
         className="flex-1 flex items-center justify-center"
         style={{ perspective: "1200px" }}
       >
         <motion.div
-          className="relative"
-          style={{
-            rotateY: globalRotateY,
-            rotateX: globalRotateX,
-            transformStyle: "preserve-3d",
+          className="relative w-[420px] h-[300px]"
+          style={{ transformStyle: "preserve-3d" }}
+          animate={{ rotateY: currentAngle }}
+          transition={{
+            type: isAutoRotating ? "tween" : "spring",
+            stiffness: 60,
+            damping: 20,
+            duration: isAutoRotating ? 0 : undefined,
           }}
         >
-          {projects.slice(0, visibleCount).map((project, index) => {
-            // Stack layout: cards fan out from center with Z-depth overlap
-            const offset = index - centerIndex;
-            const xSpread = offset * 180; // horizontal spread
-            const zDepth = -Math.abs(offset) * 80; // push non-center cards back
-            const rotateCard = offset * -4; // slight fan rotation
+          {projects.map((project, index) => {
+            const cardAngle = index * angleStep;
+
+            // Calculate how "front-facing" this card is
+            const normalizedAngle =
+              ((currentAngle + cardAngle) % 360 + 360) % 360;
+            const isFront = normalizedAngle < 40 || normalizedAngle > 320;
+            const isBack = normalizedAngle > 120 && normalizedAngle < 240;
 
             return (
-              <CarouselCard
+              <motion.div
                 key={project.slug}
-                project={project}
-                index={index}
-                isHovered={hoveredIndex === index}
-                isOtherHovered={hoveredIndex !== null && hoveredIndex !== index}
-                onHoverStart={() => setHoveredIndex(index)}
-                onHoverEnd={() => setHoveredIndex(null)}
-                stackX={xSpread}
-                stackZ={zDepth}
-                stackRotateY={rotateCard}
-              />
+                className="absolute inset-0 w-[420px] h-[300px] rounded-xl overflow-hidden"
+                style={{
+                  transform: `rotateY(${cardAngle}deg) translateZ(${radius}px)`,
+                  transformStyle: "preserve-3d",
+                  backfaceVisibility: "hidden",
+                  boxShadow: isFront
+                    ? "0 35px 80px rgba(0,0,0,0.2)"
+                    : "0 15px 40px rgba(0,0,0,0.1)",
+                }}
+                animate={{
+                  scale:
+                    hoveredIndex === index
+                      ? 1.08
+                      : isFront
+                        ? 1
+                        : 0.85,
+                  opacity:
+                    hoveredIndex !== null && hoveredIndex !== index
+                      ? 0.4
+                      : isBack
+                        ? 0
+                        : isFront
+                          ? 1
+                          : 0.7,
+                  y: [0, -10, 0],
+                }}
+                transition={{
+                  y: {
+                    duration: 5,
+                    repeat: Infinity,
+                    ease: "easeInOut",
+                    delay: index * 0.4,
+                  },
+                  default: { type: "spring", stiffness: 100, damping: 20 },
+                }}
+                onMouseEnter={() => setHoveredIndex(index)}
+                onMouseLeave={() => setHoveredIndex(null)}
+                data-cursor-hover
+              >
+                <Link
+                  href={`/work/${project.slug}`}
+                  className="block w-full h-full"
+                >
+                  <ProjectCardVisual project={project} />
+                </Link>
+              </motion.div>
             );
           })}
         </motion.div>
       </div>
 
-      {/* Four Corners Bio */}
-      <div className="absolute bottom-0 left-0 right-0 p-10 flex justify-between items-end pointer-events-none">
-        {/* Bottom-Left */}
+      {/* Four Corners Bio — single instance, no duplicate */}
+      <div className="absolute bottom-0 left-0 right-0 p-10 flex justify-between items-end pointer-events-none z-10">
+        {/* Bottom-Left: Bio */}
         <motion.div
           className="max-w-[450px] pointer-events-auto"
           initial={{ opacity: 0, y: 30 }}
@@ -138,16 +192,16 @@ export default function HeroCarousel() {
           transition={{ duration: 0.8, delay: 0.4 }}
         >
           <p className="text-lg font-medium leading-tight tracking-tight text-[#1A1A1A]">
-            Hi, I&apos;m Marlay. I help brands translate strategy into clear,
-            impactful digital experiences.
+            Hi, I&apos;m <span className="font-bold">Dario</span>, a{" "}
+            <span className="font-bold">French photographer</span> dedicated to
+            capturing raw emotions and minimalist digital aesthetics.
           </p>
           <p className="text-sm text-[#6B7280] mt-3">
-            We craft brands, websites and digital products designed to stand out
-            and scale.
+            I craft visual stories that stand out and resonate.
           </p>
         </motion.div>
 
-        {/* Bottom-Right */}
+        {/* Bottom-Right: Identity */}
         <motion.div
           className="flex flex-col items-end gap-2 pointer-events-auto"
           initial={{ opacity: 0, y: 30 }}
@@ -161,11 +215,11 @@ export default function HeroCarousel() {
             </svg>
           </div>
           <p className="text-xs tracking-[1.5px] uppercase text-[#6B7280]">
-            Co-founder of
+            French Photographer
           </p>
-          <p className="text-sm font-bold text-[#1A1A1A]">STUDIO ARCT</p>
+          <p className="text-sm font-bold text-[#1A1A1A]">DARIO TONINI</p>
           <p className="text-xs tracking-[1px] text-[#9CA3AF]">
-            BORDEAUX — FR
+            FRANCE
           </p>
           <SocialIcons />
         </motion.div>

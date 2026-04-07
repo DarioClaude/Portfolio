@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
 import NoiseOverlay from "@/components/NoiseOverlay";
 import CursorFollower from "@/components/CursorFollower";
 
@@ -13,9 +12,9 @@ const geistSans = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "Marlay — Creative Portfolio",
+  title: "Dario Tonini — Photographer",
   description:
-    "Creative Developer & Co-founder of Studio Arct — Bordeaux, FR. I help brands translate strategy into clear, impactful digital experiences.",
+    "French photographer dedicated to capturing raw emotions and minimalist digital aesthetics.",
 };
 
 export default function RootLayout({
@@ -32,8 +31,7 @@ export default function RootLayout({
         <NoiseOverlay />
         <CursorFollower />
         <Navbar />
-        <main className="min-h-screen">{children}</main>
-        <Footer />
+        <main>{children}</main>
       </body>
     </html>
   );
