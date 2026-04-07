@@ -1,331 +1,156 @@
 "use client";
 
 import { useRef, useState, useEffect } from "react";
-import {
-  motion,
-  useMotionValue,
-  useSpring,
-  useTransform,
-} from "framer-motion";
-import Image from "next/image";
-
-interface Project {
-  id: number;
-  title: string;
-  category: string;
-  image: string;
-  color: string;
-}
-
-const projects: Project[] = [
-  {
-    id: 1,
-    title: "Nebula Studio",
-    category: "Branding & Web Design",
-    image: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=800&h=1000&fit=crop",
-    color: "#1a1a2e",
-  },
-  {
-    id: 2,
-    title: "Arcane Labs",
-    category: "Creative Direction",
-    image: "https://images.unsplash.com/photo-1633356122544-f134324a6cee?w=800&h=1000&fit=crop",
-    color: "#16213e",
-  },
-  {
-    id: 3,
-    title: "Void Agency",
-    category: "UI/UX Design",
-    image: "https://images.unsplash.com/photo-1558591710-4b4a1ae0f04d?w=800&h=1000&fit=crop",
-    color: "#0f3460",
-  },
-  {
-    id: 4,
-    title: "Flux Creative",
-    category: "Art Direction",
-    image: "https://images.unsplash.com/photo-1614850523459-c2f4c699c52e?w=800&h=1000&fit=crop",
-    color: "#533483",
-  },
-  {
-    id: 5,
-    title: "Echo Digital",
-    category: "Development",
-    image: "https://images.unsplash.com/photo-1620641788421-7a1c342ea42e?w=800&h=1000&fit=crop",
-    color: "#2c2c54",
-  },
-];
-
-function CarouselCard({
-  project,
-  index,
-  totalCards,
-  hoveredIndex,
-  onHover,
-}: {
-  project: Project;
-  index: number;
-  totalCards: number;
-  hoveredIndex: number | null;
-  onHover: (index: number | null) => void;
-}) {
-  const cardRef = useRef<HTMLDivElement>(null);
-  const cardMouseX = useMotionValue(0);
-  const cardMouseY = useMotionValue(0);
-
-  // Calculate spread based on mouse position
-  const offset = index - Math.floor(totalCards / 2);
-  const baseSpacing = 280;
-
-  // Individual card tilt based on mouse position on card
-  const cardRotateX = useSpring(
-    useTransform(cardMouseY, [-150, 150], [8, -8]),
-    { stiffness: 150, damping: 20 }
-  );
-  const cardRotateY = useSpring(
-    useTransform(cardMouseX, [-200, 200], [-8, 8]),
-    { stiffness: 150, damping: 20 }
-  );
-
-  const isHovered = hoveredIndex === index;
-  const isOtherHovered = hoveredIndex !== null && hoveredIndex !== index;
-
-  const handleMouseMove = (e: React.MouseEvent) => {
-    if (!cardRef.current) return;
-    const rect = cardRef.current.getBoundingClientRect();
-    const centerX = rect.left + rect.width / 2;
-    const centerY = rect.top + rect.height / 2;
-    cardMouseX.set(e.clientX - centerX);
-    cardMouseY.set(e.clientY - centerY);
-  };
-
-  const handleMouseLeave = () => {
-    cardMouseX.set(0);
-    cardMouseY.set(0);
-    onHover(null);
-  };
-
-  return (
-    <motion.div
-      ref={cardRef}
-      className="absolute w-[280px] md:w-[320px] h-[360px] md:h-[420px] rounded-2xl overflow-hidden shadow-2xl"
-      data-cursor-label="See Project"
-      data-cursor-hover
-      style={{
-        rotateY: cardRotateY,
-        rotateX: cardRotateX,
-        transformStyle: "preserve-3d",
-      }}
-      animate={{
-        x: offset * baseSpacing,
-        z: isHovered ? 80 : isOtherHovered ? -60 : 0,
-        opacity: isOtherHovered ? 0.6 : 1,
-        y: [0, -15, 0],
-        scale: isHovered ? 1.05 : 1,
-      }}
-      transition={{
-        y: {
-          duration: 4 + index * 0.5,
-          repeat: Infinity,
-          ease: "easeInOut",
-        },
-        default: {
-          type: "spring",
-          stiffness: 100,
-          damping: 20,
-        },
-      }}
-      onMouseMove={handleMouseMove}
-      onMouseEnter={() => onHover(index)}
-      onMouseLeave={handleMouseLeave}
-      whileHover={{ scale: 1.05 }}
-    >
-      <div className="relative w-full h-full">
-        <Image
-          src={project.image}
-          alt={project.title}
-          fill
-          className="object-cover"
-          sizes="320px"
-          unoptimized
-        />
-        <div
-          className="absolute inset-0"
-          style={{
-            background: `linear-gradient(to top, ${project.color}cc 0%, transparent 60%)`,
-          }}
-        />
-        <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
-          <p className="text-xs uppercase tracking-widest opacity-70 mb-1">
-            {project.category}
-          </p>
-          <h3 className="text-xl font-semibold tracking-tight">
-            {project.title}
-          </h3>
-        </div>
-      </div>
-    </motion.div>
-  );
-}
+import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
+import CarouselCard from "./CarouselCard";
+import ProjectCursorPill from "./ProjectCursorPill";
+import SocialIcons from "./SocialIcons";
+import { projects } from "@/lib/projects";
 
 export default function HeroCarousel() {
   const containerRef = useRef<HTMLDivElement>(null);
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const [isMobile, setIsMobile] = useState(false);
-  const [mobileIndex, setMobileIndex] = useState(0);
+  const mouseX = useMotionValue(0);
+
+  // Global tilt based on mouse X position
+  const globalRotateY = useSpring(
+    useTransform(mouseX, [0, typeof window !== "undefined" ? window.innerWidth : 1440], [-8, 8]),
+    { stiffness: 60, damping: 20 }
+  );
 
   useEffect(() => {
-    const updateSize = () => {
-      setIsMobile(window.innerWidth < 768);
-    };
-    updateSize();
-    window.addEventListener("resize", updateSize);
-    return () => window.removeEventListener("resize", updateSize);
+    const check = () => setIsMobile(window.innerWidth < 768);
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
   }, []);
 
-  // Mobile horizontal slider
+  const handleMouseMove = (e: React.MouseEvent) => {
+    mouseX.set(e.clientX);
+  };
+
+  // Drag constraints
+  const cardWidth = 420;
+  const gap = 24;
+  const totalWidth = projects.length * (cardWidth + gap);
+  const viewWidth = typeof window !== "undefined" ? window.innerWidth : 1440;
+  const dragRight = 200;
+  const dragLeft = -(totalWidth - viewWidth + 200);
+
+  // Mobile: snap scroll slider
   if (isMobile) {
     return (
-      <section className="relative w-full min-h-screen flex flex-col justify-center">
-        {/* Hero bio text */}
-        <div className="px-10 pt-28 pb-10">
-          <motion.p
-            className="text-lg font-medium leading-tight tracking-tight max-w-md"
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.4 }}
-          >
-            Hi, I&apos;m Marlay — a creative developer crafting immersive digital
-            experiences at the intersection of design and technology.
-          </motion.p>
-        </div>
-
-        {/* Mobile slider */}
-        <div className="relative w-full overflow-hidden px-6">
-          <motion.div
-            className="flex gap-4"
-            animate={{ x: -mobileIndex * 300 }}
-            transition={{ type: "spring", stiffness: 100, damping: 20 }}
+      <section className="relative w-full min-h-screen flex flex-col pt-24">
+        <div className="flex-1 flex flex-col justify-center px-6">
+          <div
+            className="flex gap-4 overflow-x-auto pb-6"
+            style={{ scrollSnapType: "x mandatory", WebkitOverflowScrolling: "touch" }}
           >
             {projects.map((project) => (
               <div
-                key={project.id}
-                className="flex-shrink-0 w-[280px] h-[360px] rounded-2xl overflow-hidden relative"
+                key={project.slug}
+                className="flex-shrink-0 w-[300px] h-[200px] rounded-xl overflow-hidden"
+                style={{ scrollSnapAlign: "center" }}
               >
-                <Image
-                  src={project.image}
-                  alt={project.title}
-                  fill
-                  className="object-cover"
-                  unoptimized
-                />
-                <div
-                  className="absolute inset-0"
-                  style={{
-                    background: `linear-gradient(to top, ${project.color}cc 0%, transparent 60%)`,
-                  }}
-                />
-                <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
-                  <p className="text-xs uppercase tracking-widest opacity-70 mb-1">
-                    {project.category}
-                  </p>
-                  <h3 className="text-xl font-semibold tracking-tight">
-                    {project.title}
-                  </h3>
-                </div>
+                <a href={`/work/${project.slug}`} className="block w-full h-full">
+                  <div className={`w-full h-full ${project.bg} flex items-center justify-center`}>
+                    <p className={`text-lg font-bold ${project.textColor}`}>{project.name}</p>
+                  </div>
+                </a>
               </div>
             ))}
-          </motion.div>
-
-          {/* Mobile dots */}
-          <div className="flex justify-center gap-2 mt-6">
-            {projects.map((_, i) => (
-              <button
-                key={i}
-                onClick={() => setMobileIndex(i)}
-                className={`w-2 h-2 rounded-full transition-colors ${
-                  i === mobileIndex ? "bg-black" : "bg-black/20"
-                }`}
-              />
-            ))}
           </div>
+        </div>
+        {/* Mobile bio */}
+        <div className="p-10 pt-0">
+          <p className="text-lg font-medium leading-tight tracking-tight text-[#1A1A1A]">
+            Hi, I&apos;m Marlay. I help brands translate strategy into clear,
+            impactful digital experiences.
+          </p>
         </div>
       </section>
     );
   }
 
   return (
-    <section className="relative w-full h-screen flex flex-col">
-      {/* Four corners layout */}
-      <div className="absolute inset-0 p-10 flex flex-col justify-between pointer-events-none z-10">
-        {/* Top spacer for header */}
-        <div />
-
-        {/* Bottom row */}
-        <div className="flex justify-between items-end pointer-events-auto">
-          {/* Bottom-Left: Bio */}
-          <motion.div
-            className="max-w-[450px]"
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.5 }}
-          >
-            <p className="text-base font-medium leading-tight tracking-tight" id="about">
-              Hi, I&apos;m Marlay — a creative developer crafting immersive digital
-              experiences at the intersection of design and technology. I
-              believe in the power of thoughtful interaction and visual
-              storytelling.
-            </p>
-          </motion.div>
-
-          {/* Bottom-Right: Info */}
-          <motion.div
-            className="text-right text-sm"
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.6 }}
-          >
-            <p className="font-semibold uppercase tracking-widest text-xs mb-2">
-              Co-founder of Studio Arct
-            </p>
-            <p className="text-black/50 mb-4">Bordeaux — FR</p>
-            <div className="flex gap-4 justify-end" id="contact">
-              <a
-                href="#"
-                className="text-xs uppercase tracking-widest hover:opacity-50 transition-opacity"
-              >
-                Instagram
-              </a>
-              <a
-                href="#"
-                className="text-xs uppercase tracking-widest hover:opacity-50 transition-opacity"
-              >
-                LinkedIn
-              </a>
-            </div>
-          </motion.div>
-        </div>
-      </div>
+    <section
+      className="relative w-full h-screen flex flex-col"
+      onMouseMove={handleMouseMove}
+    >
+      {/* Pill cursor */}
+      <ProjectCursorPill visible={hoveredIndex !== null} />
 
       {/* 3D Carousel */}
       <div
         ref={containerRef}
-        className="perspective-container flex-1 flex items-center justify-center"
+        className="flex-1 flex items-center overflow-hidden"
+        style={{ perspective: "1500px" }}
       >
-        <div
-          className="relative flex items-center justify-center"
-          style={{ transformStyle: "preserve-3d" }}
+        <motion.div
+          className="flex gap-6 pl-[calc(50vw-210px)]"
+          style={{ rotateY: globalRotateY, transformStyle: "preserve-3d" }}
+          drag="x"
+          dragConstraints={{ left: dragLeft, right: dragRight }}
+          dragElastic={0.1}
+          transition={{ type: "spring", stiffness: 100, damping: 20 }}
         >
           {projects.map((project, index) => (
             <CarouselCard
-              key={project.id}
+              key={project.slug}
               project={project}
               index={index}
-              totalCards={projects.length}
-              hoveredIndex={hoveredIndex}
-              onHover={setHoveredIndex}
+              isHovered={hoveredIndex === index}
+              isOtherHovered={hoveredIndex !== null && hoveredIndex !== index}
+              onHoverStart={() => setHoveredIndex(index)}
+              onHoverEnd={() => setHoveredIndex(null)}
             />
           ))}
-        </div>
+        </motion.div>
+      </div>
+
+      {/* Four Corners Bio */}
+      <div className="absolute bottom-0 left-0 right-0 p-10 flex justify-between items-end pointer-events-none">
+        {/* Bottom-Left */}
+        <motion.div
+          className="max-w-[450px] pointer-events-auto"
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.4 }}
+        >
+          <p className="text-lg font-medium leading-tight tracking-tight text-[#1A1A1A]">
+            Hi, I&apos;m Marlay. I help brands translate strategy into clear,
+            impactful digital experiences.
+          </p>
+          <p className="text-sm text-[#6B7280] mt-3">
+            We craft brands, websites and digital products designed to stand out
+            and scale.
+          </p>
+        </motion.div>
+
+        {/* Bottom-Right */}
+        <motion.div
+          className="flex flex-col items-end gap-2 pointer-events-auto"
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.5 }}
+        >
+          {/* Avatar */}
+          <div className="w-9 h-9 rounded-full bg-gray-700 flex items-center justify-center">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="white">
+              <circle cx="12" cy="8" r="4" />
+              <path d="M12 14c-6 0-8 3-8 5v1h16v-1c0-2-2-5-8-5z" />
+            </svg>
+          </div>
+          <p className="text-xs tracking-[1.5px] uppercase text-[#6B7280]">
+            Co-founder of
+          </p>
+          <p className="text-sm font-bold text-[#1A1A1A]">STUDIO ARCT</p>
+          <p className="text-xs tracking-[1px] text-[#9CA3AF]">
+            BORDEAUX — FR
+          </p>
+          <SocialIcons />
+        </motion.div>
       </div>
     </section>
   );

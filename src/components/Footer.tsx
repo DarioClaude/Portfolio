@@ -2,82 +2,66 @@
 
 import { useRef } from "react";
 import { motion, useInView } from "framer-motion";
+import SocialIcons from "./SocialIcons";
 
 export default function Footer() {
   const ref = useRef<HTMLElement>(null);
-  const isInView = useInView(ref, { once: true, margin: "-100px" });
+  const isInView = useInView(ref, { once: true, margin: "-80px" });
 
   return (
-    <footer ref={ref} className="px-10 py-20 border-t border-black/10">
-      <div className="flex flex-col md:flex-row justify-between gap-16">
+    <footer ref={ref} className="border-t border-[#E5E7EB]">
+      <div className="flex flex-col md:flex-row justify-between gap-12 p-10">
         {/* Left: Bio */}
         <motion.div
           className="max-w-[450px]"
-          initial={{ opacity: 0, y: 40 }}
-          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
+          initial={{ opacity: 0, y: 30 }}
+          animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ type: "spring", stiffness: 100, damping: 20 }}
         >
-          <h3 className="text-sm font-semibold uppercase tracking-widest mb-4 text-black/40">
-            About
-          </h3>
-          <p className="text-base font-medium leading-tight tracking-tight">
-            Hi, I&apos;m Marlay — a creative developer passionate about building
-            memorable digital experiences. I combine design thinking with
-            technical excellence to deliver work that resonates and performs.
+          <p className="text-lg font-medium leading-tight tracking-tight text-[#1A1A1A]">
+            Hi, I&apos;m Marlay. I help brands translate strategy into clear,
+            impactful digital experiences.
           </p>
-          <p className="text-sm text-black/40 mt-6">
-            © {new Date().getFullYear()} Marlay. All rights reserved.
+          <p className="text-sm text-[#6B7280] mt-3">
+            We craft brands, websites and digital products designed to stand out
+            and scale.
           </p>
         </motion.div>
 
-        {/* Right: Info + Links */}
+        {/* Right: Studio info */}
         <motion.div
-          className="text-right"
-          initial={{ opacity: 0, y: 40 }}
-          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
+          className="flex flex-col items-end gap-3"
+          initial={{ opacity: 0, y: 30 }}
+          animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{
             type: "spring",
             stiffness: 100,
             damping: 20,
-            delay: 0.15,
+            delay: 0.1,
           }}
         >
-          <p className="text-xs font-semibold uppercase tracking-widest mb-2">
-            Co-founder of Studio Arct
-          </p>
-          <p className="text-sm text-black/50 mb-8">Bordeaux — FR</p>
-
-          <div className="flex gap-6 justify-end">
-            <a
-              href="#"
-              className="relative text-xs uppercase tracking-widest font-medium group"
+          {/* Avatar */}
+          <div className="w-9 h-9 rounded-full bg-gray-700 flex items-center justify-center">
+            <svg
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="white"
             >
-              Instagram
-              <span className="absolute -bottom-1 left-0 w-0 h-px bg-black transition-all duration-300 group-hover:w-full" />
-            </a>
-            <a
-              href="#"
-              className="relative text-xs uppercase tracking-widest font-medium group"
-            >
-              LinkedIn
-              <span className="absolute -bottom-1 left-0 w-0 h-px bg-black transition-all duration-300 group-hover:w-full" />
-            </a>
+              <circle cx="12" cy="8" r="4" />
+              <path d="M12 14c-6 0-8 3-8 5v1h16v-1c0-2-2-5-8-5z" />
+            </svg>
           </div>
 
-          <motion.div
-            className="mt-12"
-            initial={{ opacity: 0 }}
-            animate={isInView ? { opacity: 1 } : { opacity: 0 }}
-            transition={{ delay: 0.4 }}
-          >
-            <a
-              href="mailto:hello@marlay.dev"
-              className="text-2xl md:text-4xl font-black tracking-tighter hover:opacity-60 transition-opacity"
-              data-cursor-hover
-            >
-              hello@marlay.dev
-            </a>
-          </motion.div>
+          <p className="text-xs tracking-[1.5px] uppercase text-[#6B7280]">
+            Co-founder of
+          </p>
+          <p className="text-sm font-bold text-[#1A1A1A]">STUDIO ARCT</p>
+          <p className="text-xs tracking-[1px] text-[#9CA3AF]">
+            BORDEAUX — FR
+          </p>
+
+          <SocialIcons />
         </motion.div>
       </div>
     </footer>
