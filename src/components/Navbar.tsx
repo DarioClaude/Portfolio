@@ -21,14 +21,14 @@ export default function Navbar() {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6, delay: 0.1 }}
     >
-      <div className="flex items-center justify-between px-10 py-5">
+      <div className="flex items-center justify-between px-4 py-3 md:px-10 md:py-5">
         {/* Left: Logo + Nav */}
-        <div className="flex items-center gap-8">
+        <div className="flex items-center gap-4 md:gap-8">
           <Link href="/" data-cursor-hover>
             <PixelLogo />
           </Link>
 
-          <nav className="flex items-center gap-6">
+          <nav className="flex items-center gap-3 md:gap-6">
             {navLinks.map((link) => {
               const isActive =
                 link.href === "/"
@@ -43,7 +43,7 @@ export default function Navbar() {
                   className="relative group"
                 >
                   <span
-                    className="text-base transition-colors"
+                    className="text-sm md:text-base transition-colors"
                     style={{
                       fontWeight: isActive ? 600 : 400,
                       color: isActive ? "#0000ff" : "#6B7280",
@@ -67,7 +67,7 @@ export default function Navbar() {
           <Link
             href="/about"
             data-cursor-hover
-            className="inline-block bg-[#0000ff] text-white text-[13px] font-medium px-5 py-2.5 rounded-lg hover:shadow-lg transition-shadow"
+            className="inline-block bg-[#0000ff] text-white text-[11px] md:text-[13px] font-medium px-3 py-2 md:px-5 md:py-2.5 rounded-lg hover:shadow-lg transition-shadow"
           >
             Get in touch
           </Link>
