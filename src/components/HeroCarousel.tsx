@@ -2,9 +2,9 @@
 
 import { useState, useEffect, useCallback, useRef } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { motion } from "framer-motion";
 import ProjectCursorPill from "./ProjectCursorPill";
-import ProjectCardVisual from "./ProjectCardVisual";
 import SocialIcons from "./SocialIcons";
 import { projects } from "@/lib/projects";
 
@@ -13,6 +13,16 @@ const carouselProjects = projects.slice(0, 6);
 const CARD_COUNT = 6;
 const ANGLE_STEP = 360 / CARD_COUNT; // 60deg
 const RADIUS = 400; // translateZ — compact ring
+
+// Photo paths for each carousel card (temporary test)
+const CARD_PHOTOS = [
+  "/photos/1.png",
+  "/photos/2.png",
+  "/photos/3.png",
+  "/photos/4.png",
+  "/photos/5.png",
+  "/photos/6.png",
+];
 
 export default function HeroCarousel() {
   const [globalRotation, setGlobalRotation] = useState(0);
@@ -34,7 +44,7 @@ export default function HeroCarousel() {
     let raf: number;
     const rotate = () => {
       if (autoRotateRef.current && !isHoveringWheel) {
-        setGlobalRotation((prev) => prev - 0.05);
+        setGlobalRotation((prev) => prev - 0.02);
       }
       raf = requestAnimationFrame(rotate);
     };
@@ -69,14 +79,20 @@ export default function HeroCarousel() {
             className="flex gap-4 overflow-x-auto pb-6"
             style={{ scrollSnapType: "x mandatory", WebkitOverflowScrolling: "touch" }}
           >
-            {carouselProjects.map((project) => (
+            {carouselProjects.map((project, index) => (
               <div
                 key={project.slug}
-                className="flex-shrink-0 w-[300px] h-[200px] rounded-[4px] overflow-hidden"
+                className="flex-shrink-0 w-[300px] h-[200px] rounded-[4px] overflow-hidden relative"
                 style={{ scrollSnapAlign: "center" }}
               >
-                <Link href={`/work/${project.slug}`} className="block w-full h-full">
-                  <ProjectCardVisual project={project} />
+                <Link href={`/work/${project.slug}`} className="block w-full h-full relative">
+                  <Image
+                    src={CARD_PHOTOS[index]}
+                    alt={project.name}
+                    fill
+                    className="object-cover"
+                    sizes="300px"
+                  />
                 </Link>
               </div>
             ))}
@@ -136,9 +152,15 @@ export default function HeroCarousel() {
               >
                 <Link
                   href={`/work/${project.slug}`}
-                  className="block w-full h-full"
+                  className="block w-full h-full relative"
                 >
-                  <ProjectCardVisual project={project} />
+                  <Image
+                    src={CARD_PHOTOS[index]}
+                    alt={project.name}
+                    fill
+                    className="object-cover"
+                    sizes="357px"
+                  />
                 </Link>
               </div>
             );
