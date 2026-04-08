@@ -12,7 +12,7 @@ import { projects } from "@/lib/projects";
 const carouselProjects = projects.slice(0, 6);
 const CARD_COUNT = 6;
 const ANGLE_STEP = 360 / CARD_COUNT; // 60deg
-const RADIUS = 550; // translateZ — wider for landscape cards
+const RADIUS = 380; // translateZ — compact ring
 
 export default function HeroCarousel() {
   const [globalRotation, setGlobalRotation] = useState(0);
@@ -106,7 +106,7 @@ export default function HeroCarousel() {
       >
         {/* Wheel container — 6 cards in a cylinder */}
         <div
-          className="relative w-[450px] h-[300px]"
+          className="relative w-[340px] h-[230px]"
           style={{
             transformStyle: "preserve-3d",
             transform: `rotateY(${globalRotation}deg)`,
@@ -126,7 +126,7 @@ export default function HeroCarousel() {
             return (
               <div
                 key={project.slug}
-                className="absolute inset-0 w-[450px] h-[300px]"
+                className="absolute inset-0 w-[340px] h-[230px]"
                 style={{
                   transform: `rotateY(${angle}deg) translateZ(${RADIUS}px)`,
                   backfaceVisibility: "visible",
