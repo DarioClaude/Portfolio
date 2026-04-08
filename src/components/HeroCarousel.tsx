@@ -8,6 +8,12 @@ import ProjectCardVisual from "./ProjectCardVisual";
 import SocialIcons from "./SocialIcons";
 import { projects } from "@/lib/projects";
 
+// Exactly 6 cards for the cylinder
+const carouselProjects = projects.slice(0, 6);
+const CARD_COUNT = 6;
+const ANGLE_STEP = 360 / CARD_COUNT; // 60deg
+const RADIUS = 350; // translateZ
+
 export default function HeroCarousel() {
   const [globalRotation, setGlobalRotation] = useState(0);
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
@@ -15,11 +21,7 @@ export default function HeroCarousel() {
   const [isHoveringWheel, setIsHoveringWheel] = useState(false);
   const autoRotateRef = useRef(true);
 
-  const cardCount = projects.length;
-  const angleStep = 360 / cardCount;
-  const radius = 650;
-
-  // Responsive check
+  // Responsive
   useEffect(() => {
     const check = () => setIsMobile(window.innerWidth < 768);
     check();
@@ -27,13 +29,13 @@ export default function HeroCarousel() {
     return () => window.removeEventListener("resize", check);
   }, []);
 
-  // Auto-rotation via requestAnimationFrame — pauses on hover
+  // Auto-rotation — 0.05 deg/frame for luxury gallery feel
   useEffect(() => {
     if (isMobile) return;
     let raf: number;
     const rotate = () => {
       if (autoRotateRef.current && !isHoveringWheel) {
-        setGlobalRotation((prev) => prev - 0.08);
+        setGlobalRotation((prev) => prev - 0.05);
       }
       raf = requestAnimationFrame(rotate);
     };
@@ -41,21 +43,18 @@ export default function HeroCarousel() {
     return () => cancelAnimationFrame(raf);
   }, [isMobile, isHoveringWheel]);
 
-  // Keyboard navigation
-  const handleKeyDown = useCallback(
-    (e: KeyboardEvent) => {
-      if (e.key === "ArrowLeft") {
-        autoRotateRef.current = false;
-        setGlobalRotation((prev) => prev + angleStep);
-        setTimeout(() => { autoRotateRef.current = true; }, 3000);
-      } else if (e.key === "ArrowRight") {
-        autoRotateRef.current = false;
-        setGlobalRotation((prev) => prev - angleStep);
-        setTimeout(() => { autoRotateRef.current = true; }, 3000);
-      }
-    },
-    [angleStep]
-  );
+  // Keyboard: Left/Right snap by 60deg
+  const handleKeyDown = useCallback((e: KeyboardEvent) => {
+    if (e.key === "ArrowLeft") {
+      autoRotateRef.current = false;
+      setGlobalRotation((prev) => prev + ANGLE_STEP);
+      setTimeout(() => { autoRotateRef.current = true; }, 3000);
+    } else if (e.key === "ArrowRight") {
+      autoRotateRef.current = false;
+      setGlobalRotation((prev) => prev - ANGLE_STEP);
+      setTimeout(() => { autoRotateRef.current = true; }, 3000);
+    }
+  }, []);
 
   useEffect(() => {
     window.addEventListener("keydown", handleKeyDown);
@@ -71,10 +70,10 @@ export default function HeroCarousel() {
             className="flex gap-4 overflow-x-auto pb-6"
             style={{ scrollSnapType: "x mandatory", WebkitOverflowScrolling: "touch" }}
           >
-            {projects.map((project) => (
+            {carouselProjects.map((project) => (
               <div
                 key={project.slug}
-                className="flex-shrink-0 w-[280px] h-[380px] rounded-xl overflow-hidden"
+                className="flex-shrink-0 w-[220px] h-[300px] rounded-[4px] overflow-hidden"
                 style={{ scrollSnapAlign: "center" }}
               >
                 <Link href={`/work/${project.slug}`} className="block w-full h-full">
@@ -96,19 +95,18 @@ export default function HeroCarousel() {
   }
 
   return (
-    <section className="relative w-full h-screen overflow-hidden">
-      {/* "See the project" pill — only visible when hovering a card */}
-      <ProjectCursorPill visible={hoveredIndex !== null} />
+    <section className="relative w-full h-screen">
+      {/* "SEE PROJECT" pill — only when hovering the carousel area */}
+      <ProjectCursorPill visible={isHoveringWheel} />
 
-      {/* ===== 3D CYLINDER ===== */}
-      {/* Perspective wrapper */}
+      {/* Perspective wrapper — no overflow hidden so 3D space isn't clipped */}
       <div
         className="flex items-center justify-center h-full"
         style={{ perspective: "1500px" }}
       >
-        {/* Wheel — rotates as a whole, pure CSS transform (no framer animate on transform) */}
+        {/* Wheel container — 6 cards in a cylinder */}
         <div
-          className="relative w-[400px] h-[280px]"
+          className="relative w-[260px] h-[360px]"
           style={{
             transformStyle: "preserve-3d",
             transform: `rotateY(${globalRotation}deg)`,
@@ -122,27 +120,30 @@ export default function HeroCarousel() {
             setHoveredIndex(null);
           }}
         >
-          {projects.map((project, index) => {
-            const angle = index * angleStep;
+          {carouselProjects.map((project, index) => {
+            const angle = index * ANGLE_STEP;
 
             return (
               <div
                 key={project.slug}
-                className="absolute inset-0 w-[400px] h-[280px] rounded-xl overflow-hidden"
+                className="absolute inset-0 w-[260px] h-[360px]"
                 style={{
-                  transform: `rotateY(${angle}deg) translateZ(${radius}px)`,
-                  backfaceVisibility: "hidden",
+                  transform: `rotateY(${angle}deg) translateZ(${RADIUS}px)`,
+                  backfaceVisibility: "visible",
+                  borderRadius: "4px",
+                  overflow: "hidden",
                   boxShadow:
                     hoveredIndex === index
                       ? "0 40px 90px rgba(0,0,0,0.25)"
-                      : "0 20px 50px rgba(0,0,0,0.12)",
-                  transition: "box-shadow 0.4s ease, opacity 0.4s ease, filter 0.4s ease",
+                      : "0 15px 40px rgba(0,0,0,0.1)",
+                  transition:
+                    "box-shadow 0.4s ease, opacity 0.4s ease, filter 0.4s ease",
                   opacity:
-                    hoveredIndex !== null && hoveredIndex !== index ? 0.5 : 1,
+                    hoveredIndex !== null && hoveredIndex !== index ? 0.4 : 1,
                   filter:
                     hoveredIndex !== null && hoveredIndex !== index
-                      ? "brightness(0.7)"
-                      : "brightness(1)",
+                      ? "blur(1px) brightness(0.7)"
+                      : "blur(0px) brightness(1)",
                 }}
                 onMouseEnter={() => setHoveredIndex(index)}
                 onMouseLeave={() => setHoveredIndex(null)}
