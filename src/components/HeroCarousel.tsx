@@ -94,18 +94,21 @@ export default function HeroCarousel() {
   }
 
   return (
-    <section className="relative w-full h-screen">
+    <section className="relative w-full h-screen overflow-hidden">
       {/* "SEE PROJECT" pill — only when hovering the carousel area */}
       <ProjectCursorPill visible={isHoveringWheel} />
 
-      {/* Perspective wrapper — no overflow hidden so 3D space isn't clipped */}
+      {/* ===== CAROUSEL — independently positioned at top: 150px ===== */}
       <div
-        className="flex items-center justify-center h-full"
-        style={{ perspective: "1500px", marginTop: "-80px" }}
+        className="absolute left-1/2 w-[357px] h-[242px]"
+        style={{
+          top: "150px",
+          transform: "translateX(-50%)",
+          perspective: "1500px",
+        }}
       >
-        {/* Wheel container — 6 cards in a cylinder */}
         <div
-          className="relative w-[357px] h-[242px]"
+          className="relative w-full h-full"
           style={{
             transformStyle: "preserve-3d",
             transform: `rotateY(${globalRotation}deg)`,
@@ -143,8 +146,11 @@ export default function HeroCarousel() {
         </div>
       </div>
 
-      {/* ===== FOUR CORNERS BIO ===== */}
-      <div className="absolute bottom-0 left-0 right-0 p-10 flex justify-between items-end pointer-events-none z-10">
+      {/* ===== FOOTER BIO — independently anchored at 75vh ===== */}
+      <div
+        className="absolute left-0 right-0 px-10 flex justify-between items-end pointer-events-none z-10"
+        style={{ top: "75vh" }}
+      >
         {/* Bottom-Left: Bio */}
         <motion.div
           className="max-w-[450px] pointer-events-auto"
