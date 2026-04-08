@@ -2,7 +2,6 @@
 
 import { motion } from "framer-motion";
 import SocialIcons from "@/components/SocialIcons";
-import Footer from "@/components/Footer";
 
 const spring = { type: "spring" as const, stiffness: 100, damping: 20 };
 
@@ -29,7 +28,7 @@ export default function AboutPage() {
             >
               <p className="text-xl font-medium leading-tight tracking-tight text-[#1A1A1A] mb-6">
                 Hi, I&apos;m <span className="font-bold">Dario</span>. A{" "}
-                <span className="font-bold">French photographer</span> dedicated
+                <span className="font-bold">french photographer</span> dedicated
                 to capturing raw emotions and minimalist digital aesthetics.
               </p>
               <p className="text-base text-[#6B7280] leading-relaxed mb-6">
@@ -98,7 +97,6 @@ export default function AboutPage() {
           </div>
         </div>
       </section>
-      <Footer />
     </>
   );
 }

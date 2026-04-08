@@ -20,7 +20,7 @@ export default function Footer() {
         >
           <p className="text-lg font-medium leading-tight tracking-tight text-[#1A1A1A]">
             Hi, I&apos;m <span className="font-bold">Dario</span>, a{" "}
-            <span className="font-bold">French photographer</span> dedicated to
+            <span className="font-bold">french photographer</span> dedicated to
             capturing raw emotions and minimalist digital aesthetics.
           </p>
           <p className="text-sm text-[#6B7280] mt-3">
@@ -41,7 +41,7 @@ export default function Footer() {
           }}
         >
           <p className="text-xs tracking-[1.5px] uppercase text-[#6B7280]">
-            French Photographer
+            french photographer
           </p>
           <p className="text-sm font-bold text-[#1A1A1A]">DARIO TONINI</p>
 

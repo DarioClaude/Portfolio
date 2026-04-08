@@ -33,7 +33,7 @@ export default function ProjectCard({ project, index }: Props) {
         className="block group"
         data-cursor-hover
       >
-        <div className="rounded-2xl overflow-hidden relative" style={{ aspectRatio: "16/10" }}>
+        <div className="rounded-[4px] overflow-hidden relative" style={{ aspectRatio: "16/10" }}>
           <motion.div
             className="w-full h-full"
             whileHover={{ scale: 1.05 }}

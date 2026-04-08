@@ -195,7 +195,7 @@ export default function HeroCarousel() {
         >
           <p className="text-sm md:text-lg font-medium leading-snug md:leading-tight tracking-tight text-[#1A1A1A]">
             Hi, I&apos;m <span className="font-bold text-[#0000ff]">Dario</span>, a{" "}
-            <span className="font-bold text-[#0000ff]">French photographer</span> dedicated to
+            <span className="font-bold text-[#0000ff]">french photographer</span> dedicated to
             capturing raw emotions and minimalist digital aesthetics.
           </p>
           <p className="text-[10px] md:text-sm text-[#6B7280] mt-2 md:mt-3">
@@ -217,7 +217,7 @@ export default function HeroCarousel() {
             </svg>
           </div>
           <p className="text-[10px] md:text-xs tracking-[1.5px] uppercase text-[#6B7280]">
-            French Photographer
+            french photographer
           </p>
           <p className="text-xs md:text-sm font-bold text-[#1A1A1A]">DARIO TONINI</p>
           <p className="text-[10px] md:text-xs tracking-[1px] text-[#9CA3AF] hidden md:block">FRANCE</p>
