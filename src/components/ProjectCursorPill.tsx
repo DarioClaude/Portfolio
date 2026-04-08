@@ -40,7 +40,7 @@ export default function ProjectCursorPill({ visible }: { visible: boolean }) {
           exit={{ opacity: 0, scale: 0.6 }}
           transition={{ type: "spring", stiffness: 300, damping: 25 }}
         >
-          <div className="bg-[#1A1A1A] text-white text-[11px] font-semibold uppercase tracking-wider px-5 py-2 rounded-full whitespace-nowrap">
+          <div className="bg-[#1A1A1A] text-white text-[10px] font-semibold uppercase tracking-wider px-3.5 py-1.5 rounded-[4px] whitespace-nowrap">
             See Project
           </div>
         </motion.div>

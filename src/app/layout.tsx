@@ -5,9 +5,9 @@ import Navbar from "@/components/Navbar";
 import NoiseOverlay from "@/components/NoiseOverlay";
 import CursorFollower from "@/components/CursorFollower";
 
-const geistSans = localFont({
-  src: "./fonts/GeistVF.woff",
-  variable: "--font-geist-sans",
+const montserrat = localFont({
+  src: "./fonts/Montserrat.woff2",
+  variable: "--font-montserrat",
   weight: "100 900",
 });
 
@@ -25,8 +25,8 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} font-sans antialiased bg-white text-[#1A1A1A]`}
-        style={{ fontFamily: "var(--font-geist-sans), Inter, -apple-system, sans-serif" }}
+        className={`${montserrat.variable} font-sans antialiased bg-white text-[#1A1A1A]`}
+        style={{ fontFamily: "var(--font-montserrat), -apple-system, sans-serif" }}
       >
         <NoiseOverlay />
         <CursorFollower />

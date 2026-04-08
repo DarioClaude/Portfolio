@@ -12,11 +12,10 @@ import { projects } from "@/lib/projects";
 const carouselProjects = projects.slice(0, 6);
 const CARD_COUNT = 6;
 const ANGLE_STEP = 360 / CARD_COUNT; // 60deg
-const RADIUS = 380; // translateZ — compact ring
+const RADIUS = 400; // translateZ — compact ring
 
 export default function HeroCarousel() {
   const [globalRotation, setGlobalRotation] = useState(0);
-  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const [isMobile, setIsMobile] = useState(false);
   const [isHoveringWheel, setIsHoveringWheel] = useState(false);
   const autoRotateRef = useRef(true);
@@ -85,8 +84,8 @@ export default function HeroCarousel() {
         </div>
         <div className="p-10 pt-0">
           <p className="text-lg font-medium leading-tight tracking-tight text-[#1A1A1A]">
-            Hi, I&apos;m <span className="font-bold">Dario</span>, a{" "}
-            <span className="font-bold">French photographer</span> dedicated to
+            Hi, I&apos;m <span className="font-bold text-[#0000ff]">Dario</span>, a{" "}
+            <span className="font-bold text-[#0000ff]">French photographer</span> dedicated to
             capturing raw emotions and minimalist digital aesthetics.
           </p>
         </div>
@@ -106,7 +105,7 @@ export default function HeroCarousel() {
       >
         {/* Wheel container — 6 cards in a cylinder */}
         <div
-          className="relative w-[340px] h-[230px]"
+          className="relative w-[357px] h-[242px]"
           style={{
             transformStyle: "preserve-3d",
             transform: `rotateY(${globalRotation}deg)`,
@@ -115,10 +114,7 @@ export default function HeroCarousel() {
               : "transform 0.8s cubic-bezier(0.23, 1, 0.32, 1)",
           }}
           onMouseEnter={() => setIsHoveringWheel(true)}
-          onMouseLeave={() => {
-            setIsHoveringWheel(false);
-            setHoveredIndex(null);
-          }}
+          onMouseLeave={() => setIsHoveringWheel(false)}
         >
           {carouselProjects.map((project, index) => {
             const angle = index * ANGLE_STEP;
@@ -126,20 +122,13 @@ export default function HeroCarousel() {
             return (
               <div
                 key={project.slug}
-                className="absolute inset-0 w-[340px] h-[230px]"
+                className="absolute inset-0 w-[357px] h-[242px]"
                 style={{
                   transform: `rotateY(${angle}deg) translateZ(${RADIUS}px)`,
                   backfaceVisibility: "visible",
                   borderRadius: "4px",
                   overflow: "hidden",
-                  boxShadow:
-                    hoveredIndex === index
-                      ? "0 40px 90px rgba(0,0,0,0.25)"
-                      : "0 15px 40px rgba(0,0,0,0.1)",
-                  transition: "box-shadow 0.4s ease",
                 }}
-                onMouseEnter={() => setHoveredIndex(index)}
-                onMouseLeave={() => setHoveredIndex(null)}
                 data-cursor-hover
               >
                 <Link
@@ -164,8 +153,8 @@ export default function HeroCarousel() {
           transition={{ duration: 0.8, delay: 0.4 }}
         >
           <p className="text-lg font-medium leading-tight tracking-tight text-[#1A1A1A]">
-            Hi, I&apos;m <span className="font-bold">Dario</span>, a{" "}
-            <span className="font-bold">French photographer</span> dedicated to
+            Hi, I&apos;m <span className="font-bold text-[#0000ff]">Dario</span>, a{" "}
+            <span className="font-bold text-[#0000ff]">French photographer</span> dedicated to
             capturing raw emotions and minimalist digital aesthetics.
           </p>
           <p className="text-sm text-[#6B7280] mt-3">

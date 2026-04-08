@@ -69,14 +69,25 @@ export default function CursorFollower() {
       }}
     >
       <motion.div
-        className="rounded-full bg-white"
+        className="relative"
         animate={{
-          width: isHovering ? 48 : 16,
-          height: isHovering ? 48 : 16,
+          width: isHovering ? 48 : 24,
+          height: isHovering ? 48 : 24,
           opacity: isVisible ? 1 : 0,
         }}
         transition={{ type: "spring", stiffness: 300, damping: 25 }}
-      />
+      >
+        {/* Horizontal bar */}
+        <span
+          className="absolute bg-white left-0 right-0 top-1/2"
+          style={{ height: "2px", transform: "translateY(-50%)" }}
+        />
+        {/* Vertical bar */}
+        <span
+          className="absolute bg-white top-0 bottom-0 left-1/2"
+          style={{ width: "2px", transform: "translateX(-50%)" }}
+        />
+      </motion.div>
     </motion.div>
   );
 }

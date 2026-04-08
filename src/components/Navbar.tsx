@@ -43,19 +43,16 @@ export default function Navbar() {
                   className="relative group"
                 >
                   <span
-                    className="text-[14px] transition-colors"
+                    className="text-base transition-colors"
                     style={{
                       fontWeight: isActive ? 600 : 400,
-                      color: isActive ? "#1A1A1A" : "#6B7280",
+                      color: isActive ? "#0000ff" : "#6B7280",
                     }}
                   >
                     {link.label}
-                    {isActive && (
-                      <span className="ml-1 text-[#6B7280]">&gt;</span>
-                    )}
                   </span>
                   {/* Hover underline */}
-                  <span className="absolute -bottom-0.5 left-0 h-px bg-[#1A1A1A] w-0 group-hover:w-full transition-all duration-300" />
+                  <span className="absolute -bottom-0.5 left-0 h-px bg-[#0000ff] w-0 group-hover:w-full transition-all duration-300" />
                 </Link>
               );
             })}
@@ -70,7 +67,7 @@ export default function Navbar() {
           <Link
             href="/about"
             data-cursor-hover
-            className="inline-block bg-[#1A1A1A] text-white text-[13px] font-medium px-5 py-2.5 rounded-lg hover:shadow-lg transition-shadow"
+            className="inline-block bg-[#0000ff] text-white text-[13px] font-medium px-5 py-2.5 rounded-lg hover:shadow-lg transition-shadow"
           >
             Get in touch
           </Link>
