@@ -101,7 +101,7 @@ export default function HeroCarousel() {
       {/* Perspective wrapper — no overflow hidden so 3D space isn't clipped */}
       <div
         className="flex items-center justify-center h-full"
-        style={{ perspective: "1500px" }}
+        style={{ perspective: "1500px", marginTop: "-80px" }}
       >
         {/* Wheel container — 6 cards in a cylinder */}
         <div
