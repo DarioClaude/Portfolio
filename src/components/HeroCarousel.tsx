@@ -12,7 +12,7 @@ import { projects } from "@/lib/projects";
 const carouselProjects = projects.slice(0, 6);
 const CARD_COUNT = 6;
 const ANGLE_STEP = 360 / CARD_COUNT; // 60deg
-const RADIUS = 350; // translateZ
+const RADIUS = 550; // translateZ — wider for landscape cards
 
 export default function HeroCarousel() {
   const [globalRotation, setGlobalRotation] = useState(0);
@@ -73,7 +73,7 @@ export default function HeroCarousel() {
             {carouselProjects.map((project) => (
               <div
                 key={project.slug}
-                className="flex-shrink-0 w-[220px] h-[300px] rounded-[4px] overflow-hidden"
+                className="flex-shrink-0 w-[300px] h-[200px] rounded-[4px] overflow-hidden"
                 style={{ scrollSnapAlign: "center" }}
               >
                 <Link href={`/work/${project.slug}`} className="block w-full h-full">
@@ -106,7 +106,7 @@ export default function HeroCarousel() {
       >
         {/* Wheel container — 6 cards in a cylinder */}
         <div
-          className="relative w-[260px] h-[360px]"
+          className="relative w-[450px] h-[300px]"
           style={{
             transformStyle: "preserve-3d",
             transform: `rotateY(${globalRotation}deg)`,
@@ -126,7 +126,7 @@ export default function HeroCarousel() {
             return (
               <div
                 key={project.slug}
-                className="absolute inset-0 w-[260px] h-[360px]"
+                className="absolute inset-0 w-[450px] h-[300px]"
                 style={{
                   transform: `rotateY(${angle}deg) translateZ(${RADIUS}px)`,
                   backfaceVisibility: "visible",
@@ -136,14 +136,7 @@ export default function HeroCarousel() {
                     hoveredIndex === index
                       ? "0 40px 90px rgba(0,0,0,0.25)"
                       : "0 15px 40px rgba(0,0,0,0.1)",
-                  transition:
-                    "box-shadow 0.4s ease, opacity 0.4s ease, filter 0.4s ease",
-                  opacity:
-                    hoveredIndex !== null && hoveredIndex !== index ? 0.4 : 1,
-                  filter:
-                    hoveredIndex !== null && hoveredIndex !== index
-                      ? "blur(1px) brightness(0.7)"
-                      : "blur(0px) brightness(1)",
+                  transition: "box-shadow 0.4s ease",
                 }}
                 onMouseEnter={() => setHoveredIndex(index)}
                 onMouseLeave={() => setHoveredIndex(null)}
