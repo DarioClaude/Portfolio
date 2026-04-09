@@ -33,7 +33,7 @@ export default function RootLayout({
         <CursorFollower />
         <ImageProtection />
         <Navbar />
-        <main>{children}</main>
+        <main className="max-w-[1800px] mx-auto relative">{children}</main>
       </body>
     </html>
   );

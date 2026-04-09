@@ -21,7 +21,7 @@ export default function Navbar() {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6, delay: 0.1 }}
     >
-      <div className="flex items-center justify-between px-4 py-3 md:px-10 md:py-5">
+      <div className="max-w-[1800px] mx-auto flex items-center justify-between px-4 py-3 md:px-10 md:py-5">
         {/* Left: Logo + Nav */}
         <div className="flex items-center gap-4 md:gap-8">
           <Link href="/" data-cursor-hover>

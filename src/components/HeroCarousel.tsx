@@ -11,27 +11,41 @@ import { carouselProjects } from "@/lib/projects";
 const CARD_COUNT = 6;
 const ANGLE_STEP = 360 / CARD_COUNT; // 60deg
 
-// Responsive dimensions
-const DESKTOP = { cardW: 357, cardH: 242, radius: 400 };
-const MOBILE = { cardW: 280, cardH: 187, radius: 300 };
+// Fluid dimensions — computed from container width for proportional scaling
+function getFluidDims(containerW: number, isMobile: boolean) {
+  if (isMobile) return { cardW: 280, cardH: 187, radius: 300 };
+  // Scale between 1024px and 1800px containers
+  // At ~1200px (125% zoom on 1440): cards are ~380px
+  // At 1800px: cards are ~420px
+  const t = Math.min(Math.max((containerW - 900) / 900, 0), 1);
+  const cardW = Math.round(340 + t * 80); // 340 → 420
+  const cardH = Math.round(cardW / 1.5);  // 3:2 ratio preserved
+  const radius = Math.round(380 + t * 90); // 380 → 470
+  return { cardW, cardH, radius };
+}
 
 export default function HeroCarousel() {
   const [globalRotation, setGlobalRotation] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
+  const [dims, setDims] = useState({ cardW: 380, cardH: 253, radius: 430 });
   const [isHoveringWheel, setIsHoveringWheel] = useState(false);
   const autoRotateRef = useRef(true);
   const dragStartX = useRef(0);
   const dragStartRotation = useRef(0);
+  const sectionRef = useRef<HTMLElement>(null);
 
-  // Responsive
+  // Responsive + fluid sizing based on container width
   useEffect(() => {
-    const check = () => setIsMobile(window.innerWidth < 768);
-    check();
-    window.addEventListener("resize", check);
-    return () => window.removeEventListener("resize", check);
+    const update = () => {
+      const mobile = window.innerWidth < 768;
+      setIsMobile(mobile);
+      const containerW = sectionRef.current?.offsetWidth ?? window.innerWidth;
+      setDims(getFluidDims(Math.min(containerW, 1800), mobile));
+    };
+    update();
+    window.addEventListener("resize", update);
+    return () => window.removeEventListener("resize", update);
   }, []);
-
-  const dims = isMobile ? MOBILE : DESKTOP;
 
   // Auto-rotation — slow luxury feel
   useEffect(() => {
@@ -102,14 +116,14 @@ export default function HeroCarousel() {
   }, [isMobile, globalRotation]);
 
   return (
-    <section className="relative w-full h-screen overflow-hidden">
+    <section ref={sectionRef} className="relative w-full h-screen overflow-hidden">
       {!isMobile && <ProjectCursorPill visible={isHoveringWheel} />}
 
-      {/* ===== CAROUSEL ===== */}
+      {/* ===== CAROUSEL — centered within the max-w container ===== */}
       <div
         className="absolute left-1/2"
         style={{
-          top: isMobile ? "50%" : "150px",
+          top: isMobile ? "50%" : "clamp(120px, 10vw, 180px)",
           transform: isMobile ? "translate(-50%, -60%)" : "translateX(-50%)",
           width: dims.cardW,
           height: dims.cardH,
@@ -171,10 +185,10 @@ export default function HeroCarousel() {
         </div>
       </div>
 
-      {/* ===== FOOTER BIO ===== */}
+      {/* ===== FOOTER BIO — anchored within the container ===== */}
       <div
         className="absolute left-0 right-0 px-5 md:px-10 flex justify-between items-end pointer-events-none z-10"
-        style={isMobile ? { bottom: "24px" } : { top: "75vh" }}
+        style={isMobile ? { bottom: "24px" } : { bottom: "clamp(32px, 4vh, 64px)" }}
       >
         <motion.div
           className="max-w-[280px] md:max-w-[450px] pointer-events-auto"
