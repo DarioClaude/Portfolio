@@ -33,8 +33,7 @@ export default function SocialIcons() {
         <AnimatePresence>
           {showInstaPreview && (
             <motion.div
-              className="absolute bottom-full left-1/2 mb-3 w-[220px] bg-white rounded-xl shadow-2xl border border-gray-100 overflow-hidden pointer-events-none"
-              style={{ transform: "translateX(-50%)" }}
+              className="absolute bottom-full right-0 mb-3 w-[220px] bg-white rounded-xl shadow-2xl border border-gray-100 overflow-hidden pointer-events-none"
               initial={{ opacity: 0, y: 8, scale: 0.95 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: 8, scale: 0.95 }}

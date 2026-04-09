@@ -19,12 +19,11 @@ export default function AvatarTilt() {
 
   return (
     <div className="relative flex flex-col items-center">
-      {/* Tooltip */}
+      {/* Tooltip — anchored right to prevent overflow */}
       <AnimatePresence>
         {hovering && (
           <motion.div
-            className="absolute -top-16 left-1/2 bg-white rounded-lg px-4 py-2 shadow-lg border border-gray-100 whitespace-nowrap pointer-events-none z-20"
-            style={{ transform: "translateX(-50%)" }}
+            className="absolute -top-16 right-0 bg-white rounded-lg px-4 py-2 shadow-lg border border-gray-100 whitespace-nowrap pointer-events-none z-20"
             initial={{ opacity: 0, y: 6 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 6 }}
@@ -39,11 +38,11 @@ export default function AvatarTilt() {
       {/* Avatar frame */}
       <div
         style={{ perspective: "400px" }}
-        className="w-16 h-16 md:w-[72px] md:h-[72px]"
+        className="w-9 h-9"
       >
         <div
           ref={ref}
-          className="w-full h-full rounded-full overflow-hidden ring-2 ring-gray-200"
+          className="w-full h-full rounded-full overflow-hidden ring-2 ring-[#0000ff]"
           style={{
             transform: `rotateX(${tilt.rotateX}deg) rotateY(${tilt.rotateY}deg)`,
             transition: "transform 0.1s ease-out",
@@ -61,8 +60,8 @@ export default function AvatarTilt() {
           <Image
             src="/images/portrait.jpg"
             alt="Dario Tonini"
-            width={72}
-            height={72}
+            width={36}
+            height={36}
             className="object-cover w-full h-full pointer-events-none"
             quality={90}
             priority
