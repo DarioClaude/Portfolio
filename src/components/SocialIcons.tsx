@@ -34,7 +34,7 @@ export default function SocialIcons() {
         <AnimatePresence>
           {showInstaPreview && (
             <motion.div
-              className="absolute bottom-full right-0 mb-3 w-[260px] rounded-xl shadow-2xl border border-gray-100 overflow-hidden pointer-events-none"
+              className="absolute bottom-full right-0 mb-3 w-[170px] rounded-lg shadow-2xl border border-gray-100 overflow-hidden pointer-events-none"
               initial={{ opacity: 0, y: 8, scale: 0.95 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: 8, scale: 0.95 }}
@@ -43,8 +43,8 @@ export default function SocialIcons() {
               <Image
                 src="/images/insta-preview.jpg"
                 alt="@dariotni on Instagram"
-                width={260}
-                height={300}
+                width={170}
+                height={196}
                 className="w-full h-auto"
                 quality={90}
                 draggable={false}
