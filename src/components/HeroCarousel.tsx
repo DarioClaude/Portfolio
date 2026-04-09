@@ -214,8 +214,8 @@ export default function HeroCarousel() {
           transition={{ duration: 0.8, delay: 0.5 }}
         >
           <AvatarTilt />
-          <p className="text-xs md:text-sm font-bold text-[#1A1A1A]">Dario Tonini</p>
-          <p className="text-[10px] md:text-xs tracking-[1px] text-[#9CA3AF]">@dariotni</p>
+          <p className="text-sm font-bold text-[#1A1A1A] leading-none">Dario Tonini</p>
+          <p className="text-xs tracking-[0.5px] text-[#9CA3AF] leading-none">@dariotni</p>
           <SocialIcons />
         </motion.div>
       </div>
