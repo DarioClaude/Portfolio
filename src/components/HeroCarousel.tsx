@@ -152,7 +152,7 @@ export default function HeroCarousel() {
             return (
               <div
                 key={project.slug}
-                className="absolute inset-0"
+                className="absolute inset-0 group"
                 style={{
                   width: dims.cardW,
                   height: dims.cardH,
@@ -173,7 +173,7 @@ export default function HeroCarousel() {
                     src={project.imagePath}
                     alt={project.title}
                     fill
-                    className="object-cover pointer-events-none"
+                    className="object-cover pointer-events-none scale-100 group-hover:scale-105 transition-transform duration-500 ease-out"
                     sizes={`${dims.cardW}px`}
                     quality={90}
                     draggable={false}
