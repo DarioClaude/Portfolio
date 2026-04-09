@@ -5,11 +5,12 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useTranslation } from "@/context/LanguageContext";
 import type { Lang } from "@/lib/translations";
 
-function Flag({ code, size = 18 }: { code: Lang; size?: number }) {
-  const h = size * 0.667; // 3:2 aspect ratio
+function Flag({ code }: { code: Lang }) {
+  const w = 20;
+  const h = 14;
   if (code === "fr")
     return (
-      <svg width={size} height={h} viewBox="0 0 30 20" className="rounded-[2px] block">
+      <svg width={w} height={h} viewBox="0 0 30 20" className="rounded-[2px] block shrink-0">
         <rect width="10" height="20" fill="#002395" />
         <rect x="10" width="10" height="20" fill="#fff" />
         <rect x="20" width="10" height="20" fill="#ED2939" />
@@ -17,25 +18,34 @@ function Flag({ code, size = 18 }: { code: Lang; size?: number }) {
     );
   if (code === "en")
     return (
-      <svg width={size} height={h} viewBox="0 0 60 30" className="rounded-[2px] block">
+      <svg width={w} height={h} viewBox="0 0 60 30" className="rounded-[2px] block shrink-0">
         <rect width="60" height="30" fill="#012169" />
         <path d="M0,0 L60,30 M60,0 L0,30" stroke="#fff" strokeWidth="6" />
-        <path d="M0,0 L60,30 M60,0 L0,30" stroke="#C8102E" strokeWidth="2" />
-        <path d="M30,0 V30 M0,15 H60" stroke="#fff" strokeWidth="10" />
-        <path d="M30,0 V30 M0,15 H60" stroke="#C8102E" strokeWidth="6" />
+        <path d="M0,0 L60,30" stroke="#C8102E" strokeWidth="2" />
+        <path d="M60,0 L0,30" stroke="#C8102E" strokeWidth="2" />
+        <path d="M30,0 V30" stroke="#fff" strokeWidth="10" />
+        <path d="M0,15 H60" stroke="#fff" strokeWidth="10" />
+        <path d="M30,0 V30" stroke="#C8102E" strokeWidth="6" />
+        <path d="M0,15 H60" stroke="#C8102E" strokeWidth="6" />
       </svg>
     );
   // es
   return (
-    <svg width={size} height={h} viewBox="0 0 30 20" className="rounded-[2px] block">
+    <svg width={w} height={h} viewBox="0 0 30 20" className="rounded-[2px] block shrink-0">
       <rect width="30" height="5" fill="#AA151B" />
       <rect y="5" width="30" height="10" fill="#F1BF00" />
       <rect y="15" width="30" height="5" fill="#AA151B" />
+      {/* Coat of arms hint */}
+      <rect x="8" y="7" width="4" height="6" rx="1" fill="#AA151B" opacity="0.5" />
     </svg>
   );
 }
 
-const langCodes: Lang[] = ["en", "fr", "es"];
+const languages: { code: Lang; label: string }[] = [
+  { code: "en", label: "English" },
+  { code: "fr", label: "Français" },
+  { code: "es", label: "Español" },
+];
 
 export default function LanguageSelector() {
   const [open, setOpen] = useState(false);
@@ -53,50 +63,56 @@ export default function LanguageSelector() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [handleClickOutside]);
 
+  const currentLabel = languages.find((l) => l.code === lang)?.label;
+
   return (
     <div ref={ref} className="relative">
+      {/* Trigger pill */}
       <button
         onClick={() => setOpen((prev) => !prev)}
-        className="flex items-center gap-1.5 cursor-pointer"
+        className="flex items-center gap-2 px-3 py-1.5 rounded-full border border-[#E5E7EB] bg-white hover:border-[#D1D5DB] transition-colors cursor-pointer"
         data-cursor-hover
         data-cursor-precise
         aria-label={t("aria.language")}
       >
         <Flag code={lang} />
+        <span className="text-xs font-medium text-[#1A1A1A] leading-none">{currentLabel}</span>
         <svg
           width="8"
           height="5"
           viewBox="0 0 8 5"
-          fill="#1A1A1A"
+          fill="#6B7280"
           className={`transition-transform duration-200 ${open ? "rotate-180" : ""}`}
         >
           <path d="M4 5L0 0h8L4 5z" />
         </svg>
       </button>
 
+      {/* Dropdown */}
       <AnimatePresence>
         {open && (
           <motion.div
-            className="absolute top-full left-1/2 -translate-x-1/2 mt-2 bg-white rounded-lg shadow-lg border border-gray-100 overflow-hidden z-50"
+            className="absolute top-full left-0 mt-2 bg-white rounded-xl shadow-lg border border-[#E5E7EB] overflow-hidden z-50 min-w-[140px]"
             initial={{ opacity: 0, y: -4, scale: 0.95 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -4, scale: 0.95 }}
             transition={{ duration: 0.15 }}
           >
-            {langCodes.map((code) => (
+            {languages.map((l) => (
               <button
-                key={code}
+                key={l.code}
                 onClick={() => {
-                  setLang(code);
+                  setLang(l.code);
                   setOpen(false);
                 }}
                 data-cursor-hover
                 data-cursor-precise
-                className={`flex items-center justify-center w-full px-3 py-2 hover:bg-gray-50 transition-colors ${
-                  code === lang ? "bg-gray-50" : ""
+                className={`flex items-center gap-2.5 w-full px-3.5 py-2.5 hover:bg-[#F3F4F6] transition-colors text-left ${
+                  l.code === lang ? "bg-[#F3F4F6]" : ""
                 }`}
               >
-                <Flag code={code} />
+                <Flag code={l.code} />
+                <span className="text-xs font-medium text-[#1A1A1A] leading-none">{l.label}</span>
               </button>
             ))}
           </motion.div>
