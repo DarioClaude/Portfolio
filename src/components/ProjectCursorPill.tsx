@@ -2,6 +2,7 @@
 
 import { motion, useMotionValue, useSpring, AnimatePresence } from "framer-motion";
 import { useEffect, useCallback } from "react";
+import { useTranslation } from "@/context/LanguageContext";
 
 const springConfig = { stiffness: 80, damping: 15, mass: 0.5 };
 
@@ -10,6 +11,7 @@ export default function ProjectCursorPill({ visible }: { visible: boolean }) {
   const y = useMotionValue(-100);
   const smoothX = useSpring(x, springConfig);
   const smoothY = useSpring(y, springConfig);
+  const { t } = useTranslation();
 
   const onMouseMove = useCallback(
     (e: MouseEvent) => {
@@ -41,7 +43,7 @@ export default function ProjectCursorPill({ visible }: { visible: boolean }) {
           transition={{ type: "spring", stiffness: 300, damping: 25 }}
         >
           <div className="bg-[#1A1A1A] text-white text-[10px] font-semibold uppercase tracking-wider px-3.5 py-1.5 rounded-[4px] whitespace-nowrap">
-            See Project
+            {t("cursor.seeProject")}
           </div>
         </motion.div>
       )}

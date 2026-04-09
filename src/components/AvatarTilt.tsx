@@ -3,11 +3,13 @@
 import { useRef, useState, useCallback } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
+import { useTranslation } from "@/context/LanguageContext";
 
 export default function AvatarTilt() {
   const ref = useRef<HTMLDivElement>(null);
   const [tilt, setTilt] = useState({ rotateX: 0, rotateY: 0 });
   const [hovering, setHovering] = useState(false);
+  const { t } = useTranslation();
 
   const onMove = useCallback((e: React.MouseEvent) => {
     if (!ref.current) return;
@@ -29,8 +31,8 @@ export default function AvatarTilt() {
             exit={{ opacity: 0, y: 6 }}
             transition={{ duration: 0.2 }}
           >
-            <p className="text-xs font-bold text-white">Dario Tonini</p>
-            <p className="text-[10px] text-gray-400">Photographer</p>
+            <p className="text-xs font-bold text-white">{t("avatar.name")}</p>
+            <p className="text-[10px] text-gray-400">{t("avatar.role")}</p>
           </motion.div>
         )}
       </AnimatePresence>

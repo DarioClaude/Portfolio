@@ -1,8 +1,8 @@
 import { notFound } from "next/navigation";
-import Link from "next/link";
 import Image from "next/image";
 import { projects } from "@/lib/projects";
 import Footer from "@/components/Footer";
+import ProjectDetailContent from "@/components/ProjectDetailContent";
 
 interface Props {
   params: { slug: string };
@@ -44,32 +44,12 @@ export default function ProjectDetailPage({ params }: Props) {
           </div>
         </div>
 
-        {/* Project info */}
-        <div className="px-10 max-w-3xl">
-          <h1 className="text-5xl font-black uppercase tracking-tight text-[#1A1A1A] mb-4">
-            {project.title}
-          </h1>
-          <p className="text-lg text-[#6B7280] leading-relaxed mb-8">
-            {project.description}
-          </p>
-          <div className="flex gap-4 text-sm text-[#9CA3AF]">
-            <span className="border border-[#E5E7EB] px-3 py-1 rounded-full">Photography</span>
-            <span className="border border-[#E5E7EB] px-3 py-1 rounded-full">Art Direction</span>
-            <span className="border border-[#E5E7EB] px-3 py-1 rounded-full">Visual Design</span>
-          </div>
-        </div>
-
-        {/* Next project */}
-        <div className="px-10 mt-24 border-t border-[#E5E7EB] pt-12">
-          <p className="text-xs uppercase tracking-[2px] text-[#9CA3AF] mb-4">Next project</p>
-          <Link
-            href={`/work/${nextProject.slug}`}
-            className="text-3xl font-black uppercase text-[#1A1A1A] hover:opacity-60 transition-opacity"
-            data-cursor-hover
-          >
-            {nextProject.title} →
-          </Link>
-        </div>
+        <ProjectDetailContent
+          title={project.title}
+          descriptionKey={project.descriptionKey}
+          nextProjectSlug={nextProject.slug}
+          nextProjectTitle={nextProject.title}
+        />
       </section>
       <Footer />
     </>

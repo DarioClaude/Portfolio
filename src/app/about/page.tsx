@@ -4,6 +4,7 @@ import { useRef, useState, useCallback, useEffect } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import SocialIcons from "@/components/SocialIcons";
+import { useTranslation, renderBold } from "@/context/LanguageContext";
 
 const spring = { type: "spring" as const, stiffness: 100, damping: 20 };
 
@@ -13,15 +14,16 @@ export default function AboutPage() {
   const [tilt, setTilt] = useState({ rotateX: 0, rotateY: 0 });
   const animFrameRef = useRef<number>(0);
   const startTimeRef = useRef(Date.now());
+  const { t } = useTranslation();
 
   // Continuous idle animation — gentle floating tilt
   useEffect(() => {
     const animate = () => {
       if (!isHovering) {
-        const t = (Date.now() - startTimeRef.current) / 1000;
+        const elapsed = (Date.now() - startTimeRef.current) / 1000;
         setTilt({
-          rotateX: Math.sin(t * 0.8) * 4,
-          rotateY: Math.cos(t * 0.6) * 5,
+          rotateX: Math.sin(elapsed * 0.8) * 4,
+          rotateY: Math.cos(elapsed * 0.6) * 5,
         });
       }
       animFrameRef.current = requestAnimationFrame(animate);
@@ -61,7 +63,7 @@ export default function AboutPage() {
               animate={{ opacity: 1, y: 0 }}
               transition={spring}
             >
-              Hey, I&apos;m Dario.
+              {t("about.title")}
             </motion.h1>
 
             <motion.div
@@ -70,18 +72,13 @@ export default function AboutPage() {
               transition={{ ...spring, delay: 0.1 }}
             >
               <p className="text-lg font-medium leading-tight tracking-tight text-[#1A1A1A] mb-5">
-                A <span className="font-bold text-[#0000ff]">french photographer</span> dedicated
-                to capturing raw emotions and minimalist digital aesthetics.
+                {renderBold(t("about.intro"))}
               </p>
               <p className="text-base text-[#6B7280] leading-relaxed mb-5">
-                Through my lens, I explore the quiet beauty of everyday moments,
-                transforming them into powerful visual narratives. My work sits
-                at the intersection of documentary photography and fine art.
+                {t("about.p1")}
               </p>
               <p className="text-base text-[#6B7280] leading-relaxed mb-10">
-                Every project is an opportunity to push boundaries and create
-                something that resonates with people. I believe in the power of
-                visual storytelling.
+                {t("about.p2")}
               </p>
             </motion.div>
 
@@ -97,14 +94,14 @@ export default function AboutPage() {
                 data-cursor-hover
                 className="inline-flex items-center justify-center px-6 py-3 border-2 border-[#0000ff] text-[#0000ff] text-sm font-semibold tracking-wide rounded-lg hover:bg-[#0000ff] hover:text-white transition-all duration-300"
               >
-                Me laisser un mail
+                {t("about.email")}
               </a>
               <a
                 href="tel:0603466274"
                 data-cursor-hover
                 className="inline-flex items-center justify-center px-6 py-3 bg-[#0000ff] text-white text-sm font-semibold tracking-wide rounded-lg hover:bg-[#0000cc] transition-all duration-300"
               >
-                M&apos;appeler
+                {t("about.call")}
               </a>
             </motion.div>
 
@@ -117,16 +114,16 @@ export default function AboutPage() {
             >
               <div className="flex gap-10">
                 <div>
-                  <p className="text-[10px] tracking-[1.5px] uppercase text-[#9CA3AF] mb-1">Role</p>
-                  <p className="text-sm font-bold text-[#1A1A1A]">Photographer</p>
+                  <p className="text-[10px] tracking-[1.5px] uppercase text-[#9CA3AF] mb-1">{t("about.role.label")}</p>
+                  <p className="text-sm font-bold text-[#1A1A1A]">{t("about.role.value")}</p>
                 </div>
                 <div>
-                  <p className="text-[10px] tracking-[1.5px] uppercase text-[#9CA3AF] mb-1">Location</p>
-                  <p className="text-sm font-bold text-[#1A1A1A]">France</p>
+                  <p className="text-[10px] tracking-[1.5px] uppercase text-[#9CA3AF] mb-1">{t("about.location.label")}</p>
+                  <p className="text-sm font-bold text-[#1A1A1A]">{t("about.location.value")}</p>
                 </div>
                 <div>
-                  <p className="text-[10px] tracking-[1.5px] uppercase text-[#9CA3AF] mb-1">Specialties</p>
-                  <p className="text-sm text-[#1A1A1A]">Portrait, Editorial, Fine Art</p>
+                  <p className="text-[10px] tracking-[1.5px] uppercase text-[#9CA3AF] mb-1">{t("about.specialties.label")}</p>
+                  <p className="text-sm text-[#1A1A1A]">{t("about.specialties.value")}</p>
                 </div>
               </div>
               <SocialIcons />
@@ -163,7 +160,7 @@ export default function AboutPage() {
               >
                 <Image
                   src="/images/portrait.jpg"
-                  alt="Dario Tonini — Photographer"
+                  alt="Dario Tonini"
                   fill
                   className="object-cover pointer-events-none"
                   sizes="(max-width: 768px) 100vw, 380px"

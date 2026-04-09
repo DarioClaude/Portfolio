@@ -6,7 +6,7 @@ export interface Project {
   bg: string;
   accent: "white" | "black";
   textColor: string;
-  description: string;
+  descriptionKey: string;
 }
 
 export const projects: Project[] = [
@@ -18,7 +18,7 @@ export const projects: Project[] = [
     bg: "bg-sky-300",
     accent: "white",
     textColor: "text-white",
-    description: "Brand identity & portfolio website for a creative developer studio.",
+    descriptionKey: "project.marlay.desc",
   },
   {
     id: 2,
@@ -28,7 +28,7 @@ export const projects: Project[] = [
     bg: "bg-amber-50",
     accent: "black",
     textColor: "text-gray-900",
-    description: "E-commerce platform for a sustainable botanical brand.",
+    descriptionKey: "project.garden.desc",
   },
   {
     id: 3,
@@ -38,7 +38,7 @@ export const projects: Project[] = [
     bg: "bg-gradient-to-br from-gray-100 to-gray-200",
     accent: "black",
     textColor: "text-gray-900",
-    description: "Creative agency branding and digital presence redesign.",
+    descriptionKey: "project.studioarct.desc",
   },
   {
     id: 4,
@@ -48,7 +48,7 @@ export const projects: Project[] = [
     bg: "bg-gray-900",
     accent: "white",
     textColor: "text-white",
-    description: "Data visualization dashboard for fintech analytics.",
+    descriptionKey: "project.kora.desc",
   },
   {
     id: 5,
@@ -58,7 +58,7 @@ export const projects: Project[] = [
     bg: "bg-gradient-to-br from-amber-900 to-gray-900",
     accent: "white",
     textColor: "text-white",
-    description: "Photography studio website with immersive gallery.",
+    descriptionKey: "project.studio17.desc",
   },
   {
     id: 6,
@@ -68,7 +68,7 @@ export const projects: Project[] = [
     bg: "bg-gray-700",
     accent: "white",
     textColor: "text-white",
-    description: "Product design studio portfolio with 3D showcases.",
+    descriptionKey: "project.shipstudio.desc",
   },
   {
     id: 7,
@@ -78,7 +78,7 @@ export const projects: Project[] = [
     bg: "bg-gray-300",
     accent: "black",
     textColor: "text-gray-900",
-    description: "Cloud infrastructure platform with minimal UI design.",
+    descriptionKey: "project.cirro.desc",
   },
   {
     id: 8,
@@ -88,7 +88,7 @@ export const projects: Project[] = [
     bg: "bg-gradient-to-br from-amber-500 to-orange-600",
     accent: "white",
     textColor: "text-white",
-    description: "Audio production SaaS with real-time collaboration tools.",
+    descriptionKey: "project.volumaker.desc",
   },
   {
     id: 9,
@@ -98,7 +98,7 @@ export const projects: Project[] = [
     bg: "bg-gradient-to-br from-purple-900 to-black",
     accent: "white",
     textColor: "text-white",
-    description: "Luxury streetwear brand identity and e-commerce experience.",
+    descriptionKey: "project.parabellum.desc",
   },
 ];
 

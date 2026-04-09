@@ -3,10 +3,12 @@
 import { useRef } from "react";
 import { motion, useInView } from "framer-motion";
 import SocialIcons from "./SocialIcons";
+import { useTranslation, renderBold } from "@/context/LanguageContext";
 
 export default function Footer() {
   const ref = useRef<HTMLElement>(null);
   const isInView = useInView(ref, { once: true, margin: "-80px" });
+  const { t } = useTranslation();
 
   return (
     <footer ref={ref} className="border-t border-[#E5E7EB]">
@@ -19,12 +21,10 @@ export default function Footer() {
           transition={{ type: "spring", stiffness: 100, damping: 20 }}
         >
           <p className="text-lg font-medium leading-tight tracking-tight text-[#1A1A1A]">
-            Hi, I&apos;m <span className="font-bold">Dario</span>, a{" "}
-            <span className="font-bold">french photographer</span> dedicated to
-            capturing raw emotions and minimalist digital aesthetics.
+            {renderBold(t("footer.bio"), "font-bold")}
           </p>
           <p className="text-sm text-[#6B7280] mt-3">
-            I craft visual stories that stand out and resonate.
+            {t("footer.sub")}
           </p>
         </motion.div>
 
@@ -41,9 +41,9 @@ export default function Footer() {
           }}
         >
           <p className="text-xs tracking-[1.5px] uppercase text-[#6B7280]">
-            french photographer
+            {t("footer.role")}
           </p>
-          <p className="text-sm font-bold text-[#1A1A1A]">DARIO TONINI</p>
+          <p className="text-sm font-bold text-[#1A1A1A]">{t("footer.name")}</p>
 
           <SocialIcons />
         </motion.div>

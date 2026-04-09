@@ -8,6 +8,7 @@ import ProjectCursorPill from "./ProjectCursorPill";
 import SocialIcons from "./SocialIcons";
 import AvatarTilt from "./AvatarTilt";
 import { carouselProjects } from "@/lib/projects";
+import { useTranslation, renderBold } from "@/context/LanguageContext";
 
 const CARD_COUNT = 6;
 const ANGLE_STEP = 360 / CARD_COUNT; // 60deg
@@ -34,6 +35,7 @@ export default function HeroCarousel() {
   const dragStartX = useRef(0);
   const dragStartRotation = useRef(0);
   const sectionRef = useRef<HTMLElement>(null);
+  const { t } = useTranslation();
 
   // Responsive + fluid sizing based on container width
   useEffect(() => {
@@ -198,12 +200,10 @@ export default function HeroCarousel() {
           transition={{ duration: 0.8, delay: 0.4 }}
         >
           <p className="text-sm md:text-lg font-medium leading-snug md:leading-tight tracking-tight text-[#1A1A1A]">
-            Hi, I&apos;m <span className="font-bold text-[#0000ff]">Dario</span>, a{" "}
-            <span className="font-bold text-[#0000ff]">french photographer</span> dedicated to
-            capturing raw emotions and minimalist digital aesthetics.
+            {renderBold(t("hero.bio"))}
           </p>
           <p className="text-[10px] md:text-sm text-[#6B7280] mt-2 md:mt-3">
-            I craft visual stories that stand out and resonate.
+            {t("hero.sub")}
           </p>
         </motion.div>
 

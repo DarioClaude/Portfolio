@@ -2,8 +2,10 @@
 
 import { useState, useRef, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useTranslation } from "@/context/LanguageContext";
+import type { Lang } from "@/lib/translations";
 
-const languages = [
+const languages: { code: Lang; flag: string }[] = [
   { code: "fr", flag: "🇫🇷" },
   { code: "en", flag: "🇬🇧" },
   { code: "es", flag: "🇪🇸" },
@@ -11,7 +13,7 @@ const languages = [
 
 export default function LanguageSelector() {
   const [open, setOpen] = useState(false);
-  const [current, setCurrent] = useState("fr");
+  const { lang, setLang, t } = useTranslation();
   const ref = useRef<HTMLDivElement>(null);
 
   // Close on click outside
@@ -26,7 +28,7 @@ export default function LanguageSelector() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [handleClickOutside]);
 
-  const currentFlag = languages.find((l) => l.code === current)?.flag;
+  const currentFlag = languages.find((l) => l.code === lang)?.flag;
 
   return (
     <div ref={ref} className="relative">
@@ -34,7 +36,7 @@ export default function LanguageSelector() {
         onClick={() => setOpen((prev) => !prev)}
         className="flex items-center gap-1 cursor-pointer"
         data-cursor-hover
-        aria-label="Change language"
+        aria-label={t("aria.language")}
       >
         <span className="text-sm leading-none">{currentFlag}</span>
         <svg
@@ -57,19 +59,19 @@ export default function LanguageSelector() {
             exit={{ opacity: 0, y: -4, scale: 0.95 }}
             transition={{ duration: 0.15 }}
           >
-            {languages.map((lang) => (
+            {languages.map((l) => (
               <button
-                key={lang.code}
+                key={l.code}
                 onClick={() => {
-                  setCurrent(lang.code);
+                  setLang(l.code);
                   setOpen(false);
                 }}
                 data-cursor-hover
                 className={`flex items-center justify-center w-full px-3 py-1.5 hover:bg-gray-50 transition-colors ${
-                  lang.code === current ? "bg-gray-50" : ""
+                  l.code === lang ? "bg-gray-50" : ""
                 }`}
               >
-                <span className="text-sm leading-none">{lang.flag}</span>
+                <span className="text-sm leading-none">{l.flag}</span>
               </button>
             ))}
           </motion.div>

@@ -5,6 +5,7 @@ import Navbar from "@/components/Navbar";
 import NoiseOverlay from "@/components/NoiseOverlay";
 import CursorFollower from "@/components/CursorFollower";
 import ImageProtection from "@/components/ImageProtection";
+import { LanguageProvider } from "@/context/LanguageContext";
 
 const montserrat = localFont({
   src: "./fonts/Montserrat.woff2",
@@ -29,11 +30,13 @@ export default function RootLayout({
         className={`${montserrat.variable} font-sans antialiased bg-white text-[#1A1A1A]`}
         style={{ fontFamily: "var(--font-montserrat), -apple-system, sans-serif" }}
       >
-        <NoiseOverlay />
-        <CursorFollower />
-        <ImageProtection />
-        <Navbar />
-        <main className="max-w-[1800px] mx-auto relative">{children}</main>
+        <LanguageProvider>
+          <NoiseOverlay />
+          <CursorFollower />
+          <ImageProtection />
+          <Navbar />
+          <main className="max-w-[1800px] mx-auto relative">{children}</main>
+        </LanguageProvider>
       </body>
     </html>
   );

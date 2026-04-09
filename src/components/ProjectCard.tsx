@@ -5,6 +5,7 @@ import Image from "next/image";
 import { motion, useInView } from "framer-motion";
 import Link from "next/link";
 import type { Project } from "@/lib/projects";
+import { useTranslation } from "@/context/LanguageContext";
 
 interface Props {
   project: Project;
@@ -14,6 +15,7 @@ interface Props {
 export default function ProjectCard({ project, index }: Props) {
   const ref = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, { once: true, margin: "-80px" });
+  const { t } = useTranslation();
 
   return (
     <motion.div
@@ -62,7 +64,7 @@ export default function ProjectCard({ project, index }: Props) {
               *{project.title}
             </p>
             <p className="text-[11px] mt-0.5 text-white opacity-60 drop-shadow-md">
-              {project.description}
+              {t(project.descriptionKey)}
             </p>
           </div>
         </div>

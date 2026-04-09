@@ -5,15 +5,17 @@ import { usePathname } from "next/navigation";
 import { motion } from "framer-motion";
 import PixelLogo from "./PixelLogo";
 import LanguageSelector from "./LanguageSelector";
+import { useTranslation } from "@/context/LanguageContext";
 
 const navLinks = [
-  { label: "Home", href: "/" },
-  { label: "Work", href: "/work" },
-  { label: "About", href: "/about" },
+  { key: "nav.home", href: "/" },
+  { key: "nav.work", href: "/work" },
+  { key: "nav.about", href: "/about" },
 ];
 
 export default function Navbar() {
   const pathname = usePathname();
+  const { t } = useTranslation();
 
   return (
     <motion.header
@@ -50,7 +52,7 @@ export default function Navbar() {
                       color: isActive ? "#0000ff" : "#6B7280",
                     }}
                   >
-                    {link.label}
+                    {t(link.key)}
                   </span>
                   {/* Hover underline */}
                   <span className="absolute -bottom-0.5 left-0 h-px bg-[#0000ff] w-0 group-hover:w-full transition-all duration-300" />
@@ -73,7 +75,7 @@ export default function Navbar() {
               data-cursor-hover
               className="inline-block bg-[#0000ff] text-white text-[11px] md:text-[13px] font-medium px-3 py-2 md:px-5 md:py-2.5 rounded-lg hover:shadow-lg transition-shadow"
             >
-              Get in touch
+              {t("nav.cta")}
             </Link>
           </motion.div>
         )}
