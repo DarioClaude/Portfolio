@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion } from "framer-motion";
 import PixelLogo from "./PixelLogo";
+import LanguageSelector from "./LanguageSelector";
 
 const navLinks = [
   { label: "Home", href: "/" },
@@ -57,6 +58,8 @@ export default function Navbar() {
               );
             })}
           </nav>
+
+          <LanguageSelector />
         </div>
 
         {/* Right: CTA — hidden on About page since it already links there */}
