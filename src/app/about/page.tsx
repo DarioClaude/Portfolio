@@ -1,102 +1,165 @@
 "use client";
 
+import { useRef, useState, useCallback } from "react";
+import Image from "next/image";
 import { motion } from "framer-motion";
 import SocialIcons from "@/components/SocialIcons";
 
 const spring = { type: "spring" as const, stiffness: 100, damping: 20 };
 
 export default function AboutPage() {
-  return (
-    <>
-      <section className="pt-28 pb-20 px-10">
-        <div className="max-w-4xl mx-auto">
-          <motion.h1
-            className="text-6xl md:text-8xl font-black uppercase text-[#1A1A1A] mb-16 leading-none"
-            initial={{ opacity: 0, y: 60 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={spring}
-          >
-            About
-          </motion.h1>
+  const cardRef = useRef<HTMLDivElement>(null);
+  const [isHovering, setIsHovering] = useState(false);
+  const [tilt, setTilt] = useState({ rotateX: 5, rotateY: -5 });
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-16">
-            {/* Left */}
+  const handleMouseMove = useCallback((e: React.MouseEvent) => {
+    if (!cardRef.current) return;
+    const rect = cardRef.current.getBoundingClientRect();
+    const x = (e.clientX - rect.left) / rect.width - 0.5; // -0.5 to 0.5
+    const y = (e.clientY - rect.top) / rect.height - 0.5;
+    setTilt({
+      rotateX: -y * 12, // tilt up/down based on vertical position
+      rotateY: x * 12,  // tilt left/right based on horizontal position
+    });
+  }, []);
+
+  const handleMouseEnter = useCallback(() => setIsHovering(true), []);
+  const handleMouseLeave = useCallback(() => {
+    setIsHovering(false);
+    setTilt({ rotateX: 5, rotateY: -5 }); // return to static tilt
+  }, []);
+
+  return (
+    <section className="pt-28 md:pt-36 pb-20 px-5 md:px-10">
+      <div className="max-w-[1200px] mx-auto">
+        {/* Two-column layout */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-20 items-start">
+
+          {/* LEFT COLUMN — Text */}
+          <div>
+            <motion.h1
+              className="text-4xl md:text-6xl font-black text-[#1A1A1A] mb-8 leading-[1.1] tracking-tight"
+              initial={{ opacity: 0, y: 50 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={spring}
+            >
+              Hey, I&apos;m Dario.
+            </motion.h1>
+
             <motion.div
               initial={{ opacity: 0, y: 40 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ ...spring, delay: 0.1 }}
             >
-              <p className="text-xl font-medium leading-tight tracking-tight text-[#1A1A1A] mb-6">
-                Hi, I&apos;m <span className="font-bold">Dario</span>. A{" "}
-                <span className="font-bold">french photographer</span> dedicated
+              <p className="text-lg font-medium leading-tight tracking-tight text-[#1A1A1A] mb-5">
+                A <span className="font-bold text-[#0000ff]">french photographer</span> dedicated
                 to capturing raw emotions and minimalist digital aesthetics.
               </p>
-              <p className="text-base text-[#6B7280] leading-relaxed mb-6">
+              <p className="text-base text-[#6B7280] leading-relaxed mb-5">
                 Through my lens, I explore the quiet beauty of everyday moments,
                 transforming them into powerful visual narratives. My work sits
                 at the intersection of documentary photography and fine art.
               </p>
-              <p className="text-base text-[#6B7280] leading-relaxed">
+              <p className="text-base text-[#6B7280] leading-relaxed mb-10">
                 Every project is an opportunity to push boundaries and create
                 something that resonates with people. I believe in the power of
                 visual storytelling.
               </p>
             </motion.div>
 
-            {/* Right */}
+            {/* CTAs */}
             <motion.div
-              initial={{ opacity: 0, y: 40 }}
+              className="flex flex-col sm:flex-row gap-4 mb-10"
+              initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ ...spring, delay: 0.2 }}
-              className="flex flex-col gap-8"
             >
-              <div>
-                <p className="text-xs tracking-[1.5px] uppercase text-[#6B7280] mb-1">
-                  Role
-                </p>
-                <p className="text-base font-bold text-[#1A1A1A]">
-                  Photographer
-                </p>
-              </div>
-              <div>
-                <p className="text-xs tracking-[1.5px] uppercase text-[#6B7280] mb-1">
-                  Location
-                </p>
-                <p className="text-base font-bold text-[#1A1A1A]">France</p>
-              </div>
-              <div>
-                <p className="text-xs tracking-[1.5px] uppercase text-[#6B7280] mb-1">
-                  Specialties
-                </p>
-                <p className="text-base text-[#1A1A1A]">
-                  Portrait, Landscape, Editorial, Fine Art
-                </p>
-              </div>
-              <div>
-                <p className="text-xs tracking-[1.5px] uppercase text-[#6B7280] mb-2">
-                  Social
-                </p>
-                <SocialIcons />
-              </div>
-
-              <motion.div
-                className="mt-4"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.5 }}
+              <a
+                href="mailto:toninidario@yahoo.fr"
+                data-cursor-hover
+                className="inline-flex items-center justify-center px-6 py-3 border-2 border-[#0000ff] text-[#0000ff] text-sm font-semibold tracking-wide rounded-lg hover:bg-[#0000ff] hover:text-white transition-all duration-300"
               >
-                <a
-                  href="mailto:contact@dariotonini.com"
-                  data-cursor-hover
-                  className="text-2xl font-black text-[#1A1A1A] hover:opacity-60 transition-opacity"
-                >
-                  contact@dariotonini.com
-                </a>
-              </motion.div>
+                Me laisser un mail
+              </a>
+              <a
+                href="tel:0603466274"
+                data-cursor-hover
+                className="inline-flex items-center justify-center px-6 py-3 bg-[#0000ff] text-white text-sm font-semibold tracking-wide rounded-lg hover:bg-[#0000cc] transition-all duration-300"
+              >
+                M&apos;appeler
+              </a>
+            </motion.div>
+
+            {/* Social + Details */}
+            <motion.div
+              className="flex flex-col gap-5"
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ ...spring, delay: 0.3 }}
+            >
+              <div className="flex gap-10">
+                <div>
+                  <p className="text-[10px] tracking-[1.5px] uppercase text-[#9CA3AF] mb-1">Role</p>
+                  <p className="text-sm font-bold text-[#1A1A1A]">Photographer</p>
+                </div>
+                <div>
+                  <p className="text-[10px] tracking-[1.5px] uppercase text-[#9CA3AF] mb-1">Location</p>
+                  <p className="text-sm font-bold text-[#1A1A1A]">France</p>
+                </div>
+                <div>
+                  <p className="text-[10px] tracking-[1.5px] uppercase text-[#9CA3AF] mb-1">Specialties</p>
+                  <p className="text-sm text-[#1A1A1A]">Portrait, Editorial, Fine Art</p>
+                </div>
+              </div>
+              <SocialIcons />
             </motion.div>
           </div>
+
+          {/* RIGHT COLUMN — 3D Portrait */}
+          <motion.div
+            initial={{ opacity: 0, y: 60, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            transition={{ ...spring, delay: 0.15 }}
+            className="flex justify-center md:justify-end"
+          >
+            <div
+              style={{ perspective: "1000px" }}
+              className="w-full max-w-[480px]"
+            >
+              <div
+                ref={cardRef}
+                className="relative rounded-xl overflow-hidden"
+                style={{
+                  aspectRatio: "3/4",
+                  transform: `rotateX(${tilt.rotateX}deg) rotateY(${tilt.rotateY}deg) translateZ(${isHovering ? "40px" : "30px"}) scale(${isHovering ? 1.03 : 1})`,
+                  transition: "transform 0.5s ease-out",
+                  transformStyle: "preserve-3d",
+                  willChange: "transform",
+                }}
+                onMouseMove={handleMouseMove}
+                onMouseEnter={handleMouseEnter}
+                onMouseLeave={handleMouseLeave}
+                data-protected
+                data-cursor-hover
+              >
+                <Image
+                  src="/images/portrait.jpg"
+                  alt="Dario Tonini — Photographer"
+                  fill
+                  className="object-cover pointer-events-none"
+                  sizes="(max-width: 768px) 100vw, 480px"
+                  quality={90}
+                  priority
+                  draggable={false}
+                />
+                {/* Subtle gradient overlay at bottom */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent pointer-events-none" />
+              </div>
+            </div>
+          </motion.div>
+
         </div>
-      </section>
-    </>
+      </div>
+    </section>
   );
 }
