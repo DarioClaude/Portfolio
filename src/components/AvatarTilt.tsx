@@ -58,7 +58,7 @@ export default function AvatarTilt() {
           data-protected
         >
           <Image
-            src="/images/portrait.jpg"
+            src="/images/avatar.jpg"
             alt="Dario Tonini"
             width={36}
             height={36}
