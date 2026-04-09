@@ -59,19 +59,21 @@ export default function Navbar() {
           </nav>
         </div>
 
-        {/* Right: CTA */}
-        <motion.div
-          whileHover={{ y: -1 }}
-          transition={{ type: "spring", stiffness: 300, damping: 20 }}
-        >
-          <Link
-            href="/about"
-            data-cursor-hover
-            className="inline-block bg-[#0000ff] text-white text-[11px] md:text-[13px] font-medium px-3 py-2 md:px-5 md:py-2.5 rounded-lg hover:shadow-lg transition-shadow"
+        {/* Right: CTA — hidden on About page since it already links there */}
+        {pathname !== "/about" && (
+          <motion.div
+            whileHover={{ y: -1 }}
+            transition={{ type: "spring", stiffness: 300, damping: 20 }}
           >
-            Get in touch
-          </Link>
-        </motion.div>
+            <Link
+              href="/about"
+              data-cursor-hover
+              className="inline-block bg-[#0000ff] text-white text-[11px] md:text-[13px] font-medium px-3 py-2 md:px-5 md:py-2.5 rounded-lg hover:shadow-lg transition-shadow"
+            >
+              Get in touch
+            </Link>
+          </motion.div>
+        )}
       </div>
     </motion.header>
   );
