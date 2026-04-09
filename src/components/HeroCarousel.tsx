@@ -214,11 +214,8 @@ export default function HeroCarousel() {
           transition={{ duration: 0.8, delay: 0.5 }}
         >
           <AvatarTilt />
-          <p className="text-[10px] md:text-xs tracking-[1.5px] uppercase text-[#6B7280]">
-            french photographer
-          </p>
-          <p className="text-xs md:text-sm font-bold text-[#1A1A1A]">DARIO TONINI</p>
-          <p className="text-[10px] md:text-xs tracking-[1px] text-[#9CA3AF] hidden md:block">FRANCE</p>
+          <p className="text-xs md:text-sm font-bold text-[#1A1A1A]">Dario Tonini</p>
+          <p className="text-[10px] md:text-xs tracking-[1px] text-[#9CA3AF]">@dariotni</p>
           <SocialIcons />
         </motion.div>
       </div>
