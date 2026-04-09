@@ -1,10 +1,10 @@
 "use client";
 
 import { useRef } from "react";
+import Image from "next/image";
 import { motion, useInView } from "framer-motion";
 import Link from "next/link";
 import type { Project } from "@/lib/projects";
-import ProjectCardVisual from "./ProjectCardVisual";
 
 interface Props {
   project: Project;
@@ -33,27 +33,35 @@ export default function ProjectCard({ project, index }: Props) {
         className="block group"
         data-cursor-hover
       >
-        <div className="rounded-[4px] overflow-hidden relative" style={{ aspectRatio: "16/10" }}>
+        <div
+          className="rounded-[4px] overflow-hidden relative"
+          style={{ aspectRatio: "16/10" }}
+          data-protected
+        >
           <motion.div
-            className="w-full h-full"
+            className="w-full h-full relative"
             whileHover={{ scale: 1.05 }}
             transition={{
               duration: 0.5,
               ease: [0.23, 1, 0.32, 1],
             }}
           >
-            <ProjectCardVisual project={project} />
+            <Image
+              src={project.imagePath}
+              alt={project.title}
+              fill
+              className="object-cover"
+              sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+              quality={85}
+              draggable={false}
+            />
           </motion.div>
           {/* Overlay text */}
           <div className="absolute bottom-0 left-0 p-4 z-10">
-            <p
-              className={`text-[13px] font-bold uppercase ${project.textColor}`}
-            >
-              *{project.name}
+            <p className="text-[13px] font-bold uppercase text-white drop-shadow-md">
+              *{project.title}
             </p>
-            <p
-              className={`text-[11px] mt-0.5 ${project.textColor} opacity-60`}
-            >
+            <p className="text-[11px] mt-0.5 text-white opacity-60 drop-shadow-md">
               {project.description}
             </p>
           </div>

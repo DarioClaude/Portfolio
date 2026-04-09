@@ -6,22 +6,10 @@ import Image from "next/image";
 import { motion } from "framer-motion";
 import ProjectCursorPill from "./ProjectCursorPill";
 import SocialIcons from "./SocialIcons";
-import { projects } from "@/lib/projects";
+import { carouselProjects } from "@/lib/projects";
 
-// Exactly 6 cards for the cylinder
-const carouselProjects = projects.slice(0, 6);
 const CARD_COUNT = 6;
 const ANGLE_STEP = 360 / CARD_COUNT; // 60deg
-
-// Photo paths for each carousel card (temporary test)
-const CARD_PHOTOS = [
-  "/photos/1.png",
-  "/photos/2.png",
-  "/photos/3.png",
-  "/photos/4.png",
-  "/photos/5.png",
-  "/photos/6.png",
-];
 
 // Responsive dimensions
 const DESKTOP = { cardW: 357, cardH: 242, radius: 400 };
@@ -45,7 +33,7 @@ export default function HeroCarousel() {
 
   const dims = isMobile ? MOBILE : DESKTOP;
 
-  // Auto-rotation — slow luxury feel (mobile too, slightly slower)
+  // Auto-rotation — slow luxury feel
   useEffect(() => {
     let raf: number;
     const speed = isMobile ? 0.015 : 0.02;
@@ -59,7 +47,7 @@ export default function HeroCarousel() {
     return () => cancelAnimationFrame(raf);
   }, [isMobile, isHoveringWheel]);
 
-  // Keyboard: Left/Right snap by 60deg (desktop only)
+  // Keyboard: Left/Right snap by 60deg
   const handleKeyDown = useCallback((e: KeyboardEvent) => {
     if (e.key === "ArrowLeft") {
       autoRotateRef.current = false;
@@ -86,7 +74,6 @@ export default function HeroCarousel() {
 
   const handleTouchMove = useCallback((e: React.TouchEvent) => {
     const dx = e.touches[0].clientX - dragStartX.current;
-    // Map drag distance to rotation: ~0.5 deg per pixel
     setGlobalRotation(dragStartRotation.current + dx * 0.5);
   }, []);
 
@@ -94,9 +81,9 @@ export default function HeroCarousel() {
     setTimeout(() => { autoRotateRef.current = true; }, 2000);
   }, []);
 
-  // Mouse drag for desktop fallback
+  // Mouse drag for desktop
   const handlePointerDown = useCallback((e: React.PointerEvent) => {
-    if (isMobile) return; // handled by touch events
+    if (isMobile) return;
     autoRotateRef.current = false;
     dragStartX.current = e.clientX;
     dragStartRotation.current = globalRotation;
@@ -116,10 +103,9 @@ export default function HeroCarousel() {
 
   return (
     <section className="relative w-full h-screen overflow-hidden">
-      {/* "SEE PROJECT" pill — desktop only */}
       {!isMobile && <ProjectCursorPill visible={isHoveringWheel} />}
 
-      {/* ===== CAROUSEL — absolute positioned ===== */}
+      {/* ===== CAROUSEL ===== */}
       <div
         className="absolute left-1/2"
         style={{
@@ -162,17 +148,21 @@ export default function HeroCarousel() {
                   overflow: "hidden",
                 }}
                 data-cursor-hover
+                data-protected
               >
                 <Link
                   href={`/work/${project.slug}`}
-                  className="block w-full h-full relative"
+                  className="block w-full h-full relative select-none"
+                  draggable={false}
                 >
                   <Image
-                    src={CARD_PHOTOS[index]}
-                    alt={project.name}
+                    src={project.imagePath}
+                    alt={project.title}
                     fill
-                    className="object-cover"
+                    className="object-cover pointer-events-none"
                     sizes={`${dims.cardW}px`}
+                    quality={90}
+                    draggable={false}
                   />
                 </Link>
               </div>
@@ -181,12 +171,11 @@ export default function HeroCarousel() {
         </div>
       </div>
 
-      {/* ===== FOOTER BIO — independently anchored ===== */}
+      {/* ===== FOOTER BIO ===== */}
       <div
         className="absolute left-0 right-0 px-5 md:px-10 flex justify-between items-end pointer-events-none z-10"
         style={isMobile ? { bottom: "24px" } : { top: "75vh" }}
       >
-        {/* Bottom-Left: Bio */}
         <motion.div
           className="max-w-[280px] md:max-w-[450px] pointer-events-auto"
           initial={{ opacity: 0, y: 30 }}
@@ -203,7 +192,6 @@ export default function HeroCarousel() {
           </p>
         </motion.div>
 
-        {/* Bottom-Right: Identity */}
         <motion.div
           className="flex flex-col items-end gap-1 md:gap-2 pointer-events-auto"
           initial={{ opacity: 0, y: 30 }}

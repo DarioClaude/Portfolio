@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
 import { projects } from "@/lib/projects";
-import ProjectCardVisual from "@/components/ProjectCardVisual";
 import Footer from "@/components/Footer";
 
 interface Props {
@@ -15,7 +15,7 @@ export function generateStaticParams() {
 export function generateMetadata({ params }: Props) {
   const project = projects.find((p) => p.slug === params.slug);
   if (!project) return {};
-  return { title: `${project.name} — Dario Tonini` };
+  return { title: `${project.title} — Dario Tonini` };
 }
 
 export default function ProjectDetailPage({ params }: Props) {
@@ -29,16 +29,25 @@ export default function ProjectDetailPage({ params }: Props) {
     <>
       <section className="pt-24 pb-20">
         {/* Hero image */}
-        <div className="px-10 mb-12">
-          <div className="w-full rounded-2xl overflow-hidden" style={{ aspectRatio: "16/9" }}>
-            <ProjectCardVisual project={project} />
+        <div className="px-5 md:px-10 mb-12">
+          <div className="w-full rounded-[4px] overflow-hidden relative" style={{ aspectRatio: "16/9" }} data-protected>
+            <Image
+              src={project.imagePath}
+              alt={project.title}
+              fill
+              className="object-cover"
+              sizes="100vw"
+              quality={90}
+              priority
+              draggable={false}
+            />
           </div>
         </div>
 
         {/* Project info */}
         <div className="px-10 max-w-3xl">
           <h1 className="text-5xl font-black uppercase tracking-tight text-[#1A1A1A] mb-4">
-            {project.name}
+            {project.title}
           </h1>
           <p className="text-lg text-[#6B7280] leading-relaxed mb-8">
             {project.description}
@@ -58,7 +67,7 @@ export default function ProjectDetailPage({ params }: Props) {
             className="text-3xl font-black uppercase text-[#1A1A1A] hover:opacity-60 transition-opacity"
             data-cursor-hover
           >
-            {nextProject.name} →
+            {nextProject.title} →
           </Link>
         </div>
       </section>

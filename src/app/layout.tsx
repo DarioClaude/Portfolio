@@ -4,6 +4,7 @@ import "./globals.css";
 import Navbar from "@/components/Navbar";
 import NoiseOverlay from "@/components/NoiseOverlay";
 import CursorFollower from "@/components/CursorFollower";
+import ImageProtection from "@/components/ImageProtection";
 
 const montserrat = localFont({
   src: "./fonts/Montserrat.woff2",
@@ -30,6 +31,7 @@ export default function RootLayout({
       >
         <NoiseOverlay />
         <CursorFollower />
+        <ImageProtection />
         <Navbar />
         <main>{children}</main>
       </body>
