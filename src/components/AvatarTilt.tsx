@@ -23,14 +23,14 @@ export default function AvatarTilt() {
       <AnimatePresence>
         {hovering && (
           <motion.div
-            className="absolute -top-16 right-0 bg-white rounded-lg px-4 py-2 shadow-lg border border-gray-100 whitespace-nowrap pointer-events-none z-20"
+            className="absolute -top-16 right-0 bg-[#1A1A1A] rounded-lg px-4 py-2 shadow-lg whitespace-nowrap pointer-events-none z-20"
             initial={{ opacity: 0, y: 6 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 6 }}
             transition={{ duration: 0.2 }}
           >
-            <p className="text-xs font-bold text-[#1A1A1A]">Dario Tonini</p>
-            <p className="text-[10px] text-[#6B7280]">Photographer</p>
+            <p className="text-xs font-bold text-white">Dario Tonini</p>
+            <p className="text-[10px] text-gray-400">Photographer</p>
           </motion.div>
         )}
       </AnimatePresence>
