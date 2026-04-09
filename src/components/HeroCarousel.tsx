@@ -6,6 +6,7 @@ import Image from "next/image";
 import { motion } from "framer-motion";
 import ProjectCursorPill from "./ProjectCursorPill";
 import SocialIcons from "./SocialIcons";
+import AvatarTilt from "./AvatarTilt";
 import { carouselProjects } from "@/lib/projects";
 
 const CARD_COUNT = 6;
@@ -212,12 +213,7 @@ export default function HeroCarousel() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.5 }}
         >
-          <div className="w-7 h-7 md:w-9 md:h-9 rounded-full bg-gray-700 flex items-center justify-center">
-            <svg className="w-3.5 h-3.5 md:w-[18px] md:h-[18px]" viewBox="0 0 24 24" fill="white">
-              <circle cx="12" cy="8" r="4" />
-              <path d="M12 14c-6 0-8 3-8 5v1h16v-1c0-2-2-5-8-5z" />
-            </svg>
-          </div>
+          <AvatarTilt />
           <p className="text-[10px] md:text-xs tracking-[1.5px] uppercase text-[#6B7280]">
             french photographer
           </p>
