@@ -59,9 +59,8 @@ export default function Navbar() {
                 </Link>
               );
             })}
+            <LanguageSelector />
           </nav>
-
-          <LanguageSelector />
         </div>
 
         {/* Right: CTA — hidden on About page since it already links there */}

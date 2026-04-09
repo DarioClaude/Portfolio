@@ -59,6 +59,7 @@ export default function LanguageSelector() {
         onClick={() => setOpen((prev) => !prev)}
         className="flex items-center gap-1.5 cursor-pointer"
         data-cursor-hover
+        data-cursor-precise
         aria-label={t("aria.language")}
       >
         <Flag code={lang} />
@@ -90,6 +91,7 @@ export default function LanguageSelector() {
                   setOpen(false);
                 }}
                 data-cursor-hover
+                data-cursor-precise
                 className={`flex items-center justify-center w-full px-3 py-2 hover:bg-gray-50 transition-colors ${
                   code === lang ? "bg-gray-50" : ""
                 }`}

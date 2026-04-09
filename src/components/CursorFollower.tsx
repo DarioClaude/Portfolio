@@ -11,6 +11,7 @@ export default function CursorFollower() {
   const smoothX = useSpring(cursorX, springConfig);
   const smoothY = useSpring(cursorY, springConfig);
   const [isHovering, setIsHovering] = useState(false);
+  const [isPrecise, setIsPrecise] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
   const rafRef = useRef<number>(0);
 
@@ -32,7 +33,9 @@ export default function CursorFollower() {
       const interactive = target.closest(
         "a, button, [data-cursor-hover]"
       );
+      const precise = target.closest("[data-cursor-precise]");
       setIsHovering(!!interactive);
+      setIsPrecise(!!precise);
     };
 
     const onLeave = () => setIsVisible(false);
@@ -71,8 +74,8 @@ export default function CursorFollower() {
       <motion.div
         className="rounded-full bg-white"
         animate={{
-          width: isHovering ? 48 : 16,
-          height: isHovering ? 48 : 16,
+          width: isPrecise ? 24 : isHovering ? 48 : 16,
+          height: isPrecise ? 24 : isHovering ? 48 : 16,
           opacity: isVisible ? 1 : 0,
         }}
         transition={{ type: "spring", stiffness: 300, damping: 25 }}
