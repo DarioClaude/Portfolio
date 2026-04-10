@@ -35,9 +35,9 @@ export const translations: Record<Lang, Record<string, string>> = {
     "work.copyright": "©21 — 26",
 
     // Project detail
-    "project.photography": "Photographie",
-    "project.artDirection": "Direction artistique",
-    "project.visualDesign": "Design visuel",
+    "project.category": "[CATÉGORIE]",
+    "project.client": "[CLIENT]",
+    "project.year": "[ANNÉE]",
     "project.next": "Projet suivant",
 
     // Cursor pill
@@ -100,9 +100,9 @@ export const translations: Record<Lang, Record<string, string>> = {
     "work.copyright": "©21 — 26",
 
     // Project detail
-    "project.photography": "Photography",
-    "project.artDirection": "Art Direction",
-    "project.visualDesign": "Visual Design",
+    "project.category": "[CATEGORY]",
+    "project.client": "[CLIENT]",
+    "project.year": "[YEAR]",
     "project.next": "Next project",
 
     // Cursor pill
@@ -165,9 +165,9 @@ export const translations: Record<Lang, Record<string, string>> = {
     "work.copyright": "©21 — 26",
 
     // Project detail
-    "project.photography": "Fotografía",
-    "project.artDirection": "Dirección artística",
-    "project.visualDesign": "Diseño visual",
+    "project.category": "[CATEGORÍA]",
+    "project.client": "[CLIENTE]",
+    "project.year": "[AÑO]",
     "project.next": "Siguiente proyecto",
 
     // Cursor pill

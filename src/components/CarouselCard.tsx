@@ -62,7 +62,8 @@ export default function CarouselCard({ slug, title, imagePath, cardW }: Props) {
               hovering ? "scale-105" : "scale-100"
             }`}
             sizes={`${cardW}px`}
-            quality={90}
+            quality={100}
+            unoptimized
             draggable={false}
           />
         </Link>

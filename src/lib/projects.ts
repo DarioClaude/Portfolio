@@ -13,6 +13,9 @@ export interface Project {
   accent: "white" | "black";
   textColor: string;
   descriptionKey: string;
+  category: string;
+  client: string;
+  year: number;
   gallery: GalleryImage[];
 }
 
@@ -24,7 +27,6 @@ function generateGallery(slug: string, count: number, pattern: ("landscape" | "p
   }));
 }
 
-// Alternating patterns for visual harmony
 const patternA: ("landscape" | "portrait")[] = ["landscape", "portrait", "portrait", "landscape", "landscape", "portrait", "landscape", "portrait"];
 const patternB: ("landscape" | "portrait")[] = ["portrait", "landscape", "landscape", "portrait", "portrait", "landscape", "portrait", "landscape"];
 
@@ -38,6 +40,9 @@ export const projects: Project[] = [
     accent: "white",
     textColor: "text-white",
     descriptionKey: "project.marlay.desc",
+    category: "Portrait",
+    client: "Marlay Studio",
+    year: 2024,
     gallery: generateGallery("marlay", 8, patternA),
   },
   {
@@ -49,6 +54,9 @@ export const projects: Project[] = [
     accent: "black",
     textColor: "text-gray-900",
     descriptionKey: "project.garden.desc",
+    category: "Editorial",
+    client: "Garden Botanics",
+    year: 2023,
     gallery: generateGallery("garden", 8, patternB),
   },
   {
@@ -60,6 +68,9 @@ export const projects: Project[] = [
     accent: "black",
     textColor: "text-gray-900",
     descriptionKey: "project.studioarct.desc",
+    category: "Branding",
+    client: "Studio Arct",
+    year: 2023,
     gallery: generateGallery("studio-arct", 8, patternA),
   },
   {
@@ -71,6 +82,9 @@ export const projects: Project[] = [
     accent: "white",
     textColor: "text-white",
     descriptionKey: "project.kora.desc",
+    category: "Fine Art",
+    client: "Kora Agency",
+    year: 2024,
     gallery: generateGallery("kora", 8, patternB),
   },
   {
@@ -82,6 +96,9 @@ export const projects: Project[] = [
     accent: "white",
     textColor: "text-white",
     descriptionKey: "project.studio17.desc",
+    category: "Portrait",
+    client: "Studio 17",
+    year: 2022,
     gallery: generateGallery("studio-17", 8, patternA),
   },
   {
@@ -93,6 +110,9 @@ export const projects: Project[] = [
     accent: "white",
     textColor: "text-white",
     descriptionKey: "project.shipstudio.desc",
+    category: "Editorial",
+    client: "Ship Studio",
+    year: 2024,
     gallery: generateGallery("ship-studio", 8, patternB),
   },
   {
@@ -104,6 +124,9 @@ export const projects: Project[] = [
     accent: "black",
     textColor: "text-gray-900",
     descriptionKey: "project.cirro.desc",
+    category: "Fine Art",
+    client: "Cirro Collective",
+    year: 2023,
     gallery: generateGallery("cirro", 8, patternA),
   },
   {
@@ -115,6 +138,9 @@ export const projects: Project[] = [
     accent: "white",
     textColor: "text-white",
     descriptionKey: "project.volumaker.desc",
+    category: "Branding",
+    client: "Volumaker",
+    year: 2022,
     gallery: generateGallery("volumaker", 8, patternB),
   },
   {
@@ -126,9 +152,11 @@ export const projects: Project[] = [
     accent: "white",
     textColor: "text-white",
     descriptionKey: "project.parabellum.desc",
+    category: "Editorial",
+    client: "Para Bellum",
+    year: 2024,
     gallery: generateGallery("para-bellum", 8, patternA),
   },
 ];
 
-// First 6 projects used in the carousel
 export const carouselProjects = projects.slice(0, 6);

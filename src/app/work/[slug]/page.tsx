@@ -1,5 +1,4 @@
 import { notFound } from "next/navigation";
-import Image from "next/image";
 import { projects } from "@/lib/projects";
 import Footer from "@/components/Footer";
 import ProjectDetailContent from "@/components/ProjectDetailContent";
@@ -29,42 +28,31 @@ export default function ProjectDetailPage({ params }: Props) {
 
   return (
     <>
-      <section className="pt-24 pb-20">
-        {/* Hero cover image */}
-        <div className="px-5 md:px-10 mb-12">
-          <div className="w-full rounded-[4px] overflow-hidden relative" style={{ aspectRatio: "16/9" }} data-protected>
-            <Image
-              src={project.imagePath}
-              alt={project.title}
-              fill
-              className="object-cover"
-              sizes="100vw"
-              quality={90}
-              priority
-              draggable={false}
-            />
-          </div>
-        </div>
-
-        {/* Project info: title, description, tags */}
+      <section className="pt-28 md:pt-36 pb-20">
+        {/* Header: Title + Description + Metadata */}
         <ProjectDetailContent
           title={project.title}
           descriptionKey={project.descriptionKey}
+          category={project.category}
+          client={project.client}
+          year={project.year}
         />
 
-        {/* Shooting gallery */}
+        {/* Gallery — masonry 3-col */}
         {project.gallery.length > 0 && (
-          <div className="px-5 md:px-10 mt-16 md:mt-24">
+          <div className="mt-14 md:mt-20">
             <ShootingGallery images={project.gallery} />
           </div>
         )}
 
         {/* Next project */}
-        <NextProjectLink
-          slug={nextProject.slug}
-          title={nextProject.title}
-          imagePath={nextProject.imagePath}
-        />
+        <div className="max-w-5xl mx-auto">
+          <NextProjectLink
+            slug={nextProject.slug}
+            title={nextProject.title}
+            imagePath={nextProject.imagePath}
+          />
+        </div>
       </section>
       <Footer />
     </>

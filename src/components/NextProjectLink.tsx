@@ -14,7 +14,7 @@ export default function NextProjectLink({ slug, title, imagePath }: Props) {
   const { t } = useTranslation();
 
   return (
-    <div className="px-5 md:px-10 mt-20 md:mt-28 border-t border-[#E5E7EB] pt-12">
+    <div className="px-6 mt-20 md:mt-28 border-t border-[#E5E7EB] pt-12">
       <p className="text-xs uppercase tracking-[2px] text-[#9CA3AF] mb-6">{t("project.next")}</p>
       <Link
         href={`/work/${slug}`}
