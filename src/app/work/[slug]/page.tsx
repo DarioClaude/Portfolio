@@ -3,6 +3,8 @@ import Image from "next/image";
 import { projects } from "@/lib/projects";
 import Footer from "@/components/Footer";
 import ProjectDetailContent from "@/components/ProjectDetailContent";
+import ShootingGallery from "@/components/ShootingGallery";
+import NextProjectLink from "@/components/NextProjectLink";
 
 interface Props {
   params: { slug: string };
@@ -28,7 +30,7 @@ export default function ProjectDetailPage({ params }: Props) {
   return (
     <>
       <section className="pt-24 pb-20">
-        {/* Hero image */}
+        {/* Hero cover image */}
         <div className="px-5 md:px-10 mb-12">
           <div className="w-full rounded-[4px] overflow-hidden relative" style={{ aspectRatio: "16/9" }} data-protected>
             <Image
@@ -44,11 +46,24 @@ export default function ProjectDetailPage({ params }: Props) {
           </div>
         </div>
 
+        {/* Project info: title, description, tags */}
         <ProjectDetailContent
           title={project.title}
           descriptionKey={project.descriptionKey}
-          nextProjectSlug={nextProject.slug}
-          nextProjectTitle={nextProject.title}
+        />
+
+        {/* Shooting gallery */}
+        {project.gallery.length > 0 && (
+          <div className="px-5 md:px-10 mt-16 md:mt-24">
+            <ShootingGallery images={project.gallery} />
+          </div>
+        )}
+
+        {/* Next project */}
+        <NextProjectLink
+          slug={nextProject.slug}
+          title={nextProject.title}
+          imagePath={nextProject.imagePath}
         />
       </section>
       <Footer />
