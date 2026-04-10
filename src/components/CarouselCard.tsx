@@ -1,101 +1,72 @@
 "use client";
 
-import { useRef } from "react";
-import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
+import { useRef, useState, useCallback } from "react";
 import Link from "next/link";
-import type { Project } from "@/lib/projects";
-import ProjectCardVisual from "./ProjectCardVisual";
+import Image from "next/image";
 
 interface Props {
-  project: Project;
-  index: number;
-  isHovered: boolean;
-  isOtherHovered: boolean;
-  onHoverStart: () => void;
-  onHoverEnd: () => void;
-  stackX: number;
-  stackZ: number;
-  stackRotateY: number;
+  slug: string;
+  title: string;
+  imagePath: string;
+  cardW: number;
 }
 
-export default function CarouselCard({
-  project,
-  index,
-  isHovered,
-  isOtherHovered,
-  onHoverStart,
-  onHoverEnd,
-  stackX,
-  stackZ,
-  stackRotateY,
-}: Props) {
-  const cardRef = useRef<HTMLDivElement>(null);
-  const localMouseX = useMotionValue(0);
-  const localMouseY = useMotionValue(0);
+export default function CarouselCard({ slug, title, imagePath, cardW }: Props) {
+  const ref = useRef<HTMLDivElement>(null);
+  const [tilt, setTilt] = useState({ rotateX: 0, rotateY: 0 });
+  const [hovering, setHovering] = useState(false);
 
-  // Per-card tilt relative to card center
-  const tiltX = useSpring(
-    useTransform(localMouseY, [-150, 150], [10, -10]),
-    { stiffness: 200, damping: 20 }
-  );
-  const tiltY = useSpring(
-    useTransform(localMouseX, [-200, 200], [-10, 10]),
-    { stiffness: 200, damping: 20 }
-  );
-
-  const handleMouseMove = (e: React.MouseEvent) => {
-    if (!cardRef.current) return;
-    const rect = cardRef.current.getBoundingClientRect();
-    localMouseX.set(e.clientX - (rect.left + rect.width / 2));
-    localMouseY.set(e.clientY - (rect.top + rect.height / 2));
-  };
-
-  const handleMouseLeave = () => {
-    localMouseX.set(0);
-    localMouseY.set(0);
-    onHoverEnd();
-  };
+  const onMouseMove = useCallback((e: React.MouseEvent) => {
+    if (!ref.current) return;
+    const rect = ref.current.getBoundingClientRect();
+    const x = (e.clientX - rect.left) / rect.width - 0.5;
+    const y = (e.clientY - rect.top) / rect.height - 0.5;
+    setTilt({ rotateX: -y * 12, rotateY: x * 12 });
+  }, []);
 
   return (
-    <motion.div
-      ref={cardRef}
-      className="absolute w-[420px] h-[300px] rounded-xl overflow-hidden"
-      style={{
-        rotateX: isHovered ? tiltX : 0,
-        rotateY: isHovered ? tiltY : 0,
-        transformStyle: "preserve-3d",
-        boxShadow: isHovered
-          ? "0 35px 80px rgba(0,0,0,0.25)"
-          : "0 25px 60px rgba(0,0,0,0.15)",
-        left: "50%",
-        top: "50%",
-        marginLeft: "-210px",
-        marginTop: "-150px",
+    <div
+      ref={ref}
+      style={{ perspective: "600px" }}
+      className="w-full h-full"
+      onMouseMove={onMouseMove}
+      onMouseEnter={() => setHovering(true)}
+      onMouseLeave={() => {
+        setHovering(false);
+        setTilt({ rotateX: 0, rotateY: 0 });
       }}
-      animate={{
-        x: isHovered ? stackX : stackX,
-        z: isHovered ? stackZ + 80 : isOtherHovered ? stackZ - 30 : stackZ,
-        rotateY: isHovered ? 0 : stackRotateY,
-        scale: isHovered ? 1.08 : 1,
-        opacity: isOtherHovered ? 0.5 : 1,
-        y: [0, -15, 0],
-      }}
-      transition={{
-        y: {
-          duration: 6,
-          repeat: Infinity,
-          ease: "easeInOut",
-          delay: index * 0.6,
-        },
-        default: { type: "spring", stiffness: 100, damping: 20 },
-      }}
-      onMouseMove={handleMouseMove}
-      onMouseEnter={onHoverStart}
-      onMouseLeave={handleMouseLeave}
     >
-      <Link href={`/work/${project.slug}`} className="block w-full h-full">
-        <ProjectCardVisual project={project} />
-      </Link>
-    </motion.div>
+      <div
+        className="w-full h-full rounded-[4px] overflow-hidden"
+        style={{
+          transform: `rotateX(${tilt.rotateX}deg) rotateY(${tilt.rotateY}deg)`,
+          transition: hovering ? "transform 0.1s ease-out" : "transform 0.4s ease-out",
+          transformStyle: "preserve-3d",
+          boxShadow: hovering
+            ? "0 20px 40px rgba(0,0,0,0.2)"
+            : "0 8px 20px rgba(0,0,0,0.1)",
+        }}
+        data-cursor-hover
+        data-protected
+      >
+        <Link
+          href={`/work/${slug}`}
+          className="block w-full h-full relative select-none"
+          draggable={false}
+        >
+          <Image
+            src={imagePath}
+            alt={title}
+            fill
+            className={`object-cover pointer-events-none transition-transform duration-500 ease-out ${
+              hovering ? "scale-105" : "scale-100"
+            }`}
+            sizes={`${cardW}px`}
+            quality={90}
+            draggable={false}
+          />
+        </Link>
+      </div>
+    </div>
   );
 }

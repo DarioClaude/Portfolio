@@ -1,12 +1,11 @@
 "use client";
 
 import { useState, useEffect, useCallback, useRef } from "react";
-import Link from "next/link";
-import Image from "next/image";
 import { motion } from "framer-motion";
 import ProjectCursorPill from "./ProjectCursorPill";
 import SocialIcons from "./SocialIcons";
 import AvatarTilt from "./AvatarTilt";
+import CarouselCard from "./CarouselCard";
 import { carouselProjects } from "@/lib/projects";
 import { useTranslation, renderBold } from "@/context/LanguageContext";
 
@@ -155,33 +154,20 @@ export default function HeroCarousel() {
             return (
               <div
                 key={project.slug}
-                className="absolute inset-0 group"
+                className="absolute inset-0"
                 style={{
                   width: dims.cardW,
                   height: dims.cardH,
                   transform: `rotateY(${angle}deg) translateZ(${dims.radius}px)`,
                   backfaceVisibility: "visible",
-                  borderRadius: "4px",
-                  overflow: "hidden",
                 }}
-                data-cursor-hover
-                data-protected
               >
-                <Link
-                  href={`/work/${project.slug}`}
-                  className="block w-full h-full relative select-none"
-                  draggable={false}
-                >
-                  <Image
-                    src={project.imagePath}
-                    alt={project.title}
-                    fill
-                    className="object-cover pointer-events-none scale-100 group-hover:scale-105 transition-transform duration-500 ease-out"
-                    sizes={`${dims.cardW}px`}
-                    quality={90}
-                    draggable={false}
-                  />
-                </Link>
+                <CarouselCard
+                  slug={project.slug}
+                  title={project.title}
+                  imagePath={project.imagePath}
+                  cardW={dims.cardW}
+                />
               </div>
             );
           })}
