@@ -5,6 +5,8 @@ import { usePathname } from "next/navigation";
 import { motion } from "framer-motion";
 import PixelLogo from "./PixelLogo";
 import LanguageSelector from "./LanguageSelector";
+import ThemeToggle from "./ThemeToggle";
+import Button from "./ui/Button";
 import { useTranslation } from "@/context/LanguageContext";
 
 const navLinks = [
@@ -60,23 +62,15 @@ export default function Navbar() {
               );
             })}
             <LanguageSelector />
+            <ThemeToggle />
           </nav>
         </div>
 
         {/* Right: CTA — hidden on About page since it already links there */}
         {pathname !== "/about" && (
-          <motion.div
-            whileHover={{ y: -1 }}
-            transition={{ type: "spring", stiffness: 300, damping: 20 }}
-          >
-            <Link
-              href="/about"
-              data-cursor-hover
-              className="inline-block bg-[#0000ff] text-white text-[11px] md:text-[13px] font-medium px-3 py-2 md:px-5 md:py-2.5 rounded-lg hover:shadow-lg transition-shadow"
-            >
-              {t("nav.cta")}
-            </Link>
-          </motion.div>
+          <Button href="/about" variant="dark" size="sm">
+            {t("nav.cta")}
+          </Button>
         )}
       </div>
     </motion.header>

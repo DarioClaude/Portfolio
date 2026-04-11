@@ -3,7 +3,7 @@ import Footer from "@/components/Footer";
 import WorkTitle from "@/components/WorkTitle";
 
 export const metadata = {
-  title: "Works — Dario Tonini",
+  title: "Work — Dario Tonini",
 };
 
 export default function WorkPage() {
@@ -15,8 +15,14 @@ export default function WorkPage() {
           <WorkTitle />
         </div>
 
-        {/* Grid */}
-        <ProjectGrid />
+        {/* Grid + progressive blur fade at bottom */}
+        <div className="relative">
+          <ProjectGrid />
+          <div
+            aria-hidden
+            className="pointer-events-none absolute bottom-0 left-0 right-0 h-32 z-10 bg-gradient-to-t from-white to-transparent backdrop-blur-[2px]"
+          />
+        </div>
       </section>
       <Footer />
     </>

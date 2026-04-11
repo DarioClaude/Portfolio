@@ -4,6 +4,7 @@ import { useRef, useState, useCallback, useEffect } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import SocialIcons from "@/components/SocialIcons";
+import Button from "@/components/ui/Button";
 import { useTranslation, renderBold } from "@/context/LanguageContext";
 
 const spring = { type: "spring" as const, stiffness: 100, damping: 20 };
@@ -74,10 +75,10 @@ export default function AboutPage() {
               <p className="text-lg font-medium leading-tight tracking-tight text-[#1A1A1A] mb-5">
                 {renderBold(t("about.intro"))}
               </p>
-              <p className="text-base text-[#6B7280] leading-relaxed mb-5">
+              <p className="text-base text-[#6B7280] leading-relaxed text-justify mb-5">
                 {t("about.p1")}
               </p>
-              <p className="text-base text-[#6B7280] leading-relaxed mb-10">
+              <p className="text-base text-[#6B7280] leading-relaxed text-justify mb-10">
                 {t("about.p2")}
               </p>
             </motion.div>
@@ -89,20 +90,12 @@ export default function AboutPage() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ ...spring, delay: 0.2 }}
             >
-              <a
-                href="mailto:toninidario@yahoo.fr"
-                data-cursor-hover
-                className="inline-flex items-center justify-center px-6 py-3 border-2 border-[#0000ff] text-[#0000ff] text-sm font-semibold tracking-wide rounded-lg hover:bg-[#0000ff] hover:text-white transition-all duration-300"
-              >
+              <Button href="mailto:toninidario@yahoo.fr" variant="outline">
                 {t("about.email")}
-              </a>
-              <a
-                href="tel:0603466274"
-                data-cursor-hover
-                className="inline-flex items-center justify-center px-6 py-3 bg-[#0000ff] text-white text-sm font-semibold tracking-wide rounded-lg hover:bg-[#0000cc] transition-all duration-300"
-              >
+              </Button>
+              <Button href="tel:0603466274" variant="primary">
                 {t("about.call")}
-              </a>
+              </Button>
             </motion.div>
 
             {/* Social + Details */}

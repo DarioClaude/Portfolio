@@ -31,7 +31,7 @@ export const translations: Record<Lang, Record<string, string>> = {
     "avatar.role": "Photographe",
 
     // Work
-    "work.title": "WORKS",
+    "work.title": "WORK",
     "work.copyright": "©21 — 26",
 
     // Project detail
@@ -96,7 +96,7 @@ export const translations: Record<Lang, Record<string, string>> = {
     "avatar.role": "Photographer",
 
     // Work
-    "work.title": "WORKS",
+    "work.title": "WORK",
     "work.copyright": "©21 — 26",
 
     // Project detail
@@ -161,7 +161,7 @@ export const translations: Record<Lang, Record<string, string>> = {
     "avatar.role": "Fotógrafo",
 
     // Work
-    "work.title": "TRABAJOS",
+    "work.title": "TRABAJO",
     "work.copyright": "©21 — 26",
 
     // Project detail
