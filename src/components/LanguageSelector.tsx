@@ -70,13 +70,13 @@ export default function LanguageSelector() {
       {/* Trigger pill */}
       <button
         onClick={() => setOpen((prev) => !prev)}
-        className="flex items-center gap-2 px-3 py-1.5 rounded-full border border-[#E5E7EB] bg-white hover:border-[#D1D5DB] transition-colors cursor-pointer"
+        className="flex items-center gap-2 px-3 py-1.5 rounded-full border border-[#E5E7EB] dark:border-[#262626] bg-white dark:bg-[#171717] hover:border-[#D1D5DB] dark:hover:border-[#3f3f46] transition-colors cursor-pointer"
         data-cursor-hover
         data-cursor-precise
         aria-label={t("aria.language")}
       >
         <Flag code={lang} />
-        <span className="text-xs font-medium text-[#1A1A1A] leading-none">{currentLabel}</span>
+        <span className="text-xs font-medium text-[#1A1A1A] dark:text-[#f5f5f5] leading-none">{currentLabel}</span>
         <svg
           width="8"
           height="5"
@@ -92,7 +92,7 @@ export default function LanguageSelector() {
       <AnimatePresence>
         {open && (
           <motion.div
-            className="absolute top-full left-0 mt-2 bg-white rounded-xl shadow-lg border border-[#E5E7EB] overflow-hidden z-50 min-w-[140px]"
+            className="absolute top-full left-0 mt-2 bg-white dark:bg-[#171717] rounded-xl shadow-lg border border-[#E5E7EB] dark:border-[#262626] overflow-hidden z-50 min-w-[140px]"
             initial={{ opacity: 0, y: -4, scale: 0.95 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -4, scale: 0.95 }}
@@ -107,12 +107,12 @@ export default function LanguageSelector() {
                 }}
                 data-cursor-hover
                 data-cursor-precise
-                className={`flex items-center gap-2.5 w-full px-3.5 py-2.5 hover:bg-[#F3F4F6] transition-colors text-left ${
-                  l.code === lang ? "bg-[#F3F4F6]" : ""
+                className={`flex items-center gap-2.5 w-full px-3.5 py-2.5 hover:bg-[#F3F4F6] dark:hover:bg-[#262626] transition-colors text-left ${
+                  l.code === lang ? "bg-[#F3F4F6] dark:bg-[#262626]" : ""
                 }`}
               >
                 <Flag code={l.code} />
-                <span className="text-xs font-medium text-[#1A1A1A] leading-none">{l.label}</span>
+                <span className="text-xs font-medium text-[#1A1A1A] dark:text-[#f5f5f5] leading-none">{l.label}</span>
               </button>
             ))}
           </motion.div>

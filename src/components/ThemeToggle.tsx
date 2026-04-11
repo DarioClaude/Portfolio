@@ -53,14 +53,32 @@ export default function ThemeToggle() {
       }}
     >
       <span
-        className={`inline-block h-5 w-5 rounded-full bg-white transition-transform duration-300 ease-out ${
+        className={`inline-flex items-center justify-center h-5 w-5 rounded-full bg-white transition-transform duration-300 ease-out ${
           mounted && isDark ? "translate-x-[22px]" : "translate-x-[2px]"
         }`}
         style={{
           boxShadow:
             "0 2px 4px rgba(0,0,0,0.25), 0 1px 2px rgba(0,0,0,0.12)",
         }}
-      />
+      >
+        {/* Inlaid crescent moon — same engraved feel as the track's indent */}
+        <svg
+          width="11"
+          height="11"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="#9CA3AF"
+          strokeWidth="2.2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          style={{
+            filter: "drop-shadow(0 0.5px 0 rgba(255,255,255,0.9))",
+          }}
+          aria-hidden
+        >
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+        </svg>
+      </span>
     </button>
   );
 }

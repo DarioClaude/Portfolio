@@ -59,7 +59,7 @@ export default function AboutPage() {
           {/* LEFT COLUMN — Text */}
           <div>
             <motion.h1
-              className="text-4xl md:text-6xl font-black text-[#1A1A1A] mb-8 leading-[1.1] tracking-tight"
+              className="text-4xl md:text-6xl font-black text-[#1A1A1A] dark:text-[#f5f5f5] mb-8 leading-[1.1] tracking-tight"
               initial={{ opacity: 0, y: 50 }}
               animate={{ opacity: 1, y: 0 }}
               transition={spring}
@@ -72,13 +72,13 @@ export default function AboutPage() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ ...spring, delay: 0.1 }}
             >
-              <p className="text-lg font-medium leading-tight tracking-tight text-[#1A1A1A] mb-5">
+              <p className="text-lg font-medium leading-tight tracking-tight text-[#1A1A1A] dark:text-[#f5f5f5] mb-5">
                 {renderBold(t("about.intro"))}
               </p>
-              <p className="text-base text-[#6B7280] leading-relaxed text-justify mb-5">
+              <p className="text-base text-[#6B7280] dark:text-[#a1a1aa] leading-relaxed text-justify mb-5">
                 {t("about.p1")}
               </p>
-              <p className="text-base text-[#6B7280] leading-relaxed text-justify mb-10">
+              <p className="text-base text-[#6B7280] dark:text-[#a1a1aa] leading-relaxed text-justify mb-10">
                 {t("about.p2")}
               </p>
             </motion.div>
@@ -107,16 +107,16 @@ export default function AboutPage() {
             >
               <div className="flex gap-10">
                 <div>
-                  <p className="text-[10px] tracking-[1.5px] uppercase text-[#9CA3AF] mb-1">{t("about.role.label")}</p>
-                  <p className="text-sm font-bold text-[#1A1A1A]">{t("about.role.value")}</p>
+                  <p className="text-[10px] tracking-[1.5px] uppercase text-[#9CA3AF] dark:text-[#71717a] mb-1">{t("about.role.label")}</p>
+                  <p className="text-sm font-bold text-[#1A1A1A] dark:text-[#f5f5f5]">{t("about.role.value")}</p>
                 </div>
                 <div>
-                  <p className="text-[10px] tracking-[1.5px] uppercase text-[#9CA3AF] mb-1">{t("about.location.label")}</p>
-                  <p className="text-sm font-bold text-[#1A1A1A]">{t("about.location.value")}</p>
+                  <p className="text-[10px] tracking-[1.5px] uppercase text-[#9CA3AF] dark:text-[#71717a] mb-1">{t("about.location.label")}</p>
+                  <p className="text-sm font-bold text-[#1A1A1A] dark:text-[#f5f5f5]">{t("about.location.value")}</p>
                 </div>
                 <div>
-                  <p className="text-[10px] tracking-[1.5px] uppercase text-[#9CA3AF] mb-1">{t("about.specialties.label")}</p>
-                  <p className="text-sm text-[#1A1A1A]">{t("about.specialties.value")}</p>
+                  <p className="text-[10px] tracking-[1.5px] uppercase text-[#9CA3AF] dark:text-[#71717a] mb-1">{t("about.specialties.label")}</p>
+                  <p className="text-sm text-[#1A1A1A] dark:text-[#f5f5f5]">{t("about.specialties.value")}</p>
                 </div>
               </div>
               <SocialIcons />

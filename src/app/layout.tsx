@@ -25,9 +25,17 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
+      <head>
+        {/* Pre-hydration theme boot to avoid a flash of the wrong theme */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(){try{var t=localStorage.getItem('theme');var m=window.matchMedia('(prefers-color-scheme: dark)').matches;if(t==='dark'||(!t&&m)){document.documentElement.classList.add('dark');}}catch(e){}})();`,
+          }}
+        />
+      </head>
       <body
-        className={`${montserrat.variable} font-sans antialiased bg-white text-[#1A1A1A]`}
+        className={`${montserrat.variable} font-sans antialiased transition-colors duration-500 ease-out`}
         style={{ fontFamily: "var(--font-montserrat), -apple-system, sans-serif" }}
       >
         <LanguageProvider>

@@ -20,7 +20,7 @@ export default function WorkPage() {
           <ProjectGrid />
           <div
             aria-hidden
-            className="pointer-events-none absolute bottom-0 left-0 right-0 h-32 z-10 bg-gradient-to-t from-white to-transparent backdrop-blur-[2px]"
+            className="pointer-events-none absolute bottom-0 left-0 right-0 h-32 z-10 bg-gradient-to-t from-white dark:from-[#0a0a0a] to-transparent backdrop-blur-[2px]"
           />
         </div>
       </section>

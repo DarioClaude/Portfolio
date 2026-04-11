@@ -11,7 +11,7 @@ export default function Footer() {
   const { t } = useTranslation();
 
   return (
-    <footer ref={ref} className="border-t border-[#E5E7EB]">
+    <footer ref={ref} className="border-t border-[#E5E7EB] dark:border-[#262626]">
       <div className="flex flex-col md:flex-row justify-between gap-12 p-10">
         {/* Left: Bio */}
         <motion.div
@@ -20,10 +20,10 @@ export default function Footer() {
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ type: "spring", stiffness: 100, damping: 20 }}
         >
-          <p className="text-lg font-medium leading-tight tracking-tight text-[#1A1A1A]">
+          <p className="text-lg font-medium leading-tight tracking-tight text-[#1A1A1A] dark:text-[#f5f5f5]">
             {renderBold(t("footer.bio"), "font-bold")}
           </p>
-          <p className="text-sm text-[#6B7280] mt-3">
+          <p className="text-sm text-[#6B7280] dark:text-[#a1a1aa] mt-3">
             {t("footer.sub")}
           </p>
         </motion.div>
@@ -40,10 +40,10 @@ export default function Footer() {
             delay: 0.1,
           }}
         >
-          <p className="text-xs tracking-[1.5px] uppercase text-[#6B7280]">
+          <p className="text-xs tracking-[1.5px] uppercase text-[#6B7280] dark:text-[#a1a1aa]">
             {t("footer.role")}
           </p>
-          <p className="text-sm font-bold text-[#1A1A1A]">{t("footer.name")}</p>
+          <p className="text-sm font-bold text-[#1A1A1A] dark:text-[#f5f5f5]">{t("footer.name")}</p>
 
           <SocialIcons />
         </motion.div>

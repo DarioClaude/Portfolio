@@ -14,8 +14,8 @@ export default function NextProjectLink({ slug, title, imagePath }: Props) {
   const { t } = useTranslation();
 
   return (
-    <div className="px-6 mt-20 md:mt-28 border-t border-[#E5E7EB] pt-12">
-      <p className="text-xs uppercase tracking-[2px] text-[#9CA3AF] mb-6">{t("project.next")}</p>
+    <div className="px-6 mt-20 md:mt-28 border-t border-[#E5E7EB] dark:border-[#262626] pt-12">
+      <p className="text-xs uppercase tracking-[2px] text-[#9CA3AF] dark:text-[#71717a] mb-6">{t("project.next")}</p>
       <Link
         href={`/work/${slug}`}
         className="group flex items-center gap-6"
@@ -32,7 +32,7 @@ export default function NextProjectLink({ slug, title, imagePath }: Props) {
             draggable={false}
           />
         </div>
-        <span className="text-2xl md:text-3xl font-black uppercase text-[#1A1A1A] group-hover:opacity-60 transition-opacity">
+        <span className="text-2xl md:text-3xl font-black uppercase text-[#1A1A1A] dark:text-[#f5f5f5] group-hover:opacity-60 transition-opacity">
           {title} →
         </span>
       </Link>

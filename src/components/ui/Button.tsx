@@ -38,18 +38,19 @@ export default function Button({
     href.startsWith("tel:") ||
     href.startsWith("http");
 
-  // Padding preserved from the original navbar / about design so the button
-  // width stays identical to the previous release.
+  // Padding is intentionally generous on the right so the arrow has real
+  // breathing room from the label when it slides in on hover. Horizontal
+  // padding is symmetric so the label stays perfectly centered.
   const sizes: Record<Size, string> = {
-    sm: "text-[11px] md:text-[13px] px-3 py-2 md:px-5 md:py-2.5",
-    md: "text-sm md:text-base px-6 py-3 md:px-7 md:py-3.5",
+    sm: "text-[11px] md:text-[13px] px-5 py-2 md:px-7 md:py-2.5",
+    md: "text-sm md:text-base px-8 py-3 md:px-10 md:py-3.5",
   };
 
   // Right-offset for the absolute arrow — matches the button's right padding
   // so it lands flush with the inner padding edge on hover.
   const arrowRight: Record<Size, string> = {
-    sm: "right-3 md:right-5",
-    md: "right-6 md:right-7",
+    sm: "right-5 md:right-7",
+    md: "right-8 md:right-10",
   };
 
   const variants: Record<Variant, string> = {
@@ -63,7 +64,7 @@ export default function Button({
 
   const base =
     "group font-sans relative inline-flex items-center justify-center " +
-    "font-semibold tracking-wide rounded-lg overflow-hidden " +
+    "font-normal tracking-normal rounded-lg overflow-hidden " +
     "transition-all duration-500 ease-out " +
     "active:shadow-inner active:scale-[0.97] active:translate-y-[1px]";
 
@@ -72,8 +73,9 @@ export default function Button({
 
   const content = (
     <>
-      {/* Label — perfectly centered by default; slides slightly left on hover */}
-      <span className="inline-block transition-transform duration-500 ease-out group-hover:-translate-x-2">
+      {/* Label — perfectly centered by default; slides left on hover to open
+          a gap for the arrow. */}
+      <span className="inline-block transition-transform duration-500 ease-out group-hover:-translate-x-4">
         {children}
       </span>
 
