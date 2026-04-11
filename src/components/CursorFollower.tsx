@@ -68,15 +68,14 @@ export default function CursorFollower() {
         y: smoothY,
         translateX: "-50%",
         translateY: "-50%",
-        mixBlendMode: "difference",
       }}
     >
       <motion.div
-        className="rounded-full bg-white"
+        className="rounded-full bg-[#1A1A1A]"
         animate={{
-          width: isPrecise ? 24 : isHovering ? 48 : 16,
-          height: isPrecise ? 24 : isHovering ? 48 : 16,
-          opacity: isVisible ? 1 : 0,
+          width: isPrecise ? 24 : isHovering ? 44 : 14,
+          height: isPrecise ? 24 : isHovering ? 44 : 14,
+          opacity: isVisible ? (isHovering ? 0.22 : 0.9) : 0,
         }}
         transition={{ type: "spring", stiffness: 300, damping: 25 }}
       />

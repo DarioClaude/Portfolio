@@ -14,7 +14,12 @@ const config: Config = {
         foreground: "var(--foreground)",
       },
       fontFamily: {
-        sans: ["var(--font-geist-sans)", "Inter", "system-ui", "sans-serif"],
+        sans: [
+          "var(--font-montserrat)",
+          "Inter",
+          "system-ui",
+          "sans-serif",
+        ],
       },
       transitionTimingFunction: {
         spring: "cubic-bezier(0.25, 0.46, 0.45, 0.94)",
