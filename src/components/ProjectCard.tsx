@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef } from "react";
+import Image from "next/image";
 import { motion, useInView } from "framer-motion";
 import Link from "next/link";
 import type { Project } from "@/lib/projects";
@@ -33,8 +34,17 @@ export default function ProjectCard({ project, index }: Props) {
         data-cursor-hover
       >
         <div className="relative rounded-lg overflow-hidden aspect-[3/4]">
-          {/* Image placeholder */}
-          <div className="w-full h-full bg-neutral-200 dark:bg-neutral-800 animate-pulse" />
+          {project.imagePath ? (
+            <Image
+              src={project.imagePath}
+              alt={project.title}
+              fill
+              className="object-cover"
+              sizes="(max-width: 768px) 100vw, 50vw"
+            />
+          ) : (
+            <div className="w-full h-full bg-neutral-200 dark:bg-neutral-800 animate-pulse" />
+          )}
 
           {/* Progressive blur gradient — stops just above the title text */}
           <div

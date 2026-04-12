@@ -59,7 +59,7 @@ export const translations: Record<Lang, Record<string, string>> = {
     "project.travel.desc": "Reportage de voyage à travers le monde, des paysages aux rencontres.",
     "project.rugby.desc": "L'énergie brute du rugby saisie sur le terrain.",
     "project.tourdefrance.desc": "Le Tour de France immortalisé à travers l'effort et l'asphalte.",
-    "project.course.desc": "L'athlétisme en mouvement — sprint, fond et courses de rue.",
+    "project.running.desc": "L'athlétisme en mouvement — sprint, fond et courses de rue.",
     "project.otherssports.desc": "Une sélection éclectique de sports variés, du basket au surf.",
   },
 
@@ -121,7 +121,7 @@ export const translations: Record<Lang, Record<string, string>> = {
     "project.travel.desc": "Travel reportage across the world — landscapes and encounters.",
     "project.rugby.desc": "The raw energy of rugby captured on the field.",
     "project.tourdefrance.desc": "The Tour de France immortalized through effort and tarmac.",
-    "project.course.desc": "Athletics in motion — sprints, distance, and street races.",
+    "project.running.desc": "Athletics in motion — sprints, distance, and street races.",
     "project.otherssports.desc": "An eclectic selection of various sports, from basketball to surfing.",
   },
 
@@ -183,7 +183,7 @@ export const translations: Record<Lang, Record<string, string>> = {
     "project.travel.desc": "Reportaje de viajes por el mundo — paisajes y encuentros.",
     "project.rugby.desc": "La energía bruta del rugby capturada en el campo.",
     "project.tourdefrance.desc": "El Tour de Francia inmortalizado a través del esfuerzo y el asfalto.",
-    "project.course.desc": "Atletismo en movimiento — sprints, fondo y carreras callejeras.",
+    "project.running.desc": "Atletismo en movimiento — sprints, fondo y carreras callejeras.",
     "project.otherssports.desc": "Una selección ecléctica de deportes variados, del baloncesto al surf.",
   },
 };
