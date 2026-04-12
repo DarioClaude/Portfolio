@@ -1,6 +1,6 @@
 import ProjectGrid from "@/components/ProjectGrid";
-import Footer from "@/components/Footer";
 import WorkTitle from "@/components/WorkTitle";
+import WorkIdentity from "@/components/WorkIdentity";
 
 export const metadata = {
   title: "Work — Dario Tonini",
@@ -24,7 +24,11 @@ export default function WorkPage() {
           />
         </div>
       </section>
-      <Footer />
+
+      {/* Identity block — matches home page bottom-right section */}
+      <div className="px-5 md:px-10 pb-8 md:pb-12">
+        <WorkIdentity />
+      </div>
     </>
   );
 }
