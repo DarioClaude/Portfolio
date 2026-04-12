@@ -180,7 +180,7 @@ export default function HeroCarousel() {
         style={isMobile ? { bottom: "24px" } : { bottom: "clamp(32px, 4vh, 64px)" }}
       >
         <motion.div
-          className="max-w-[280px] md:max-w-[450px] pointer-events-auto"
+          className="max-w-[300px] md:max-w-[520px] pointer-events-auto"
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.4 }}
@@ -188,7 +188,7 @@ export default function HeroCarousel() {
           <p className="text-sm md:text-lg font-normal leading-snug md:leading-tight tracking-tight text-[#1A1A1A] dark:text-[#f5f5f5]">
             {renderBold(t("hero.bio"), "text-[#0000ff]")}
           </p>
-          <p className="text-[10px] md:text-sm text-[#6B7280] dark:text-[#a1a1aa] mt-2 md:mt-3">
+          <p className="text-sm md:text-lg font-light leading-snug md:leading-tight tracking-tight text-[#9CA3AF] dark:text-[#71717a] mt-1 md:mt-1.5">
             {t("hero.sub")}
           </p>
         </motion.div>
