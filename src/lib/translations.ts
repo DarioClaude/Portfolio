@@ -9,7 +9,7 @@ export const translations: Record<Lang, Record<string, string>> = {
     "nav.cta": "Get in touch",
 
     // Hero
-    "hero.bio": "Salut, je suis <bold>Dario</bold>, un <bold>photographe français</bold> dédié à capturer les émotions brutes et les esthétiques digitales minimalistes.",
+    "hero.bio": "Salut, je suis Dario, un photographe français dédié à capturer les émotions brutes et les esthétiques digitales minimalistes.",
     "hero.sub": "Je crée des histoires visuelles qui marquent et résonnent.",
 
     // About
@@ -71,7 +71,7 @@ export const translations: Record<Lang, Record<string, string>> = {
     "nav.cta": "Get in touch",
 
     // Hero
-    "hero.bio": "Hi, I'm <bold>Dario</bold>, a <bold>french photographer</bold> dedicated to capturing raw emotions and minimalist digital aesthetics.",
+    "hero.bio": "Hi, I'm Dario, a french photographer dedicated to capturing raw emotions and minimalist digital aesthetics.",
     "hero.sub": "I craft visual stories that stand out and resonate.",
 
     // About
@@ -133,7 +133,7 @@ export const translations: Record<Lang, Record<string, string>> = {
     "nav.cta": "Contacto",
 
     // Hero
-    "hero.bio": "Hola, soy <bold>Dario</bold>, un <bold>fotógrafo francés</bold> dedicado a capturar emociones puras y estéticas digitales minimalistas.",
+    "hero.bio": "Hola, soy Dario, un fotógrafo francés dedicado a capturar emociones puras y estéticas digitales minimalistas.",
     "hero.sub": "Creo historias visuales que destacan y resuenan.",
 
     // About

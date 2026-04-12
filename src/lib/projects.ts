@@ -106,4 +106,13 @@ export const projects: Project[] = [
   },
 ];
 
-export const carouselProjects = projects.slice(0, 6);
+/** Carousel entries — original project names for the hero section.
+ *  Slugs point to the actual sport-project pages so clicks resolve. */
+export const carouselProjects = [
+  { slug: "football", title: "MARLAY", imagePath: "/images/photo1.jpg" },
+  { slug: "travel", title: "GARDEN", imagePath: "/images/photo2.jpg" },
+  { slug: "rugby", title: "STUDIO ARCT", imagePath: "/images/photo3.jpg" },
+  { slug: "tour-de-france", title: "KORA", imagePath: "/images/photo4.jpg" },
+  { slug: "course", title: "STUDIO 17", imagePath: "/images/photo5.jpg" },
+  { slug: "others-sports", title: "SHIP STUDIO", imagePath: "/images/photo6.jpg" },
+];

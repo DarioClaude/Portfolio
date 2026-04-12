@@ -5,7 +5,6 @@ import { usePathname } from "next/navigation";
 import { motion } from "framer-motion";
 import PixelLogo from "./PixelLogo";
 import LanguageSelector from "./LanguageSelector";
-import ThemeToggle from "./ThemeToggle";
 import Button from "./ui/Button";
 import { useTranslation } from "@/context/LanguageContext";
 
@@ -62,7 +61,6 @@ export default function Navbar() {
               );
             })}
             <LanguageSelector />
-            <ThemeToggle />
           </nav>
         </div>
 

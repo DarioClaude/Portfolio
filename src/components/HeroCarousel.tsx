@@ -7,7 +7,7 @@ import SocialIcons from "./SocialIcons";
 import AvatarTilt from "./AvatarTilt";
 import CarouselCard from "./CarouselCard";
 import { carouselProjects } from "@/lib/projects";
-import { useTranslation, renderBold } from "@/context/LanguageContext";
+import { useTranslation } from "@/context/LanguageContext";
 
 const CARD_COUNT = 6;
 const ANGLE_STEP = 360 / CARD_COUNT; // 60deg
@@ -185,8 +185,8 @@ export default function HeroCarousel() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.4 }}
         >
-          <p className="text-sm md:text-lg font-medium leading-snug md:leading-tight tracking-tight text-[#1A1A1A] dark:text-[#f5f5f5]">
-            {renderBold(t("hero.bio"))}
+          <p className="text-sm md:text-lg font-normal leading-snug md:leading-tight tracking-tight text-[#1A1A1A] dark:text-[#f5f5f5]">
+            {t("hero.bio")}
           </p>
           <p className="text-[10px] md:text-sm text-[#6B7280] dark:text-[#a1a1aa] mt-2 md:mt-3">
             {t("hero.sub")}
