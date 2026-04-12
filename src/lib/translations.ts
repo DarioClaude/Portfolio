@@ -3,10 +3,10 @@ export type Lang = "fr" | "en" | "es";
 export const translations: Record<Lang, Record<string, string>> = {
   fr: {
     // Nav
-    "nav.home": "Home",
-    "nav.work": "Work",
-    "nav.about": "About",
-    "nav.cta": "Get in touch",
+    "nav.home": "Accueil",
+    "nav.work": "Projets",
+    "nav.about": "À propos",
+    "nav.cta": "Me contacter",
 
     // Hero
     "hero.bio": "Salut, je suis <bold>Dario</bold>, photographe français\nbasé dans le Sud, <bold>disponible partout</bold> dans le monde.",
