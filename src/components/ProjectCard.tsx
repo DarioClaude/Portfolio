@@ -32,7 +32,7 @@ export default function ProjectCard({ project, index }: Props) {
         className="block group"
         data-cursor-hover
       >
-        <div className="relative rounded-lg overflow-hidden aspect-[4/3]">
+        <div className="relative rounded-lg overflow-hidden aspect-[3/4]">
           {/* Image placeholder */}
           <div className="w-full h-full bg-neutral-200 dark:bg-neutral-800 animate-pulse" />
 
