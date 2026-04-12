@@ -185,7 +185,7 @@ export default function HeroCarousel() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.4 }}
         >
-          <p className="text-sm md:text-lg font-normal leading-snug md:leading-tight tracking-tight text-[#1A1A1A] dark:text-[#f5f5f5]">
+          <p className="text-sm md:text-lg font-normal leading-snug md:leading-tight tracking-tight text-[#1A1A1A] dark:text-[#f5f5f5] whitespace-pre-line">
             {renderBold(t("hero.bio"), "text-[#0000ff]")}
           </p>
           <p className="text-sm md:text-lg font-light leading-snug md:leading-tight tracking-tight text-[#9CA3AF] dark:text-[#71717a] mt-1 md:mt-1.5">

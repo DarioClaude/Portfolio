@@ -71,7 +71,7 @@ export const translations: Record<Lang, Record<string, string>> = {
     "nav.cta": "Get in touch",
 
     // Hero
-    "hero.bio": "Hi, I'm <bold>Dario</bold>, a <bold>French photographer</bold> turning moments into lasting memories.",
+    "hero.bio": "Hi, I'm <bold>Dario</bold>, a <bold>French photographer</bold>\nturning moments into lasting memories.",
     "hero.sub": "It all starts with a click. Let's talk.",
 
     // About
