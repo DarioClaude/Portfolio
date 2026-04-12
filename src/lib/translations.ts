@@ -9,7 +9,7 @@ export const translations: Record<Lang, Record<string, string>> = {
     "nav.cta": "Get in touch",
 
     // Hero
-    "hero.bio": "Salut, je suis <bold>Dario</bold>, <bold>photographe français</bold> basé dans le Sud, disponible partout en France.",
+    "hero.bio": "Salut, je suis <bold>Dario</bold>, photographe français\nbasé dans le Sud, <bold>disponible partout</bold> dans le monde.",
     "hero.sub": "Tout part d'un clic. Discutons ensemble.",
 
     // About
@@ -71,7 +71,7 @@ export const translations: Record<Lang, Record<string, string>> = {
     "nav.cta": "Get in touch",
 
     // Hero
-    "hero.bio": "Hi, I'm <bold>Dario</bold>, a <bold>French photographer</bold>\nturning moments into lasting memories.",
+    "hero.bio": "Hi, I'm <bold>Dario</bold>, a <bold>French photographer</bold> turning\nmoments into lasting memories.",
     "hero.sub": "It all starts with a click. Let's talk.",
 
     // About
@@ -133,7 +133,7 @@ export const translations: Record<Lang, Record<string, string>> = {
     "nav.cta": "Contacto",
 
     // Hero
-    "hero.bio": "Hola, soy <bold>Dario</bold>, <bold>fotógrafo francés</bold> que transforma momentos en recuerdos duraderos.",
+    "hero.bio": "Hola, soy <bold>Dario</bold>, <bold>fotógrafo francés</bold> que transforma momentos\nen recuerdos duraderos. <bold>Disponible en toda España.</bold>",
     "hero.sub": "Todo comienza con un clic. Hablemos.",
 
     // About
