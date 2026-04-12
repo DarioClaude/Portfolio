@@ -54,18 +54,24 @@ export default function CarouselCard({ slug, title, imagePath, cardW }: Props) {
           className="block w-full h-full relative select-none"
           draggable={false}
         >
-          <Image
-            src={imagePath}
-            alt={title}
-            fill
-            className={`object-cover pointer-events-none transition-transform duration-500 ease-out ${
-              hovering ? "scale-105" : "scale-100"
-            }`}
-            sizes={`${cardW}px`}
-            quality={100}
-            unoptimized
-            draggable={false}
-          />
+          {imagePath ? (
+            <Image
+              src={imagePath}
+              alt={title}
+              fill
+              className={`object-cover pointer-events-none transition-transform duration-500 ease-out ${
+                hovering ? "scale-105" : "scale-100"
+              }`}
+              sizes={`${cardW}px`}
+              quality={100}
+              unoptimized
+              draggable={false}
+            />
+          ) : (
+            <div className="w-full h-full bg-neutral-200 dark:bg-neutral-800 animate-pulse rounded-lg flex items-end p-3">
+              <span className="text-xs font-normal text-neutral-500 dark:text-neutral-400">{title}</span>
+            </div>
+          )}
         </Link>
       </div>
     </div>

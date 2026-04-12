@@ -1,11 +1,9 @@
 "use client";
 
 import { useRef } from "react";
-import Image from "next/image";
 import { motion, useInView } from "framer-motion";
 import Link from "next/link";
 import type { Project } from "@/lib/projects";
-import { useTranslation } from "@/context/LanguageContext";
 
 interface Props {
   project: Project;
@@ -15,7 +13,6 @@ interface Props {
 export default function ProjectCard({ project, index }: Props) {
   const ref = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, { once: true, margin: "-80px" });
-  const { t } = useTranslation();
 
   return (
     <motion.div
@@ -35,37 +32,24 @@ export default function ProjectCard({ project, index }: Props) {
         className="block group"
         data-cursor-hover
       >
-        <div
-          className="rounded-[4px] overflow-hidden relative"
-          style={{ aspectRatio: "16/10" }}
-          data-protected
-        >
-          <motion.div
-            className="w-full h-full relative"
-            whileHover={{ scale: 1.05 }}
-            transition={{
-              duration: 0.5,
-              ease: [0.23, 1, 0.32, 1],
-            }}
-          >
-            <Image
-              src={project.imagePath}
-              alt={project.title}
-              fill
-              className="object-cover"
-              sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
-              quality={85}
-              draggable={false}
-            />
-          </motion.div>
-          {/* Overlay text */}
-          <div className="absolute bottom-0 left-0 p-4 z-10">
-            <p className="text-[13px] font-bold uppercase text-white drop-shadow-md">
-              *{project.title}
-            </p>
-            <p className="text-[11px] mt-0.5 text-white opacity-60 drop-shadow-md">
-              {t(project.descriptionKey)}
-            </p>
+        <div className="relative rounded-lg overflow-hidden aspect-[4/3]">
+          {/* Image placeholder */}
+          <div className="w-full h-full bg-neutral-200 dark:bg-neutral-800 animate-pulse" />
+
+          {/* Progressive blur gradient — stops just above the title text */}
+          <div
+            aria-hidden
+            className="absolute bottom-0 left-0 w-full h-20 z-10 bg-gradient-to-t from-neutral-900/90 to-transparent backdrop-blur-[2px]"
+          />
+
+          {/* Project info overlay — title (left) + arrow (right) */}
+          <div className="absolute bottom-0 left-0 w-full z-20 flex justify-between items-center p-4">
+            <span className="font-sans text-sm md:text-base font-normal text-white">
+              {project.title}
+            </span>
+            <span className="text-white opacity-60 translate-x-1 transition-all duration-500 ease-out group-hover:opacity-100 group-hover:translate-x-0">
+              →
+            </span>
           </div>
         </div>
       </Link>

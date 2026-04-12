@@ -22,15 +22,19 @@ export default function NextProjectLink({ slug, title, imagePath }: Props) {
         data-cursor-hover
       >
         <div className="w-20 h-14 md:w-28 md:h-20 rounded-[4px] overflow-hidden relative shrink-0" data-protected>
-          <Image
-            src={imagePath}
-            alt={title}
-            fill
-            className="object-cover group-hover:scale-105 transition-transform duration-500"
-            sizes="112px"
-            quality={80}
-            draggable={false}
-          />
+          {imagePath ? (
+            <Image
+              src={imagePath}
+              alt={title}
+              fill
+              className="object-cover group-hover:scale-105 transition-transform duration-500"
+              sizes="112px"
+              quality={80}
+              draggable={false}
+            />
+          ) : (
+            <div className="w-full h-full bg-neutral-200 dark:bg-neutral-800 animate-pulse rounded-sm" />
+          )}
         </div>
         <span className="text-2xl md:text-3xl font-black uppercase text-[#1A1A1A] dark:text-[#f5f5f5] group-hover:opacity-60 transition-opacity">
           {title} →

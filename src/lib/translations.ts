@@ -55,15 +55,12 @@ export const translations: Record<Lang, Record<string, string>> = {
     "aria.linkedin": "LinkedIn",
 
     // Project descriptions
-    "project.marlay.desc": "Identité de marque & site portfolio pour un studio de développement créatif.",
-    "project.garden.desc": "Plateforme e-commerce pour une marque botanique durable.",
-    "project.studioarct.desc": "Branding d'agence créative et refonte de la présence digitale.",
-    "project.kora.desc": "Dashboard de visualisation de données pour l'analytique fintech.",
-    "project.studio17.desc": "Site de studio photo avec galerie immersive.",
-    "project.shipstudio.desc": "Portfolio de studio de design produit avec vitrines 3D.",
-    "project.cirro.desc": "Plateforme d'infrastructure cloud avec design UI minimal.",
-    "project.volumaker.desc": "SaaS de production audio avec outils de collaboration en temps réel.",
-    "project.parabellum.desc": "Identité de marque streetwear luxe et expérience e-commerce.",
+    "project.football.desc": "Photographie sportive capturant l'intensité et la passion du football.",
+    "project.travel.desc": "Reportage de voyage à travers le monde, des paysages aux rencontres.",
+    "project.rugby.desc": "L'énergie brute du rugby saisie sur le terrain.",
+    "project.tourdefrance.desc": "Le Tour de France immortalisé à travers l'effort et l'asphalte.",
+    "project.course.desc": "L'athlétisme en mouvement — sprint, fond et courses de rue.",
+    "project.otherssports.desc": "Une sélection éclectique de sports variés, du basket au surf.",
   },
 
   en: {
@@ -120,15 +117,12 @@ export const translations: Record<Lang, Record<string, string>> = {
     "aria.linkedin": "LinkedIn",
 
     // Project descriptions
-    "project.marlay.desc": "Brand identity & portfolio website for a creative developer studio.",
-    "project.garden.desc": "E-commerce platform for a sustainable botanical brand.",
-    "project.studioarct.desc": "Creative agency branding and digital presence redesign.",
-    "project.kora.desc": "Data visualization dashboard for fintech analytics.",
-    "project.studio17.desc": "Photography studio website with immersive gallery.",
-    "project.shipstudio.desc": "Product design studio portfolio with 3D showcases.",
-    "project.cirro.desc": "Cloud infrastructure platform with minimal UI design.",
-    "project.volumaker.desc": "Audio production SaaS with real-time collaboration tools.",
-    "project.parabellum.desc": "Luxury streetwear brand identity and e-commerce experience.",
+    "project.football.desc": "Sports photography capturing the intensity and passion of football.",
+    "project.travel.desc": "Travel reportage across the world — landscapes and encounters.",
+    "project.rugby.desc": "The raw energy of rugby captured on the field.",
+    "project.tourdefrance.desc": "The Tour de France immortalized through effort and tarmac.",
+    "project.course.desc": "Athletics in motion — sprints, distance, and street races.",
+    "project.otherssports.desc": "An eclectic selection of various sports, from basketball to surfing.",
   },
 
   es: {
@@ -185,14 +179,11 @@ export const translations: Record<Lang, Record<string, string>> = {
     "aria.linkedin": "LinkedIn",
 
     // Project descriptions
-    "project.marlay.desc": "Identidad de marca y sitio portfolio para un estudio de desarrollo creativo.",
-    "project.garden.desc": "Plataforma e-commerce para una marca botánica sostenible.",
-    "project.studioarct.desc": "Branding de agencia creativa y rediseño de presencia digital.",
-    "project.kora.desc": "Dashboard de visualización de datos para analítica fintech.",
-    "project.studio17.desc": "Sitio web de estudio fotográfico con galería inmersiva.",
-    "project.shipstudio.desc": "Portfolio de estudio de diseño de producto con vitrinas 3D.",
-    "project.cirro.desc": "Plataforma de infraestructura cloud con diseño UI minimal.",
-    "project.volumaker.desc": "SaaS de producción de audio con herramientas de colaboración en tiempo real.",
-    "project.parabellum.desc": "Identidad de marca streetwear de lujo y experiencia e-commerce.",
+    "project.football.desc": "Fotografía deportiva capturando la intensidad y pasión del fútbol.",
+    "project.travel.desc": "Reportaje de viajes por el mundo — paisajes y encuentros.",
+    "project.rugby.desc": "La energía bruta del rugby capturada en el campo.",
+    "project.tourdefrance.desc": "El Tour de Francia inmortalizado a través del esfuerzo y el asfalto.",
+    "project.course.desc": "Atletismo en movimiento — sprints, fondo y carreras callejeras.",
+    "project.otherssports.desc": "Una selección ecléctica de deportes variados, del baloncesto al surf.",
   },
 };
