@@ -46,18 +46,18 @@ export default function ProjectCard({ project, index }: Props) {
             <div className="w-full h-full bg-neutral-200 dark:bg-neutral-800 animate-pulse" />
           )}
 
-          {/* Progressive blur gradient — stops just above the title text */}
+          {/* Delicate gradient mask — soft light fade with no hard edge */}
           <div
             aria-hidden
-            className="absolute bottom-0 left-0 w-full h-20 z-10 bg-gradient-to-t from-neutral-900/90 to-transparent backdrop-blur-[2px]"
+            className="absolute bottom-0 left-0 right-0 h-1/5 z-10 bg-gradient-to-t from-white to-transparent backdrop-blur-[2px]"
           />
 
           {/* Project info overlay — title (left) + arrow (right) */}
-          <div className="absolute bottom-0 left-0 w-full z-20 flex justify-between items-center p-4">
-            <span className="font-sans text-sm md:text-base font-normal text-white">
+          <div className="absolute bottom-0 left-0 w-full z-20 flex justify-between items-center px-3 py-2.5 md:px-4 md:py-3">
+            <span className="font-sans text-xs md:text-sm font-medium text-[#1a1a1a] tracking-tight">
               {project.title}
             </span>
-            <span className="text-white opacity-60 translate-x-1 transition-all duration-500 ease-out group-hover:opacity-100 group-hover:translate-x-0">
+            <span className="text-[#1a1a1a] opacity-60 translate-x-1 transition-all duration-500 ease-out group-hover:opacity-100 group-hover:translate-x-0">
               →
             </span>
           </div>

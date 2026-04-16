@@ -13,21 +13,6 @@
   --btn-dark: #1a1a1a;
 }
 
-.dark {
-  --bg-primary: #0a0a0a;
-  --bg-elevated: #171717;
-  --text-primary: #f5f5f5;
-  --text-secondary: #a1a1aa;
-  --text-tertiary: #71717a;
-  --border: #262626;
-  --card-shadow: 0 25px 60px rgba(0, 0, 0, 0.5);
-  --btn-dark: #f5f5f5;
-}
-
-.dark body {
-  color-scheme: dark;
-}
-
 * {
   cursor: none !important;
 }
