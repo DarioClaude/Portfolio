@@ -15,13 +15,9 @@ export default function WorkPage() {
           <WorkTitle />
         </div>
 
-        {/* Grid + progressive blur fade at bottom */}
+        {/* Grid */}
         <div className="relative">
           <ProjectGrid />
-          <div
-            aria-hidden
-            className="pointer-events-none absolute bottom-0 left-0 right-0 h-32 z-10 bg-gradient-to-t from-white to-transparent backdrop-blur-[2px]"
-          />
         </div>
       </section>
 
