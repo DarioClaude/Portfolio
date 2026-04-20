@@ -125,8 +125,8 @@ export default function HeroCarousel() {
       <div
         className="absolute left-1/2"
         style={{
-          top: isMobile ? "50%" : "clamp(120px, 10vw, 180px)",
-          transform: isMobile ? "translate(-50%, -60%)" : "translateX(-50%)",
+          top: isMobile ? "50%" : "42%",
+          transform: isMobile ? "translate(-50%, -60%)" : "translate(-50%, -50%)",
           width: dims.cardW,
           height: dims.cardH,
           perspective: isMobile ? "1000px" : "1500px",
@@ -177,7 +177,7 @@ export default function HeroCarousel() {
       {/* ===== FOOTER BIO — anchored within the container ===== */}
       <div
         className="absolute left-0 right-0 px-5 md:px-10 flex justify-between items-end pointer-events-none z-10"
-        style={isMobile ? { bottom: "24px" } : { bottom: "clamp(32px, 4vh, 64px)" }}
+        style={isMobile ? { bottom: "24px" } : { bottom: "clamp(40px, 12vh, 140px)" }}
       >
         <motion.div
           className="max-w-[300px] md:max-w-[520px] pointer-events-auto"
