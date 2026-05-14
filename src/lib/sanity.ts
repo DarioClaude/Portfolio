@@ -1,14 +1,19 @@
-import { createClient } from "@sanity/client";
+import { createClient } from "next-sanity";
 import imageUrlBuilder from "@sanity/image-url";
 
+const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || "";
+const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET || "production";
+const apiVersion = process.env.NEXT_PUBLIC_SANITY_API_VERSION || "2024-01-01";
+
 export const sanityClient = createClient({
-  projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || "",
-  dataset: process.env.NEXT_PUBLIC_SANITY_DATASET || "production",
-  apiVersion: "2024-01-01",
+  projectId,
+  dataset,
+  apiVersion,
   useCdn: true,
+  perspective: "published",
 });
 
-const builder = imageUrlBuilder(sanityClient);
+const builder = imageUrlBuilder({ projectId, dataset });
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function urlFor(source: any) {
@@ -17,7 +22,6 @@ export function urlFor(source: any) {
 
 // ─── GROQ Queries ───────────────────────────────────────────────
 
-/** All projects, ordered by display order */
 export const allProjectsQuery = `
   *[_type == "project"] | order(order asc) {
     _id,
@@ -35,7 +39,6 @@ export const allProjectsQuery = `
   }
 `;
 
-/** Single project by slug */
 export const projectBySlugQuery = `
   *[_type == "project" && slug.current == $slug][0] {
     _id,
@@ -53,7 +56,6 @@ export const projectBySlugQuery = `
   }
 `;
 
-/** First 6 projects for the carousel */
 export const carouselProjectsQuery = `
   *[_type == "project"] | order(order asc) [0...6] {
     _id,
@@ -63,7 +65,7 @@ export const carouselProjectsQuery = `
   }
 `;
 
-// ─── TypeScript Types (from Sanity) ──────────────────────────────
+// ─── TypeScript Types ────────────────────────────────────────────
 
 export interface SanityProject {
   _id: string;

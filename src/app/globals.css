@@ -13,7 +13,8 @@
   --btn-dark: #1a1a1a;
 }
 
-* {
+.site-shell,
+.site-shell * {
   cursor: none !important;
 }
 
@@ -47,7 +48,8 @@ body {
 
 /* Mobile: restore native cursor */
 @media (pointer: coarse) {
-  * {
+  .site-shell,
+  .site-shell * {
     cursor: auto !important;
   }
 }
