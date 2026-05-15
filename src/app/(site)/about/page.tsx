@@ -161,7 +161,7 @@ export default function AboutPage() {
             <div style={{ perspective: "1000px" }} className="w-full max-w-[380px] h-full">
               <div
                 ref={cardRef}
-                className="relative rounded-2xl overflow-hidden w-full aspect-[3/4] lg:aspect-auto lg:h-full"
+                className="relative rounded-2xl overflow-hidden w-full aspect-[2/3] lg:aspect-auto lg:h-full"
                 style={{
                   transform: `rotateX(${tilt.rotateX}deg) rotateY(${tilt.rotateY}deg) translateZ(20px)`,
                   transition: isHovering ? "transform 0.15s ease-out" : "none",
