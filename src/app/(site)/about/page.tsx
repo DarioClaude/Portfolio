@@ -159,7 +159,7 @@ export default function AboutPage() {
             initial={{ opacity: 0, y: 60, scale: 0.95 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             transition={{ ...spring, delay: 0.15 }}
-            className="flex justify-center lg:justify-end"
+            className="flex justify-center lg:justify-center"
           >
             <div style={{ perspective: "1000px" }} className="w-full max-w-[380px] lg:w-[230px]">
               <div
