@@ -118,7 +118,7 @@ export default function AboutPage() {
   return (
     <section className="pt-28 md:pt-36 pb-24 md:pb-32 px-5 md:px-10 bg-white text-[#191D23]">
       <div className="max-w-[1280px] mx-auto">
-        <div className="grid grid-cols-1 lg:grid-cols-[1fr_auto] gap-10 lg:gap-16 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-20 items-start">
           {/* LEFT — pill + bio + meta + CTA */}
           <motion.div
             className="flex flex-col gap-8 md:gap-10"
