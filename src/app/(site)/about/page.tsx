@@ -3,6 +3,7 @@
 import { useRef, useState, useCallback, useEffect } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
+import Button from "@/components/ui/Button";
 import { useTranslation } from "@/context/LanguageContext";
 
 const spring = { type: "spring" as const, stiffness: 100, damping: 22 };
@@ -27,16 +28,6 @@ function Pill({ children }: { children: React.ReactNode }) {
   );
 }
 
-function Divider() {
-  return (
-    <span
-      aria-hidden
-      className="flex-1 mx-3 md:mx-5"
-      style={{ height: 1, background: "rgba(25, 29, 35, 0.12)", minWidth: 24 }}
-    />
-  );
-}
-
 function GlobeIcon() {
   return (
     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0000ff" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
@@ -52,19 +43,6 @@ function ClockIcon() {
       <circle cx="12" cy="12" r="9" />
       <path d="M12 7v5l3 2" />
     </svg>
-  );
-}
-
-function Stat({ value, label }: { value: string; label: string }) {
-  return (
-    <span className="inline-flex items-baseline gap-2 flex-shrink-0">
-      <span style={{ color: "#0000ff", fontSize: 15, fontWeight: 600, letterSpacing: "-0.01em" }}>
-        {value}
-      </span>
-      <span style={{ color: "#191D23", fontSize: 14, fontWeight: 400 }}>
-        {label}
-      </span>
-    </span>
   );
 }
 
@@ -137,8 +115,8 @@ export default function AboutPage() {
   return (
     <section className="pt-28 md:pt-36 pb-24 md:pb-32 px-5 md:px-10 bg-white text-[#191D23]">
       <div className="max-w-[1280px] mx-auto">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-start">
-          {/* LEFT — pill + bio text + stats + meta + CTA */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-stretch">
+          {/* LEFT — pill + bio + meta + CTA */}
           <motion.div
             className="flex flex-col gap-8 md:gap-10"
             initial={{ opacity: 0, y: 30 }}
@@ -149,7 +127,7 @@ export default function AboutPage() {
               <Pill>{t("about.pill.aboutMe")}</Pill>
             </div>
 
-            {/* Bio — same typo/size as hero, justified */}
+            {/* Bio — hero typography, justified */}
             <div>
               <p className="text-sm md:text-lg font-normal leading-snug md:leading-tight tracking-tight text-[#1A1A1A] text-justify">
                 {t("about.heading")}
@@ -159,54 +137,32 @@ export default function AboutPage() {
               </p>
             </div>
 
-            {/* Stats row */}
-            <div className="flex items-center flex-wrap font-sans" style={{ rowGap: 8 }}>
-              <Stat value={t("about.stats.years.value")} label={t("about.stats.years.label")} />
-              <Divider />
-              <Stat value={t("about.stats.projects.value")} label={t("about.stats.projects.label")} />
-              <Divider />
-              <Stat value={t("about.stats.clients.value")} label={t("about.stats.clients.label")} />
-            </div>
-
-            {/* Location + Time rows */}
+            {/* Location + Time */}
             <div className="flex flex-col gap-3">
               <MetaRow icon={<GlobeIcon />} text={t("about.location.line")} />
               <MetaRow icon={<ClockIcon />} text={time || "—:—:—"} />
             </div>
 
-            {/* CTA */}
-            <a
-              href="mailto:toninidario@yahoo.fr"
-              data-cursor-hover
-              className="inline-flex items-center justify-center font-sans transition-all duration-200 hover:-translate-y-px"
-              style={{
-                background: "#191D23",
-                color: "#fff",
-                fontSize: 13,
-                fontWeight: 500,
-                padding: "10px 22px",
-                borderRadius: 4,
-                width: "fit-content",
-                textDecoration: "none",
-              }}
-            >
-              {t("about.cta")}
-            </a>
+            {/* CTA — same component & animations as home navbar Get in touch */}
+            <div>
+              <Button href="mailto:toninidario@yahoo.fr" variant="dark" size="sm">
+                {t("about.email")}
+              </Button>
+            </div>
           </motion.div>
 
-          {/* RIGHT — 3D tilt portrait with continuous animation */}
+          {/* RIGHT — 3D tilt portrait, stretches to align top↔︎About Me, bottom↔︎button */}
           <motion.div
             initial={{ opacity: 0, y: 60, scale: 0.95 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             transition={{ ...spring, delay: 0.15 }}
-            className="flex justify-center lg:justify-end"
+            className="flex justify-center lg:justify-end h-full"
           >
-            <div style={{ perspective: "1000px" }} className="w-full max-w-[380px]">
+            <div style={{ perspective: "1000px" }} className="w-full max-w-[380px] h-full">
               <div
                 ref={cardRef}
-                className="relative rounded-2xl overflow-hidden"
+                className="relative rounded-2xl overflow-hidden w-full aspect-[3/4] lg:aspect-auto lg:h-full"
                 style={{
-                  aspectRatio: "3/4",
                   transform: `rotateX(${tilt.rotateX}deg) rotateY(${tilt.rotateY}deg) translateZ(20px)`,
                   transition: isHovering ? "transform 0.15s ease-out" : "none",
                   transformStyle: "preserve-3d",
