@@ -4,10 +4,9 @@ import { useRef, useState, useCallback, useEffect } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import SocialIcons from "@/components/SocialIcons";
-import Button from "@/components/ui/Button";
-import { useTranslation, renderBold } from "@/context/LanguageContext";
+import { useTranslation } from "@/context/LanguageContext";
 
-const spring = { type: "spring" as const, stiffness: 100, damping: 20 };
+const spring = { type: "spring" as const, stiffness: 100, damping: 22 };
 
 export default function AboutPage() {
   const cardRef = useRef<HTMLDivElement>(null);
@@ -17,7 +16,6 @@ export default function AboutPage() {
   const startTimeRef = useRef(Date.now());
   const { t } = useTranslation();
 
-  // Continuous idle animation — gentle floating tilt
   useEffect(() => {
     const animate = () => {
       if (!isHovering) {
@@ -38,10 +36,7 @@ export default function AboutPage() {
     const rect = cardRef.current.getBoundingClientRect();
     const x = (e.clientX - rect.left) / rect.width - 0.5;
     const y = (e.clientY - rect.top) / rect.height - 0.5;
-    setTilt({
-      rotateX: -y * 14,
-      rotateY: x * 14,
-    });
+    setTilt({ rotateX: -y * 14, rotateY: x * 14 });
   }, []);
 
   const handleMouseEnter = useCallback(() => setIsHovering(true), []);
@@ -51,123 +46,120 @@ export default function AboutPage() {
   }, []);
 
   return (
-    <section className="pt-28 md:pt-36 pb-20 px-5 md:px-10">
-      <div className="max-w-[1200px] mx-auto">
-        {/* Two-column layout */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-20 items-start">
+    <section
+      className="flex flex-col bg-white text-[#191D23] overflow-hidden"
+      style={{ height: "100vh", paddingTop: "64px" }}
+    >
+      {/* CENTER — interactive 3D portrait, fills remaining vertical space */}
+      <div className="flex-1 flex items-center justify-center px-5 md:px-10">
+        <motion.div
+          initial={{ opacity: 0, y: 20, scale: 0.96 }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
+          transition={{ ...spring, delay: 0.1 }}
+          style={{ perspective: "1100px" }}
+          className="w-full max-w-[300px] md:max-w-[360px]"
+        >
+          <div
+            ref={cardRef}
+            className="relative rounded-2xl overflow-hidden"
+            style={{
+              aspectRatio: "3/4",
+              transform: `rotateX(${tilt.rotateX}deg) rotateY(${tilt.rotateY}deg) translateZ(20px)`,
+              transition: isHovering ? "transform 0.15s ease-out" : "none",
+              transformStyle: "preserve-3d",
+              boxShadow:
+                "0 25px 60px rgba(0,0,0,0.15), 0 10px 24px rgba(0,0,0,0.1)",
+              willChange: "transform",
+            }}
+            onMouseMove={handleMouseMove}
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
+            data-protected
+            data-cursor-hover
+          >
+            <Image
+              src="/images/portrait.jpg"
+              alt="Dario Tonini"
+              fill
+              className="object-cover pointer-events-none"
+              sizes="(max-width: 768px) 100vw, 360px"
+              quality={90}
+              priority
+              draggable={false}
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent pointer-events-none" />
+          </div>
+        </motion.div>
+      </div>
 
-          {/* LEFT COLUMN — Text */}
-          <div>
-            <motion.h1
-              className="text-4xl md:text-6xl font-black text-[#1A1A1A] dark:text-[#f5f5f5] mb-8 leading-[1.1] tracking-tight"
-              initial={{ opacity: 0, y: 50 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={spring}
+      {/* BOTTOM BIO STRIP — anchored, 2-column at md+ */}
+      <div
+        className="w-full"
+        style={{ padding: "0 clamp(20px, 5vw, 74px) clamp(28px, 4vh, 48px)" }}
+      >
+        <motion.section
+          className="flex flex-col md:flex-row md:justify-between md:items-end gap-8 md:gap-6"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ ...spring, delay: 0.25 }}
+        >
+          {/* LEFT — bio */}
+          <div style={{ maxWidth: 560 }}>
+            <p
+              className="font-sans"
+              style={{
+                fontSize: 15,
+                fontWeight: 400,
+                lineHeight: 1.65,
+                color: "#191D23",
+              }}
             >
-              {t("about.title")}
-            </motion.h1>
-
-            <motion.div
-              initial={{ opacity: 0, y: 40 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ ...spring, delay: 0.1 }}
+              {t("about.bio.primary")}
+            </p>
+            <p
+              className="font-sans mt-2"
+              style={{
+                fontSize: 14,
+                fontWeight: 400,
+                lineHeight: 1.65,
+                color: "rgba(25, 29, 35, 0.55)",
+              }}
             >
-              <p className="text-lg font-medium leading-tight tracking-tight text-[#1A1A1A] dark:text-[#f5f5f5] mb-5">
-                {renderBold(t("about.intro"))}
-              </p>
-              <p className="text-base text-[#6B7280] dark:text-[#a1a1aa] leading-relaxed text-justify mb-5">
-                {t("about.p1")}
-              </p>
-              <p className="text-base text-[#6B7280] dark:text-[#a1a1aa] leading-relaxed text-justify mb-10">
-                {t("about.p2")}
-              </p>
-            </motion.div>
-
-            {/* CTAs */}
-            <motion.div
-              className="flex flex-col sm:flex-row gap-4 mb-10"
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ ...spring, delay: 0.2 }}
-            >
-              <Button href="mailto:toninidario@yahoo.fr" variant="outline">
-                {t("about.email")}
-              </Button>
-              <Button href="tel:0603466274" variant="primary">
-                {t("about.call")}
-              </Button>
-            </motion.div>
-
-            {/* Social + Details */}
-            <motion.div
-              className="flex flex-col gap-5"
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ ...spring, delay: 0.3 }}
-            >
-              <div className="flex gap-10">
-                <div>
-                  <p className="text-[10px] tracking-[1.5px] uppercase text-[#9CA3AF] dark:text-[#71717a] mb-1">{t("about.role.label")}</p>
-                  <p className="text-sm font-bold text-[#1A1A1A] dark:text-[#f5f5f5]">{t("about.role.value")}</p>
-                </div>
-                <div>
-                  <p className="text-[10px] tracking-[1.5px] uppercase text-[#9CA3AF] dark:text-[#71717a] mb-1">{t("about.location.label")}</p>
-                  <p className="text-sm font-bold text-[#1A1A1A] dark:text-[#f5f5f5]">{t("about.location.value")}</p>
-                </div>
-                <div>
-                  <p className="text-[10px] tracking-[1.5px] uppercase text-[#9CA3AF] dark:text-[#71717a] mb-1">{t("about.specialties.label")}</p>
-                  <p className="text-sm text-[#1A1A1A] dark:text-[#f5f5f5]">{t("about.specialties.value")}</p>
-                </div>
-              </div>
-              <SocialIcons />
-            </motion.div>
+              {t("about.bio.secondary")}
+            </p>
           </div>
 
-          {/* RIGHT COLUMN — 3D Portrait with continuous animation */}
-          <motion.div
-            initial={{ opacity: 0, y: 60, scale: 0.95 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            transition={{ ...spring, delay: 0.15 }}
-            className="flex justify-center md:justify-end"
-          >
-            <div
-              style={{ perspective: "1000px" }}
-              className="w-full max-w-[380px]"
+          {/* RIGHT — availability tag, city, socials */}
+          <div className="flex flex-col items-start md:items-end gap-2.5">
+            <span
+              className="font-sans"
+              style={{
+                fontSize: 13,
+                fontWeight: 600,
+                textTransform: "uppercase",
+                letterSpacing: "0.04em",
+                color: "#191D23",
+              }}
             >
-              <div
-                ref={cardRef}
-                className="relative rounded-2xl overflow-hidden"
-                style={{
-                  aspectRatio: "3/4",
-                  transform: `rotateX(${tilt.rotateX}deg) rotateY(${tilt.rotateY}deg) translateZ(20px)`,
-                  transition: isHovering ? "transform 0.15s ease-out" : "none",
-                  transformStyle: "preserve-3d",
-                  boxShadow: "0 25px 60px rgba(0,0,0,0.15), 0 10px 24px rgba(0,0,0,0.1)",
-                  willChange: "transform",
-                }}
-                onMouseMove={handleMouseMove}
-                onMouseEnter={handleMouseEnter}
-                onMouseLeave={handleMouseLeave}
-                data-protected
-                data-cursor-hover
-              >
-                <Image
-                  src="/images/portrait.jpg"
-                  alt="Dario Tonini"
-                  fill
-                  className="object-cover pointer-events-none"
-                  sizes="(max-width: 768px) 100vw, 380px"
-                  quality={90}
-                  priority
-                  draggable={false}
-                />
-                {/* Subtle gradient overlay at bottom */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent pointer-events-none" />
-              </div>
+              {t("about.tag")}
+            </span>
+            <span
+              className="font-sans"
+              style={{
+                fontSize: 13,
+                fontWeight: 500,
+                textTransform: "uppercase",
+                letterSpacing: "0.04em",
+                color: "rgba(25, 29, 35, 0.55)",
+              }}
+            >
+              {t("about.cityFR")}
+            </span>
+            <div style={{ color: "#191D23" }}>
+              <SocialIcons />
             </div>
-          </motion.div>
-
-        </div>
+          </div>
+        </motion.section>
       </div>
     </section>
   );
