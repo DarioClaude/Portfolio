@@ -1,12 +1,34 @@
 "use client";
 
-import { useRef, useState, useCallback, useEffect } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import Button from "@/components/ui/Button";
+import AvatarTilt from "@/components/AvatarTilt";
 import { useTranslation } from "@/context/LanguageContext";
 
 const spring = { type: "spring" as const, stiffness: 100, damping: 22 };
+
+const CAROUSEL_IMAGES = [
+  "/images/gallery/cirro/1.jpg",
+  "/images/gallery/garden/2.jpg",
+  "/images/gallery/kora/3.jpg",
+  "/images/gallery/marlay/4.jpg",
+  "/images/gallery/ship-studio/5.jpg",
+  "/images/gallery/studio-17/1.jpg",
+  "/images/gallery/studio-arct/2.jpg",
+  "/images/gallery/volumaker/3.jpg",
+  "/images/gallery/para-bellum/1.jpg",
+  "/images/gallery/cirro/4.jpg",
+  "/images/gallery/garden/5.jpg",
+  "/images/gallery/kora/6.jpg",
+];
+
+const N = CAROUSEL_IMAGES.length;
+const CARD_W = 220;
+const CARD_H = 155;
+const GAP = 14;
+const RADIUS = Math.round((CARD_W + GAP) * N / (2 * Math.PI));
 
 function Pill({ children }: { children: React.ReactNode }) {
   return (
@@ -62,12 +84,6 @@ export default function AboutPage() {
   const { t } = useTranslation();
   const [time, setTime] = useState("");
 
-  const cardRef = useRef<HTMLDivElement>(null);
-  const [isHovering, setIsHovering] = useState(false);
-  const [tilt, setTilt] = useState({ rotateX: 0, rotateY: 0 });
-  const animFrameRef = useRef<number>(0);
-  const startTimeRef = useRef(Date.now());
-
   useEffect(() => {
     const format = () => {
       const d = new Date();
@@ -83,45 +99,13 @@ export default function AboutPage() {
     return () => clearInterval(id);
   }, []);
 
-  useEffect(() => {
-    let prevX = 0;
-    let prevY = 0;
-    const animate = () => {
-      if (!isHovering) {
-        const elapsed = (Date.now() - startTimeRef.current) / 1000;
-        const targetX = Math.sin(elapsed * 0.45) * 3;
-        const targetY = Math.cos(elapsed * 0.35) * 4;
-        prevX += (targetX - prevX) * 0.04;
-        prevY += (targetY - prevY) * 0.04;
-        setTilt({ rotateX: prevX, rotateY: prevY });
-      }
-      animFrameRef.current = requestAnimationFrame(animate);
-    };
-    animFrameRef.current = requestAnimationFrame(animate);
-    return () => cancelAnimationFrame(animFrameRef.current);
-  }, [isHovering]);
-
-  const handleMouseMove = useCallback((e: React.MouseEvent) => {
-    if (!cardRef.current) return;
-    const rect = cardRef.current.getBoundingClientRect();
-    const x = (e.clientX - rect.left) / rect.width - 0.5;
-    const y = (e.clientY - rect.top) / rect.height - 0.5;
-    setTilt({ rotateX: -y * 12, rotateY: x * 12 });
-  }, []);
-
-  const handleMouseEnter = useCallback(() => setIsHovering(true), []);
-  const handleMouseLeave = useCallback(() => {
-    setIsHovering(false);
-    startTimeRef.current = Date.now();
-  }, []);
-
   return (
-    <section className="pt-28 md:pt-36 pb-24 md:pb-32 px-5 md:px-10 bg-white text-[#191D23]">
-      <div className="max-w-[1280px] mx-auto">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-20 items-start">
-          {/* LEFT — pill + bio + meta + CTA */}
+    <section className="pt-28 md:pt-36 pb-0 bg-white text-[#191D23] overflow-hidden min-h-screen">
+      {/* BIO — top left, unchanged */}
+      <div className="px-5 md:px-10">
+        <div className="max-w-[1280px] mx-auto">
           <motion.div
-            className="flex flex-col gap-8 md:gap-10"
+            className="max-w-[600px] flex flex-col gap-8 md:gap-10"
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={spring}
@@ -130,7 +114,6 @@ export default function AboutPage() {
               <Pill>{t("about.pill.aboutMe")}</Pill>
             </div>
 
-            {/* Bio — hero typography, justified */}
             <div>
               <p className="text-sm md:text-lg font-normal leading-snug md:leading-tight tracking-tight text-[#1A1A1A] text-justify">
                 {t("about.heading")}
@@ -140,62 +123,76 @@ export default function AboutPage() {
               </p>
             </div>
 
-            {/* Location + Time */}
             <div className="flex flex-col gap-3">
               <MetaRow icon={<GlobeIcon />} text={t("about.location.line")} />
               <MetaRow icon={<ClockIcon />} text={time || "—:—:—"} />
             </div>
 
-            {/* CTA — same component & animations as home navbar Get in touch */}
-            <div>
+            <div className="flex items-center gap-4">
+              <AvatarTilt />
               <Button href="mailto:toninidario@yahoo.fr" variant="dark" size="sm">
                 {t("about.email")}
               </Button>
             </div>
           </motion.div>
-
-          {/* RIGHT — 3D tilt portrait, stretches to align top↔︎About Me, bottom↔︎button */}
-          <motion.div
-            initial={{ opacity: 0, y: 60, scale: 0.95 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            transition={{ ...spring, delay: 0.15 }}
-            className="flex justify-center lg:justify-center"
-          >
-            <div style={{ perspective: "1000px" }} className="w-full max-w-[380px] lg:w-[230px]">
-              <div
-                ref={cardRef}
-                className="relative rounded-2xl overflow-hidden w-full aspect-[2/3]"
-                style={{
-                  transform: `rotateX(${tilt.rotateX}deg) rotateY(${tilt.rotateY}deg) translateZ(20px)`,
-                  transition: isHovering
-                    ? "transform 0.12s ease-out"
-                    : "transform 0.8s cubic-bezier(0.25, 0.1, 0.25, 1)",
-                  transformStyle: "preserve-3d",
-                  boxShadow: "0 25px 60px rgba(0,0,0,0.15), 0 10px 24px rgba(0,0,0,0.1)",
-                  willChange: "transform",
-                }}
-                onMouseMove={handleMouseMove}
-                onMouseEnter={handleMouseEnter}
-                onMouseLeave={handleMouseLeave}
-                data-protected
-                data-cursor-hover
-              >
-                <Image
-                  src="/images/portrait.jpg"
-                  alt="Dario Tonini"
-                  fill
-                  className="object-cover pointer-events-none"
-                  sizes="(max-width: 768px) 100vw, 380px"
-                  quality={90}
-                  priority
-                  draggable={false}
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent pointer-events-none" />
-              </div>
-            </div>
-          </motion.div>
         </div>
       </div>
+
+      {/* 3D CYLINDRICAL CAROUSEL — tilted, auto-rotating */}
+      <motion.div
+        className="relative mt-12 md:mt-20"
+        style={{
+          height: "clamp(320px, 42vw, 520px)",
+          perspective: "1200px",
+          perspectiveOrigin: "50% 40%",
+        }}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 1.2, delay: 0.3 }}
+      >
+        <div
+          style={{
+            position: "absolute",
+            left: "55%",
+            top: "50%",
+            transform: "translate(-50%, -50%) rotateX(-18deg) rotateZ(-6deg)",
+            transformStyle: "preserve-3d",
+          }}
+        >
+          <div
+            style={{
+              width: CARD_W,
+              height: CARD_H,
+              transformStyle: "preserve-3d",
+              animation: "carousel-spin 50s linear infinite",
+            }}
+          >
+            {CAROUSEL_IMAGES.map((src, i) => (
+              <div
+                key={src + i}
+                className="absolute rounded-lg overflow-hidden shadow-lg"
+                style={{
+                  width: CARD_W,
+                  height: CARD_H,
+                  top: 0,
+                  left: 0,
+                  transform: `rotateY(${i * (360 / N)}deg) translateZ(${RADIUS}px)`,
+                  backfaceVisibility: "hidden",
+                }}
+              >
+                <Image
+                  src={src}
+                  alt=""
+                  fill
+                  className="object-cover"
+                  sizes="220px"
+                  quality={75}
+                />
+              </div>
+            ))}
+          </div>
+        </div>
+      </motion.div>
     </section>
   );
 }
