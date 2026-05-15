@@ -115,7 +115,7 @@ export default function AboutPage() {
   return (
     <section className="pt-28 md:pt-36 pb-24 md:pb-32 px-5 md:px-10 bg-white text-[#191D23]">
       <div className="max-w-[1280px] mx-auto">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-start lg:items-stretch">
+        <div className="grid grid-cols-1 lg:grid-cols-[1fr_auto] gap-10 items-start">
           {/* LEFT — pill + bio + meta + CTA */}
           <motion.div
             className="flex flex-col gap-8 md:gap-10"
@@ -158,10 +158,10 @@ export default function AboutPage() {
             transition={{ ...spring, delay: 0.15 }}
             className="flex justify-center lg:justify-end"
           >
-            <div style={{ perspective: "1000px" }} className="w-full max-w-[380px] lg:w-auto lg:max-w-none lg:h-full">
+            <div style={{ perspective: "1000px" }} className="w-full max-w-[380px] lg:w-[230px]">
               <div
                 ref={cardRef}
-                className="relative rounded-2xl overflow-hidden w-full aspect-[2/3] lg:w-auto lg:h-full"
+                className="relative rounded-2xl overflow-hidden w-full aspect-[2/3]"
                 style={{
                   transform: `rotateX(${tilt.rotateX}deg) rotateY(${tilt.rotateY}deg) translateZ(20px)`,
                   transition: isHovering ? "transform 0.15s ease-out" : "none",
