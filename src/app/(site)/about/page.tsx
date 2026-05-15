@@ -84,13 +84,16 @@ export default function AboutPage() {
   }, []);
 
   useEffect(() => {
+    let prevX = 0;
+    let prevY = 0;
     const animate = () => {
       if (!isHovering) {
         const elapsed = (Date.now() - startTimeRef.current) / 1000;
-        setTilt({
-          rotateX: Math.sin(elapsed * 0.8) * 4,
-          rotateY: Math.cos(elapsed * 0.6) * 5,
-        });
+        const targetX = Math.sin(elapsed * 0.45) * 3;
+        const targetY = Math.cos(elapsed * 0.35) * 4;
+        prevX += (targetX - prevX) * 0.04;
+        prevY += (targetY - prevY) * 0.04;
+        setTilt({ rotateX: prevX, rotateY: prevY });
       }
       animFrameRef.current = requestAnimationFrame(animate);
     };
@@ -103,7 +106,7 @@ export default function AboutPage() {
     const rect = cardRef.current.getBoundingClientRect();
     const x = (e.clientX - rect.left) / rect.width - 0.5;
     const y = (e.clientY - rect.top) / rect.height - 0.5;
-    setTilt({ rotateX: -y * 14, rotateY: x * 14 });
+    setTilt({ rotateX: -y * 12, rotateY: x * 12 });
   }, []);
 
   const handleMouseEnter = useCallback(() => setIsHovering(true), []);
@@ -115,7 +118,7 @@ export default function AboutPage() {
   return (
     <section className="pt-28 md:pt-36 pb-24 md:pb-32 px-5 md:px-10 bg-white text-[#191D23]">
       <div className="max-w-[1280px] mx-auto">
-        <div className="grid grid-cols-1 lg:grid-cols-[1fr_auto] gap-10 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-[1fr_auto] gap-10 lg:gap-16 items-start">
           {/* LEFT — pill + bio + meta + CTA */}
           <motion.div
             className="flex flex-col gap-8 md:gap-10"
@@ -164,7 +167,9 @@ export default function AboutPage() {
                 className="relative rounded-2xl overflow-hidden w-full aspect-[2/3]"
                 style={{
                   transform: `rotateX(${tilt.rotateX}deg) rotateY(${tilt.rotateY}deg) translateZ(20px)`,
-                  transition: isHovering ? "transform 0.15s ease-out" : "none",
+                  transition: isHovering
+                    ? "transform 0.12s ease-out"
+                    : "transform 0.8s cubic-bezier(0.25, 0.1, 0.25, 1)",
                   transformStyle: "preserve-3d",
                   boxShadow: "0 25px 60px rgba(0,0,0,0.15), 0 10px 24px rgba(0,0,0,0.1)",
                   willChange: "transform",
