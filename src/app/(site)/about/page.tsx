@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef, useCallback } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import Button from "@/components/ui/Button";
@@ -80,6 +80,94 @@ function MetaRow({ icon, text }: { icon: React.ReactNode; text: string }) {
   );
 }
 
+function PortraitPhoto() {
+  const ref = useRef<HTMLDivElement>(null);
+  const tiltRef = useRef({ rotateX: 0, rotateY: 0 });
+  const targetRef = useRef({ rotateX: 0, rotateY: 0 });
+  const rafRef = useRef<number>(0);
+  const idleRef = useRef<number>(0);
+  const isHoveringRef = useRef(false);
+
+  const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
+
+  const animate = useCallback(() => {
+    tiltRef.current.rotateX = lerp(tiltRef.current.rotateX, targetRef.current.rotateX, 0.04);
+    tiltRef.current.rotateY = lerp(tiltRef.current.rotateY, targetRef.current.rotateY, 0.04);
+
+    if (ref.current) {
+      ref.current.style.transform = `rotateX(${tiltRef.current.rotateX}deg) rotateY(${tiltRef.current.rotateY}deg)`;
+    }
+
+    rafRef.current = requestAnimationFrame(animate);
+  }, []);
+
+  useEffect(() => {
+    rafRef.current = requestAnimationFrame(animate);
+
+    const idle = () => {
+      if (!isHoveringRef.current) {
+        const t = Date.now() / 1000;
+        targetRef.current = {
+          rotateX: Math.sin(t * 0.45) * 3,
+          rotateY: Math.cos(t * 0.35) * 4,
+        };
+      }
+      idleRef.current = requestAnimationFrame(idle);
+    };
+    idleRef.current = requestAnimationFrame(idle);
+
+    return () => {
+      cancelAnimationFrame(rafRef.current);
+      cancelAnimationFrame(idleRef.current);
+    };
+  }, [animate]);
+
+  const onMove = (e: React.MouseEvent) => {
+    if (!ref.current) return;
+    const rect = ref.current.getBoundingClientRect();
+    const x = (e.clientX - rect.left) / rect.width - 0.5;
+    const y = (e.clientY - rect.top) / rect.height - 0.5;
+    targetRef.current = { rotateX: -y * 14, rotateY: x * 14 };
+  };
+
+  return (
+    <motion.div
+      className="hidden lg:block"
+      initial={{ opacity: 0, x: 40 }}
+      animate={{ opacity: 1, x: 0 }}
+      transition={{ ...spring, delay: 0.15 }}
+    >
+      <div style={{ perspective: "600px" }} className="w-[230px]">
+        <div
+          ref={ref}
+          className="w-full aspect-[2/3] rounded-lg overflow-hidden shadow-xl"
+          style={{
+            transformStyle: "preserve-3d",
+            transition: "transform 0.8s cubic-bezier(0.25, 0.1, 0.25, 1)",
+          }}
+          onMouseMove={onMove}
+          onMouseEnter={() => { isHoveringRef.current = true; }}
+          onMouseLeave={() => {
+            isHoveringRef.current = false;
+            targetRef.current = { rotateX: 0, rotateY: 0 };
+          }}
+          data-cursor-hover
+        >
+          <Image
+            src="/images/portrait.jpg"
+            alt="Dario Tonini"
+            fill
+            className="object-cover pointer-events-none"
+            sizes="230px"
+            quality={85}
+            priority
+          />
+        </div>
+      </div>
+    </motion.div>
+  );
+}
+
 export default function AboutPage() {
   const { t } = useTranslation();
   const [time, setTime] = useState("");
@@ -101,40 +189,44 @@ export default function AboutPage() {
 
   return (
     <section className="pt-28 md:pt-36 pb-0 bg-white text-[#191D23] overflow-hidden min-h-screen">
-      {/* BIO — top left, unchanged */}
+      {/* BIO + PORTRAIT — two-column layout */}
       <div className="px-5 md:px-10">
         <div className="max-w-[1280px] mx-auto">
-          <motion.div
-            className="max-w-[600px] flex flex-col gap-8 md:gap-10"
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={spring}
-          >
-            <div>
-              <Pill>{t("about.pill.aboutMe")}</Pill>
-            </div>
+          <div className="flex items-start justify-between gap-12 lg:gap-20">
+            <motion.div
+              className="max-w-[600px] flex flex-col gap-8 md:gap-10"
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={spring}
+            >
+              <div>
+                <Pill>{t("about.pill.aboutMe")}</Pill>
+              </div>
 
-            <div>
-              <p className="text-sm md:text-lg font-normal leading-snug md:leading-tight tracking-tight text-[#1A1A1A] text-justify">
-                {t("about.heading")}
-              </p>
-              <p className="text-sm md:text-lg font-light leading-snug md:leading-tight tracking-tight text-[#9CA3AF] mt-1 md:mt-1.5 text-justify">
-                {t("about.heading.sub")}
-              </p>
-            </div>
+              <div>
+                <p className="text-sm md:text-lg font-normal leading-snug md:leading-tight tracking-tight text-[#1A1A1A] text-justify">
+                  {t("about.heading")}
+                </p>
+                <p className="text-sm md:text-lg font-light leading-snug md:leading-tight tracking-tight text-[#9CA3AF] mt-1 md:mt-1.5 text-justify">
+                  {t("about.heading.sub")}
+                </p>
+              </div>
 
-            <div className="flex flex-col gap-3">
-              <MetaRow icon={<GlobeIcon />} text={t("about.location.line")} />
-              <MetaRow icon={<ClockIcon />} text={time || "—:—:—"} />
-            </div>
+              <div className="flex flex-col gap-3">
+                <MetaRow icon={<GlobeIcon />} text={t("about.location.line")} />
+                <MetaRow icon={<ClockIcon />} text={time || "—:—:—"} />
+              </div>
 
-            <div className="flex items-center gap-4">
-              <AvatarTilt />
-              <Button href="mailto:toninidario@yahoo.fr" variant="dark" size="sm">
-                {t("about.email")}
-              </Button>
-            </div>
-          </motion.div>
+              <div className="flex items-center gap-4">
+                <AvatarTilt />
+                <Button href="mailto:toninidario@yahoo.fr" variant="dark" size="sm">
+                  {t("about.email")}
+                </Button>
+              </div>
+            </motion.div>
+
+            <PortraitPhoto />
+          </div>
         </div>
       </div>
 
