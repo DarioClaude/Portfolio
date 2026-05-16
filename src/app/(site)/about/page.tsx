@@ -240,7 +240,7 @@ export default function AboutPage() {
         }}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ duration: 0.8, delay: 0.2 }}
+        transition={{ duration: 1.5, delay: 0.6 }}
       >
         <Link
           href="/work"
