@@ -16,10 +16,9 @@ const CAROUSEL_IMAGES = Array.from({ length: 26 }, (_, i) =>
 );
 
 const N = CAROUSEL_IMAGES.length;
-const CARD_W = 152;
-const CARD_H = 115;
-const GAP = 2;
-const RADIUS = Math.round((CARD_W + GAP) * N / (2 * Math.PI));
+const CARD_W = 170;
+const CARD_H = 128;
+const RADIUS = Math.round((CARD_W * N) / (2 * Math.PI));
 
 function Pill({ children }: { children: React.ReactNode }) {
   return (
