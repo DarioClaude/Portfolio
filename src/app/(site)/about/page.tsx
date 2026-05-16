@@ -270,6 +270,7 @@ export default function AboutPage() {
                     left: 0,
                     transform: `rotateY(${i * (360 / N)}deg) translateZ(${RADIUS}px)`,
                     transformStyle: "preserve-3d",
+                    backfaceVisibility: "visible",
                     boxShadow: "0 2px 12px rgba(0,0,0,0.06)",
                   }}
                 >
