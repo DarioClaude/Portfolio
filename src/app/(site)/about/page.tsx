@@ -18,7 +18,11 @@ const CAROUSEL_IMAGES = Array.from({ length: 26 }, (_, i) =>
 const N = CAROUSEL_IMAGES.length;
 const CARD_W = 196;
 const CARD_H = 147;
-const RADIUS = Math.round((CARD_W * N) / (2 * Math.PI));
+const SLICES = 4;
+const SLICE_W = CARD_W / SLICES;
+const OVERLAP = 4;
+const TOTAL_PANELS = N * SLICES;
+const RADIUS = Math.round((SLICE_W * TOTAL_PANELS) / (2 * Math.PI));
 
 function Pill({ children }: { children: React.ReactNode }) {
   return (
@@ -160,19 +164,6 @@ function PortraitPhoto() {
 export default function AboutPage() {
   const { t } = useTranslation();
   const [time, setTime] = useState("");
-  const [imagesReady, setImagesReady] = useState(false);
-
-  useEffect(() => {
-    let loaded = 0;
-    CAROUSEL_IMAGES.forEach((src) => {
-      const img = new window.Image();
-      img.onload = img.onerror = () => {
-        loaded++;
-        if (loaded === CAROUSEL_IMAGES.length) setImagesReady(true);
-      };
-      img.src = src;
-    });
-  }, []);
 
   useEffect(() => {
     const format = () => {
@@ -245,8 +236,8 @@ export default function AboutPage() {
           perspectiveOrigin: "85% 80%",
         }}
         initial={{ opacity: 0 }}
-        animate={{ opacity: imagesReady ? 1 : 0 }}
-        transition={{ duration: 1, delay: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 1.5, delay: 0.6 }}
       >
         <Link href="/work" className="absolute inset-0">
           <div
@@ -259,40 +250,41 @@ export default function AboutPage() {
               transformStyle: "preserve-3d",
             }}
           >
-            <div
+            <motion.div
               style={{
-                width: CARD_W,
+                width: SLICE_W,
                 height: CARD_H,
                 transformStyle: "preserve-3d",
-                animation: "carousel-spin 110s linear infinite",
+              }}
+              animate={{ rotateY: -360 }}
+              transition={{
+                duration: 110,
+                ease: "linear",
+                repeat: Infinity,
               }}
             >
-              {CAROUSEL_IMAGES.map((src, i) => (
-                <div
-                  key={i}
-                  className="absolute"
-                  style={{
-                    width: CARD_W,
-                    height: CARD_H,
-                    transform: `rotateY(${i * (360 / N)}deg) translateZ(${RADIUS}px)`,
-                    backfaceVisibility: "hidden",
-                  }}
-                >
-                  <img
-                    src={src}
-                    alt=""
-                    loading="eager"
-                    decoding="async"
-                    style={{
-                      width: CARD_W,
-                      height: CARD_H,
-                      objectFit: "cover",
-                      borderRadius: 2,
-                    }}
-                  />
-                </div>
-              ))}
-            </div>
+              {CAROUSEL_IMAGES.flatMap((src, i) =>
+                Array.from({ length: SLICES }, (_, j) => {
+                  const panelIndex = i * SLICES + j;
+                  return (
+                    <div
+                      key={`${i}-${j}`}
+                      className="absolute"
+                      style={{
+                        width: SLICE_W + OVERLAP * 2,
+                        height: CARD_H,
+                        top: 0,
+                        left: -OVERLAP,
+                        transform: `rotateY(${panelIndex * (360 / TOTAL_PANELS)}deg) translateZ(${RADIUS}px)`,
+                        backgroundImage: `url(${src})`,
+                        backgroundSize: `${CARD_W}px ${CARD_H}px`,
+                        backgroundPosition: `${-j * SLICE_W + OVERLAP}px 0`,
+                      }}
+                    />
+                  );
+                })
+              )}
+            </motion.div>
           </div>
         </Link>
       </motion.div>
