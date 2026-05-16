@@ -12,7 +12,7 @@ export default function WorkIdentity() {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.8, delay: 0.3 }}
     >
-      <AvatarTilt />
+      <AvatarTilt showTooltip />
       <div className="flex flex-col items-start leading-none">
         <p className="text-sm font-bold text-[#1A1A1A] dark:text-[#f5f5f5] leading-none">
           Dario Tonini

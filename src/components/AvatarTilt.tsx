@@ -2,10 +2,18 @@
 
 import { useRef, useState, useCallback } from "react";
 import Image from "next/image";
+import { motion, AnimatePresence } from "framer-motion";
+import { useTranslation } from "@/context/LanguageContext";
 
-export default function AvatarTilt() {
+interface Props {
+  showTooltip?: boolean;
+}
+
+export default function AvatarTilt({ showTooltip = false }: Props) {
   const ref = useRef<HTMLDivElement>(null);
   const [tilt, setTilt] = useState({ rotateX: 0, rotateY: 0 });
+  const [hovering, setHovering] = useState(false);
+  const { t } = useTranslation();
 
   const onMove = useCallback((e: React.MouseEvent) => {
     if (!ref.current) return;
@@ -17,6 +25,21 @@ export default function AvatarTilt() {
 
   return (
     <div className="relative flex flex-col items-center">
+      <AnimatePresence>
+        {showTooltip && hovering && (
+          <motion.div
+            className="absolute -top-14 left-1/2 -translate-x-1/2 bg-[#1A1A1A] rounded-lg px-4 py-2 shadow-lg whitespace-nowrap pointer-events-none z-20"
+            initial={{ opacity: 0, y: 6 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 6 }}
+            transition={{ duration: 0.2 }}
+          >
+            <p className="text-xs font-bold text-white">{t("avatar.name")}</p>
+            <p className="text-[10px] text-gray-400">{t("avatar.role")}</p>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       <div
         style={{ perspective: "400px" }}
         className="w-9 h-9"
@@ -30,7 +53,9 @@ export default function AvatarTilt() {
             transformStyle: "preserve-3d",
           }}
           onMouseMove={onMove}
+          onMouseEnter={() => setHovering(true)}
           onMouseLeave={() => {
+            setHovering(false);
             setTilt({ rotateX: 0, rotateY: 0 });
           }}
           data-cursor-hover

@@ -2,6 +2,7 @@
 
 import { useEffect, useState, useRef, useCallback } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { motion } from "framer-motion";
 import Button from "@/components/ui/Button";
 import AvatarTilt from "@/components/AvatarTilt";
@@ -226,7 +227,7 @@ export default function AboutPage() {
 
       {/* 3D Cylindrical Carousel — CLOU Architects style */}
       <motion.div
-        className="hidden lg:block fixed inset-0 pointer-events-none z-0"
+        className="hidden lg:block fixed inset-0 z-0"
         style={{
           perspective: "1200px",
           perspectiveOrigin: "85% 80%",
@@ -235,55 +236,56 @@ export default function AboutPage() {
         animate={{ opacity: 1 }}
         transition={{ duration: 1.5, delay: 0.6 }}
       >
-        <div
-          style={{
-            position: "absolute",
-            right: -80,
-            bottom: 70,
-            transform:
-              "rotateX(-2.5deg) rotateY(22deg) rotateZ(-1deg)",
-            transformStyle: "preserve-3d",
-          }}
-        >
-          <motion.div
+        <Link href="/work" className="absolute inset-0">
+          <div
             style={{
-              width: CARD_W,
-              height: CARD_H,
+              position: "absolute",
+              right: -80,
+              bottom: 100,
+              transform:
+                "rotateX(-2.5deg) rotateY(22deg) rotateZ(1deg)",
               transformStyle: "preserve-3d",
             }}
-            animate={{ rotateY: -360 }}
-            transition={{
-              duration: 110,
-              ease: "linear",
-              repeat: Infinity,
-            }}
           >
-            {CAROUSEL_IMAGES.map((src, i) => (
-              <div
-                key={src + i}
-                className="absolute overflow-hidden"
-                style={{
-                  width: CARD_W,
-                  height: CARD_H,
-                  top: 0,
-                  left: 0,
-                  transform: `rotateY(${i * (360 / N)}deg) translateZ(${RADIUS}px)`,
-                  transformStyle: "preserve-3d",
-                  boxShadow: "0 2px 12px rgba(0,0,0,0.06)",
-                }}
-              >
-                <Image
-                  src={src}
-                  alt=""
-                  fill
-                  className="object-cover"
-                  sizes="304px"
-                  quality={90}
-                />
-              </div>
-            ))}
-          </motion.div>
-        </div>
+            <motion.div
+              style={{
+                width: CARD_W,
+                height: CARD_H,
+                transformStyle: "preserve-3d",
+              }}
+              animate={{ rotateY: -360 }}
+              transition={{
+                duration: 110,
+                ease: "linear",
+                repeat: Infinity,
+              }}
+            >
+              {CAROUSEL_IMAGES.map((src, i) => (
+                <div
+                  key={src + i}
+                  className="absolute overflow-hidden"
+                  style={{
+                    width: CARD_W,
+                    height: CARD_H,
+                    top: 0,
+                    left: 0,
+                    transform: `rotateY(${i * (360 / N)}deg) translateZ(${RADIUS}px)`,
+                    transformStyle: "preserve-3d",
+                    boxShadow: "0 2px 12px rgba(0,0,0,0.06)",
+                  }}
+                >
+                  <Image
+                    src={src}
+                    alt=""
+                    fill
+                    className="object-cover"
+                    unoptimized
+                  />
+                </div>
+              ))}
+            </motion.div>
+          </div>
+        </Link>
       </motion.div>
     </section>
   );

@@ -199,7 +199,7 @@ export default function HeroCarousel() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.5 }}
         >
-          <AvatarTilt />
+          <AvatarTilt showTooltip />
           <div className="flex flex-col items-end leading-none">
             <p className="text-sm font-medium text-[#1A1A1A] leading-none">Dario Tonini</p>
             <p className="text-xs tracking-[0.5px] text-[#9CA3AF] dark:text-[#71717a] leading-none mt-0.5">@dariotni</p>
