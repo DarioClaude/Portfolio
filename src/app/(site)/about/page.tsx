@@ -164,6 +164,19 @@ function PortraitPhoto() {
 export default function AboutPage() {
   const { t } = useTranslation();
   const [time, setTime] = useState("");
+  const [imagesReady, setImagesReady] = useState(false);
+
+  useEffect(() => {
+    let loaded = 0;
+    CAROUSEL_IMAGES.forEach((src) => {
+      const img = new window.Image();
+      img.onload = img.onerror = () => {
+        loaded++;
+        if (loaded === CAROUSEL_IMAGES.length) setImagesReady(true);
+      };
+      img.src = src;
+    });
+  }, []);
 
   useEffect(() => {
     const format = () => {
@@ -236,8 +249,8 @@ export default function AboutPage() {
           perspectiveOrigin: "85% 80%",
         }}
         initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 1.5, delay: 0.6 }}
+        animate={{ opacity: imagesReady ? 1 : 0 }}
+        transition={{ duration: 1, delay: 0 }}
       >
         <Link href="/work" className="absolute inset-0">
           <div
