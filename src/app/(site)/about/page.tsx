@@ -18,8 +18,7 @@ const CAROUSEL_IMAGES = Array.from({ length: 26 }, (_, i) =>
 const N = CAROUSEL_IMAGES.length;
 const CARD_W = 196;
 const CARD_H = 147;
-const GAP = 2;
-const RADIUS = Math.round(((CARD_W + GAP) * N) / (2 * Math.PI));
+const RADIUS = Math.round((CARD_W * N) / (2 * Math.PI));
 
 function Pill({ children }: { children: React.ReactNode }) {
   return (
@@ -269,7 +268,6 @@ export default function AboutPage() {
                     height: CARD_H,
                     top: 0,
                     left: 0,
-                    borderRadius: "4px",
                     transform: `rotateY(${i * (360 / N)}deg) translateZ(${RADIUS}px)`,
                     transformStyle: "preserve-3d",
                     boxShadow: "0 2px 12px rgba(0,0,0,0.06)",
