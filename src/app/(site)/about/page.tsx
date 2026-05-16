@@ -5,6 +5,7 @@ import Image from "next/image";
 import { motion } from "framer-motion";
 import Button from "@/components/ui/Button";
 import AvatarTilt from "@/components/AvatarTilt";
+import SocialIcons from "@/components/SocialIcons";
 import { useTranslation } from "@/context/LanguageContext";
 
 const spring = { type: "spring" as const, stiffness: 100, damping: 22 };
@@ -26,11 +27,15 @@ const CAROUSEL_IMAGES = [
   "/images/gallery/ship-studio/3.jpg",
   "/images/gallery/studio-17/4.jpg",
   "/images/gallery/studio-arct/5.jpg",
+  "/images/gallery/volumaker/5.jpg",
+  "/images/gallery/para-bellum/3.jpg",
+  "/images/gallery/cirro/6.jpg",
+  "/images/gallery/marlay/5.jpg",
 ];
 
 const N = CAROUSEL_IMAGES.length;
-const CARD_W = 140;
-const CARD_H = 185;
+const CARD_W = 130;
+const CARD_H = 170;
 const GAP = 2;
 const RADIUS = Math.round((CARD_W + GAP) * N / (2 * Math.PI));
 
@@ -193,7 +198,7 @@ export default function AboutPage() {
   return (
     <section className="relative min-h-screen overflow-hidden bg-white text-[#000]">
       {/* TOP — Bio + Portrait */}
-      <div className="relative z-10 pt-28 md:pt-36 px-5 md:px-10">
+      <div className="relative z-10 pt-24 md:pt-30 px-5 md:px-10">
         <div className="max-w-[1280px] mx-auto">
           <div className="flex items-start gap-10 md:gap-14">
             {/* Left column — Bio */}
@@ -226,6 +231,9 @@ export default function AboutPage() {
                 <Button href="mailto:toninidario@yahoo.fr" variant="dark" size="sm">
                   {t("about.email")}
                 </Button>
+                <div className="ml-2">
+                  <SocialIcons />
+                </div>
               </div>
             </motion.div>
 
@@ -235,16 +243,12 @@ export default function AboutPage() {
         </div>
       </div>
 
-      {/* BOTTOM — 3D Cylindrical Carousel (Clou Architects style) */}
+      {/* 3D Cylindrical Carousel — CLOU Architects style */}
       <motion.div
-        className="absolute pointer-events-none"
+        className="absolute inset-0 pointer-events-none"
         style={{
-          bottom: "-8%",
-          right: "-18%",
-          width: "110vw",
-          height: "48vh",
-          perspective: "900px",
-          perspectiveOrigin: "30% 40%",
+          perspective: "800px",
+          perspectiveOrigin: "65% 50%",
         }}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -253,10 +257,10 @@ export default function AboutPage() {
         <div
           style={{
             position: "absolute",
-            left: "50%",
-            top: "50%",
+            left: "58%",
+            top: "64%",
             transform:
-              "translate(-50%, -50%) rotateX(-22deg) rotateY(34deg) rotateZ(-8deg)",
+              "translate(-50%, -50%) rotateX(-16deg) rotateY(28deg) rotateZ(-6deg)",
             transformStyle: "preserve-3d",
           }}
         >
@@ -268,7 +272,7 @@ export default function AboutPage() {
             }}
             animate={{ rotateY: 360 }}
             transition={{
-              duration: 50,
+              duration: 55,
               ease: "linear",
               repeat: Infinity,
             }}
@@ -292,7 +296,7 @@ export default function AboutPage() {
                   alt=""
                   fill
                   className="object-cover"
-                  sizes="140px"
+                  sizes="130px"
                   quality={75}
                 />
               </div>

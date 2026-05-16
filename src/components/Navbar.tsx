@@ -19,7 +19,8 @@ export default function Navbar() {
 
   return (
     <motion.header
-      className="fixed top-0 left-0 right-0 z-50 bg-white/80 dark:bg-[#0a0a0a]/80 backdrop-blur-sm transition-colors duration-500"
+      className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-sm transition-colors duration-500"
+      style={{ borderBottom: "1px solid rgba(0, 0, 0, 0.06)" }}
       initial={{ opacity: 0, y: -20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6, delay: 0.1 }}
