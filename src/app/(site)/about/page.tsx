@@ -250,17 +250,12 @@ export default function AboutPage() {
               transformStyle: "preserve-3d",
             }}
           >
-            <motion.div
+            <div
               style={{
                 width: SLICE_W,
                 height: CARD_H,
                 transformStyle: "preserve-3d",
-              }}
-              animate={{ rotateY: -360 }}
-              transition={{
-                duration: 110,
-                ease: "linear",
-                repeat: Infinity,
+                animation: "carousel-spin 110s linear infinite",
               }}
             >
               {CAROUSEL_IMAGES.flatMap((src, i) =>
@@ -269,22 +264,34 @@ export default function AboutPage() {
                   return (
                     <div
                       key={`${i}-${j}`}
-                      className="absolute"
+                      className="absolute overflow-hidden"
                       style={{
                         width: SLICE_W + OVERLAP * 2,
                         height: CARD_H,
                         top: 0,
                         left: -OVERLAP,
                         transform: `rotateY(${panelIndex * (360 / TOTAL_PANELS)}deg) translateZ(${RADIUS}px)`,
-                        backgroundImage: `url(${src})`,
-                        backgroundSize: `${CARD_W}px ${CARD_H}px`,
-                        backgroundPosition: `${-j * SLICE_W + OVERLAP}px 0`,
                       }}
-                    />
+                    >
+                      <img
+                        src={src}
+                        alt=""
+                        loading="eager"
+                        decoding="async"
+                        style={{
+                          position: "absolute",
+                          width: CARD_W,
+                          height: CARD_H,
+                          left: -j * SLICE_W + OVERLAP,
+                          top: 0,
+                          objectFit: "cover",
+                        }}
+                      />
+                    </div>
                   );
                 })
               )}
-            </motion.div>
+            </div>
           </div>
         </Link>
       </motion.div>
