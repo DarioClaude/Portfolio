@@ -263,8 +263,8 @@ export default function AboutPage() {
         <div
           style={{
             position: "absolute",
-            right: -50,
-            bottom: -70,
+            right: -80,
+            bottom: 20,
             transform:
               "rotateX(-2.5deg) rotateY(22deg) rotateZ(-1deg)",
             transformStyle: "preserve-3d",

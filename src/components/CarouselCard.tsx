@@ -46,7 +46,7 @@ export default function CarouselCard({ slug, title, imagePath, cardW }: Props) {
             ? "0 20px 40px rgba(0,0,0,0.2)"
             : "0 8px 20px rgba(0,0,0,0.1)",
         }}
-        data-cursor-hover
+        data-cursor-hide
         data-protected
       >
         <Link
@@ -68,10 +68,17 @@ export default function CarouselCard({ slug, title, imagePath, cardW }: Props) {
               draggable={false}
             />
           ) : (
-            <div className="w-full h-full bg-neutral-200 dark:bg-neutral-800 animate-pulse rounded-lg flex items-end p-3">
-              <span className="text-xs font-normal text-neutral-500 dark:text-neutral-400">{title}</span>
+            <div className="w-full h-full bg-neutral-200 animate-pulse rounded-lg flex items-end p-3">
+              <span className="text-xs font-normal text-neutral-500">{title}</span>
             </div>
           )}
+          <div
+            className={`absolute inset-0 flex items-center justify-center bg-black/30 transition-opacity duration-300 ${
+              hovering ? "opacity-100" : "opacity-0"
+            }`}
+          >
+            <span className="text-white text-xs font-medium tracking-wide">See Project</span>
+          </div>
         </Link>
       </div>
     </div>

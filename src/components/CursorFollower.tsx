@@ -11,7 +11,7 @@ export default function CursorFollower() {
   const smoothX = useSpring(cursorX, springConfig);
   const smoothY = useSpring(cursorY, springConfig);
   const [isHovering, setIsHovering] = useState(false);
-  const [isPrecise, setIsPrecise] = useState(false);
+  const [isHidden, setIsHidden] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
   const rafRef = useRef<number>(0);
 
@@ -33,9 +33,9 @@ export default function CursorFollower() {
       const interactive = target.closest(
         "a, button, [data-cursor-hover]"
       );
-      const precise = target.closest("[data-cursor-precise]");
+      const hidden = target.closest("[data-cursor-hide]");
       setIsHovering(!!interactive);
-      setIsPrecise(!!precise);
+      setIsHidden(!!hidden);
     };
 
     const onLeave = () => setIsVisible(false);
@@ -55,7 +55,6 @@ export default function CursorFollower() {
     };
   }, [onMouseMove]);
 
-  // Don't render on touch devices
   if (typeof window !== "undefined" && window.matchMedia("(pointer: coarse)").matches) {
     return null;
   }
@@ -71,12 +70,11 @@ export default function CursorFollower() {
       }}
     >
       <motion.div
-        className="rounded-full bg-white"
-        style={{ mixBlendMode: "difference" }}
+        className="rounded-full bg-white mix-blend-difference"
         animate={{
-          width: isPrecise ? 20 : isHovering ? 50 : 12,
-          height: isPrecise ? 20 : isHovering ? 50 : 12,
-          opacity: isVisible ? 1 : 0,
+          width: isHidden ? 0 : isHovering ? 18 : 10,
+          height: isHidden ? 0 : isHovering ? 18 : 10,
+          opacity: isVisible && !isHidden ? 1 : 0,
         }}
         transition={{ type: "spring", stiffness: 300, damping: 25 }}
       />
