@@ -9,11 +9,9 @@ const CAROUSEL_IMAGES = Array.from({ length: 26 }, (_, i) =>
 export default function CarouselPreload() {
   useEffect(() => {
     CAROUSEL_IMAGES.forEach((src) => {
-      const link = document.createElement("link");
-      link.rel = "prefetch";
-      link.as = "image";
-      link.href = src;
-      document.head.appendChild(link);
+      const img = new window.Image();
+      img.src = src;
+      img.decode?.().catch(() => {});
     });
   }, []);
 
