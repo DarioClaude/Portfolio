@@ -268,7 +268,7 @@ export default function AboutPage() {
             left: "72%",
             top: "55%",
             transform:
-              "translate(-50%, -50%) rotateX(-8deg) rotateY(22deg) rotateZ(-3deg)",
+              "translate(-50%, -50%) rotateX(-3deg) rotateY(22deg) rotateZ(-2deg)",
             transformStyle: "preserve-3d",
           }}
         >
