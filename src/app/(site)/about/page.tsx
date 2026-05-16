@@ -253,7 +253,7 @@ export default function AboutPage() {
             }}
             animate={{ rotateY: -360 }}
             transition={{
-              duration: 55,
+              duration: 110,
               ease: "linear",
               repeat: Infinity,
             }}
@@ -277,8 +277,8 @@ export default function AboutPage() {
                   alt=""
                   fill
                   className="object-cover"
-                  sizes="130px"
-                  quality={75}
+                  sizes="304px"
+                  quality={90}
                 />
               </div>
             ))}
