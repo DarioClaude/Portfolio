@@ -235,14 +235,14 @@ export default function AboutPage() {
         animate={{ opacity: 1 }}
         transition={{ duration: 1.5, delay: 0.6 }}
       >
-        <Link
-          href="/work"
-          className="absolute inset-0"
+        {/* White gradient overlay to smooth the left edge */}
+        <div
+          className="absolute inset-0 z-10 pointer-events-none"
           style={{
-            maskImage: "linear-gradient(to left, black 55%, transparent 85%)",
-            WebkitMaskImage: "linear-gradient(to left, black 55%, transparent 85%)",
+            background: "linear-gradient(to right, white 0%, white 10%, transparent 40%)",
           }}
-        >
+        />
+        <Link href="/work" className="absolute inset-0">
           <div
             style={{
               position: "absolute",
