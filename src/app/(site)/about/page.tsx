@@ -270,7 +270,7 @@ export default function AboutPage() {
                       key={`${i}-${j}`}
                       className="absolute"
                       style={{
-                        width: SLICE_W,
+                        width: SLICE_W + 1,
                         height: CARD_H,
                         top: 0,
                         left: 0,
@@ -278,6 +278,7 @@ export default function AboutPage() {
                         backgroundImage: `url(${src})`,
                         backgroundSize: `${CARD_W}px ${CARD_H}px`,
                         backgroundPosition: `${-j * SLICE_W}px 0`,
+                        willChange: "transform",
                       }}
                     />
                   );
