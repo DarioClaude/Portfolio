@@ -25,7 +25,7 @@ export default function AvatarTilt() {
       <AnimatePresence>
         {hovering && (
           <motion.div
-            className="absolute -top-16 right-0 bg-[#1A1A1A] rounded-lg px-4 py-2 shadow-lg whitespace-nowrap pointer-events-none z-20"
+            className="absolute -top-14 left-1/2 -translate-x-1/2 bg-[#1A1A1A] rounded-lg px-4 py-2 shadow-lg whitespace-nowrap pointer-events-none z-20"
             initial={{ opacity: 0, y: 6 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 6 }}
