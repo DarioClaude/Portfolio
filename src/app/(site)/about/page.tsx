@@ -250,17 +250,12 @@ export default function AboutPage() {
               transformStyle: "preserve-3d",
             }}
           >
-            <motion.div
+            <div
               style={{
                 width: SLICE_W,
                 height: CARD_H,
                 transformStyle: "preserve-3d",
-              }}
-              animate={{ rotateY: -360 }}
-              transition={{
-                duration: 110,
-                ease: "linear",
-                repeat: Infinity,
+                animation: "carousel-spin 110s linear infinite",
               }}
             >
               {CAROUSEL_IMAGES.flatMap((src, i) =>
@@ -284,7 +279,7 @@ export default function AboutPage() {
                   );
                 })
               )}
-            </motion.div>
+            </div>
           </div>
         </Link>
       </motion.div>
