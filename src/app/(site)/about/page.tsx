@@ -22,12 +22,16 @@ const CAROUSEL_IMAGES = [
   "/images/gallery/cirro/4.jpg",
   "/images/gallery/garden/5.jpg",
   "/images/gallery/kora/6.jpg",
+  "/images/gallery/marlay/1.jpg",
+  "/images/gallery/ship-studio/3.jpg",
+  "/images/gallery/studio-17/4.jpg",
+  "/images/gallery/studio-arct/5.jpg",
 ];
 
 const N = CAROUSEL_IMAGES.length;
-const CARD_W = 220;
-const CARD_H = 155;
-const GAP = 14;
+const CARD_W = 180;
+const CARD_H = 240;
+const GAP = 2;
 const RADIUS = Math.round((CARD_W + GAP) * N / (2 * Math.PI));
 
 function Pill({ children }: { children: React.ReactNode }) {
@@ -73,9 +77,9 @@ function MetaRow({ icon, text }: { icon: React.ReactNode; text: string }) {
     <div className="flex items-center">
       <span className="flex items-center gap-2.5 flex-shrink-0">
         {icon}
-        <span style={{ fontSize: 13, fontWeight: 400, color: "#191D23" }}>{text}</span>
+        <span style={{ fontSize: 13, fontWeight: 400, color: "#000" }}>{text}</span>
       </span>
-      <span aria-hidden className="flex-1 ml-4" style={{ height: 1, background: "rgba(25, 29, 35, 0.12)" }} />
+      <span aria-hidden className="flex-1 ml-4" style={{ height: 1, background: "rgba(0, 0, 0, 0.1)" }} />
     </div>
   );
 }
@@ -90,7 +94,7 @@ function PortraitPhoto() {
 
   const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
 
-  const animate = useCallback(() => {
+  const animateLoop = useCallback(() => {
     tiltRef.current.rotateX = lerp(tiltRef.current.rotateX, targetRef.current.rotateX, 0.04);
     tiltRef.current.rotateY = lerp(tiltRef.current.rotateY, targetRef.current.rotateY, 0.04);
 
@@ -98,11 +102,11 @@ function PortraitPhoto() {
       ref.current.style.transform = `rotateX(${tiltRef.current.rotateX}deg) rotateY(${tiltRef.current.rotateY}deg)`;
     }
 
-    rafRef.current = requestAnimationFrame(animate);
+    rafRef.current = requestAnimationFrame(animateLoop);
   }, []);
 
   useEffect(() => {
-    rafRef.current = requestAnimationFrame(animate);
+    rafRef.current = requestAnimationFrame(animateLoop);
 
     const idle = () => {
       if (!isHoveringRef.current) {
@@ -120,7 +124,7 @@ function PortraitPhoto() {
       cancelAnimationFrame(rafRef.current);
       cancelAnimationFrame(idleRef.current);
     };
-  }, [animate]);
+  }, [animateLoop]);
 
   const onMove = (e: React.MouseEvent) => {
     if (!ref.current) return;
@@ -132,18 +136,17 @@ function PortraitPhoto() {
 
   return (
     <motion.div
-      className="hidden lg:block"
-      initial={{ opacity: 0, x: 40 }}
-      animate={{ opacity: 1, x: 0 }}
-      transition={{ ...spring, delay: 0.15 }}
+      className="hidden md:flex justify-center items-start"
+      initial={{ clipPath: "inset(100% 0 0 0)" }}
+      animate={{ clipPath: "inset(0% 0% 0% 0%)" }}
+      transition={{ duration: 1.2, ease: [0.76, 0, 0.24, 1], delay: 0.2 }}
     >
-      <div style={{ perspective: "600px" }} className="w-[230px]">
+      <div style={{ perspective: "600px" }} className="w-full max-w-[340px]">
         <div
           ref={ref}
-          className="w-full aspect-[2/3] rounded-lg overflow-hidden shadow-xl"
+          className="w-full aspect-[3/4] overflow-hidden shadow-2xl relative"
           style={{
             transformStyle: "preserve-3d",
-            transition: "transform 0.8s cubic-bezier(0.25, 0.1, 0.25, 1)",
           }}
           onMouseMove={onMove}
           onMouseEnter={() => { isHoveringRef.current = true; }}
@@ -158,7 +161,7 @@ function PortraitPhoto() {
             alt="Dario Tonini"
             fill
             className="object-cover pointer-events-none"
-            sizes="230px"
+            sizes="340px"
             quality={85}
             priority
           />
@@ -188,13 +191,14 @@ export default function AboutPage() {
   }, []);
 
   return (
-    <section className="pt-28 md:pt-36 pb-0 bg-white text-[#191D23] overflow-hidden min-h-screen">
-      {/* BIO + PORTRAIT — two-column layout */}
-      <div className="px-5 md:px-10">
+    <section className="relative min-h-screen overflow-hidden bg-white text-[#000]">
+      {/* TOP — Bio + Portrait Grid */}
+      <div className="relative z-10 pt-28 md:pt-36 px-5 md:px-10">
         <div className="max-w-[1280px] mx-auto">
-          <div className="flex items-start justify-between gap-12 lg:gap-20">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16 items-start">
+            {/* Left column — Bio */}
             <motion.div
-              className="max-w-[600px] flex flex-col gap-8 md:gap-10"
+              className="flex flex-col gap-8 md:gap-10 max-w-[560px]"
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={spring}
@@ -204,7 +208,7 @@ export default function AboutPage() {
               </div>
 
               <div>
-                <p className="text-sm md:text-lg font-normal leading-snug md:leading-tight tracking-tight text-[#1A1A1A] text-justify">
+                <p className="text-sm md:text-lg font-normal leading-snug md:leading-tight tracking-tight text-[#000] text-justify">
                   {t("about.heading")}
                 </p>
                 <p className="text-sm md:text-lg font-light leading-snug md:leading-tight tracking-tight text-[#9CA3AF] mt-1 md:mt-1.5 text-justify">
@@ -225,44 +229,52 @@ export default function AboutPage() {
               </div>
             </motion.div>
 
+            {/* Right column — Portrait */}
             <PortraitPhoto />
           </div>
         </div>
       </div>
 
-      {/* 3D CYLINDRICAL CAROUSEL — tilted, auto-rotating */}
+      {/* BOTTOM — 3D Cylindrical Carousel (Clou Architects style) */}
       <motion.div
-        className="relative mt-12 md:mt-20"
+        className="absolute bottom-[-12%] right-[-12%] pointer-events-none"
         style={{
-          height: "clamp(320px, 42vw, 520px)",
+          width: "120vw",
+          height: "55vh",
           perspective: "1200px",
-          perspectiveOrigin: "50% 40%",
+          perspectiveOrigin: "40% 50%",
         }}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ duration: 1.2, delay: 0.3 }}
+        transition={{ duration: 1.5, delay: 0.6 }}
       >
         <div
           style={{
             position: "absolute",
-            left: "55%",
+            left: "45%",
             top: "50%",
-            transform: "translate(-50%, -50%) rotateX(-18deg) rotateZ(-6deg)",
+            transform:
+              "translate(-50%, -50%) rotateX(-14deg) rotateY(28deg) rotateZ(-4deg)",
             transformStyle: "preserve-3d",
           }}
         >
-          <div
+          <motion.div
             style={{
               width: CARD_W,
               height: CARD_H,
               transformStyle: "preserve-3d",
-              animation: "carousel-spin 50s linear infinite",
+            }}
+            animate={{ rotateY: 360 }}
+            transition={{
+              duration: 50,
+              ease: "linear",
+              repeat: Infinity,
             }}
           >
             {CAROUSEL_IMAGES.map((src, i) => (
               <div
                 key={src + i}
-                className="absolute rounded-lg overflow-hidden shadow-lg"
+                className="absolute overflow-hidden"
                 style={{
                   width: CARD_W,
                   height: CARD_H,
@@ -270,6 +282,8 @@ export default function AboutPage() {
                   left: 0,
                   transform: `rotateY(${i * (360 / N)}deg) translateZ(${RADIUS}px)`,
                   backfaceVisibility: "hidden",
+                  transformStyle: "preserve-3d",
+                  boxShadow: "0 2px 16px rgba(0,0,0,0.08)",
                 }}
               >
                 <Image
@@ -277,12 +291,12 @@ export default function AboutPage() {
                   alt=""
                   fill
                   className="object-cover"
-                  sizes="220px"
+                  sizes="180px"
                   quality={75}
                 />
               </div>
             ))}
-          </div>
+          </motion.div>
         </div>
       </motion.div>
     </section>
