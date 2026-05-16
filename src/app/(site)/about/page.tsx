@@ -162,6 +162,13 @@ export default function AboutPage() {
   const [time, setTime] = useState("");
 
   useEffect(() => {
+    CAROUSEL_IMAGES.forEach((src) => {
+      const img = new window.Image();
+      img.src = src;
+    });
+  }, []);
+
+  useEffect(() => {
     const format = () => {
       const d = new Date();
       let hh = d.getHours();
@@ -233,7 +240,7 @@ export default function AboutPage() {
         }}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ duration: 1.5, delay: 0.6 }}
+        transition={{ duration: 0.8, delay: 0.2 }}
       >
         <Link
           href="/work"
