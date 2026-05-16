@@ -39,8 +39,8 @@ export default function Button({
     href.startsWith("http");
 
   const sizes: Record<Size, string> = {
-    sm: "text-[11px] md:text-[13px] px-4 py-1.5 md:px-6 md:py-2",
-    md: "text-sm md:text-base px-6 py-2 md:px-8 md:py-2.5",
+    sm: "text-[11px] md:text-[13px] px-3.5 py-1.5 md:px-5 md:py-2",
+    md: "text-sm md:text-base px-5 py-2 md:px-6 md:py-2.5",
   };
 
   // Arrow sits closer to the button edge than the padding so there is
