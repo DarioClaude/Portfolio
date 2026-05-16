@@ -49,7 +49,7 @@ export default function ProjectCard({ project, index }: Props) {
           )}
 
           <div className="absolute inset-x-0 bottom-0 z-20 flex items-center px-3 py-2.5 md:px-4 md:py-3">
-            <span className="relative inline-flex items-center justify-center font-sans font-normal tracking-normal text-[9px] md:text-[11px] px-2.5 py-1 md:px-3.5 md:py-1.5 rounded overflow-hidden bg-[#1A1A1A] text-white shadow-sm transition-all duration-500 ease-out hover:shadow-lg group-hover:bg-[#0000ff]">
+            <span className="relative inline-flex items-center justify-center font-sans font-normal tracking-normal text-[9px] md:text-[11px] px-2.5 py-1 md:px-3.5 md:py-1.5 rounded-md overflow-hidden bg-white/15 backdrop-blur-md border border-white/25 text-white shadow-[0_4px_12px_rgba(0,0,0,0.15)] transition-all duration-500 ease-out group-hover:bg-white/25 group-hover:border-white/40 group-hover:shadow-[0_4px_16px_rgba(0,0,0,0.2)]">
               <span className="inline-block transition-transform duration-500 ease-out group-hover:-translate-x-2">
                 {t(project.titleKey)}
               </span>
