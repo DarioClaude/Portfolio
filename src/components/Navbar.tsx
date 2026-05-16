@@ -44,7 +44,7 @@ export default function Navbar() {
                 <span
                   className="text-sm md:text-base transition-colors"
                   style={{
-                    fontWeight: isActive ? 600 : 400,
+                    fontWeight: 400,
                     color: isActive ? "#0000ff" : "#6B7280",
                   }}
                 >

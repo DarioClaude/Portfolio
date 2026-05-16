@@ -251,14 +251,10 @@ export default function AboutPage() {
 
       {/* 3D Cylindrical Carousel — CLOU Architects style */}
       <motion.div
-        className="hidden lg:block fixed pointer-events-none z-0"
+        className="hidden lg:block fixed inset-0 pointer-events-none z-0"
         style={{
-          width: 900,
-          height: 480,
-          bottom: -40,
-          right: -80,
           perspective: "1200px",
-          perspectiveOrigin: "80% 45%",
+          perspectiveOrigin: "85% 80%",
         }}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -267,10 +263,10 @@ export default function AboutPage() {
         <div
           style={{
             position: "absolute",
-            left: "72%",
-            top: "52%",
+            right: -50,
+            bottom: -70,
             transform:
-              "translate(-50%, -50%) rotateX(-2.5deg) rotateY(22deg) rotateZ(-1deg)",
+              "rotateX(-2.5deg) rotateY(22deg) rotateZ(-1deg)",
             transformStyle: "preserve-3d",
           }}
         >

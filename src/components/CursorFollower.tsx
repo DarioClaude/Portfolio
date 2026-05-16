@@ -74,8 +74,8 @@ export default function CursorFollower() {
         className="rounded-full bg-white"
         style={{ mixBlendMode: "difference" }}
         animate={{
-          width: isPrecise ? 24 : isHovering ? 60 : 14,
-          height: isPrecise ? 24 : isHovering ? 60 : 14,
+          width: isPrecise ? 20 : isHovering ? 50 : 12,
+          height: isPrecise ? 20 : isHovering ? 50 : 12,
           opacity: isVisible ? 1 : 0,
         }}
         transition={{ type: "spring", stiffness: 300, damping: 25 }}
