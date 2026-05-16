@@ -279,6 +279,7 @@ export default function AboutPage() {
                     fill
                     className="object-cover"
                     unoptimized
+                    loading="eager"
                   />
                 </div>
               ))}
