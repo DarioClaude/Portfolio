@@ -49,13 +49,13 @@ export default function ProjectCard({ project, index }: Props) {
           )}
 
           <div className="absolute inset-x-0 bottom-0 z-20 flex items-center px-3 py-2.5 md:px-4 md:py-3">
-            <span className="relative inline-flex items-center justify-center font-sans font-normal tracking-normal text-[9px] md:text-[11px] min-w-[72px] md:min-w-[88px] px-4 py-1 md:px-5 md:py-1.5 rounded-md overflow-hidden bg-white/15 backdrop-blur-md border border-white/25 text-white shadow-[0_2px_8px_rgba(0,0,0,0.25),0_4px_16px_rgba(0,0,0,0.15)] transition-all duration-500 ease-out group-hover:bg-[#0000ff]/80 group-hover:border-[#0000ff]/50 group-hover:shadow-[0_4px_20px_rgba(0,0,255,0.3),0_2px_8px_rgba(0,0,0,0.2)]">
-              <span className="inline-block transition-transform duration-500 ease-out group-hover:-translate-x-2.5">
+            <span className="relative inline-flex items-center justify-center font-sans font-normal tracking-normal text-[9px] md:text-[11px] min-w-[100px] md:min-w-[120px] px-5 py-1 md:px-6 md:py-1.5 rounded-md overflow-hidden bg-white/15 backdrop-blur-md border border-white/25 text-white shadow-[0_2px_8px_rgba(0,0,0,0.25),0_4px_16px_rgba(0,0,0,0.15)] transition-all duration-500 ease-out group-hover:bg-[#0000ff]/80 group-hover:border-[#0000ff]/50 group-hover:shadow-[0_4px_20px_rgba(0,0,255,0.3),0_2px_8px_rgba(0,0,0,0.2)]">
+              <span className="inline-block transition-transform duration-500 ease-out group-hover:-translate-x-3">
                 {t(project.titleKey)}
               </span>
               <span
                 aria-hidden
-                className="pointer-events-none absolute right-3 md:right-4 opacity-0 translate-x-6 transition-all duration-500 ease-out group-hover:opacity-100 group-hover:translate-x-0 text-[9px] md:text-[11px]"
+                className="pointer-events-none absolute right-4 md:right-5 opacity-0 translate-x-6 transition-all duration-500 ease-out group-hover:opacity-100 group-hover:translate-x-0 text-[9px] md:text-[11px]"
               >
                 →
               </span>
