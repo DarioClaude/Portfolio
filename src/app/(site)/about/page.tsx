@@ -18,10 +18,7 @@ const CAROUSEL_IMAGES = Array.from({ length: 26 }, (_, i) =>
 const N = CAROUSEL_IMAGES.length;
 const CARD_W = 196;
 const CARD_H = 147;
-const SLICES = 4;
-const SLICE_W = CARD_W / SLICES;
-const TOTAL_PANELS = N * SLICES;
-const RADIUS = Math.round((SLICE_W * TOTAL_PANELS) / (2 * Math.PI));
+const RADIUS = Math.round((CARD_W * N) / (2 * Math.PI));
 
 function Pill({ children }: { children: React.ReactNode }) {
   return (
@@ -238,7 +235,14 @@ export default function AboutPage() {
         animate={{ opacity: 1 }}
         transition={{ duration: 1.5, delay: 0.6 }}
       >
-        <Link href="/work" className="absolute inset-0">
+        <Link
+          href="/work"
+          className="absolute inset-0"
+          style={{
+            maskImage: "linear-gradient(to left, black 55%, transparent 85%)",
+            WebkitMaskImage: "linear-gradient(to left, black 55%, transparent 85%)",
+          }}
+        >
           <div
             style={{
               position: "absolute",
@@ -251,7 +255,7 @@ export default function AboutPage() {
           >
             <motion.div
               style={{
-                width: SLICE_W,
+                width: CARD_W,
                 height: CARD_H,
                 transformStyle: "preserve-3d",
               }}
@@ -262,28 +266,27 @@ export default function AboutPage() {
                 repeat: Infinity,
               }}
             >
-              {CAROUSEL_IMAGES.flatMap((src, i) =>
-                Array.from({ length: SLICES }, (_, j) => {
-                  const panelIndex = i * SLICES + j;
-                  return (
-                    <div
-                      key={`${i}-${j}`}
-                      className="absolute"
-                      style={{
-                        width: SLICE_W + 1,
-                        height: CARD_H,
-                        top: 0,
-                        left: 0,
-                        transform: `rotateY(${panelIndex * (360 / TOTAL_PANELS)}deg) translateZ(${RADIUS}px)`,
-                        backgroundImage: `url(${src})`,
-                        backgroundSize: `${CARD_W}px ${CARD_H}px`,
-                        backgroundPosition: `${-j * SLICE_W}px 0`,
-                        willChange: "transform",
-                      }}
-                    />
-                  );
-                })
-              )}
+              {CAROUSEL_IMAGES.map((src, i) => (
+                <div
+                  key={src + i}
+                  className="absolute overflow-hidden"
+                  style={{
+                    width: CARD_W,
+                    height: CARD_H,
+                    top: 0,
+                    left: 0,
+                    transform: `rotateY(${i * (360 / N)}deg) translateZ(${RADIUS}px)`,
+                    boxShadow: "0 2px 12px rgba(0,0,0,0.06)",
+                  }}
+                >
+                  <img
+                    src={src}
+                    alt=""
+                    loading="eager"
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+              ))}
             </motion.div>
           </div>
         </Link>
