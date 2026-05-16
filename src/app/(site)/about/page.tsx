@@ -204,7 +204,7 @@ export default function AboutPage() {
   return (
     <section className="relative min-h-screen overflow-hidden bg-white text-[#000]">
       {/* TOP — Bio + Portrait */}
-      <div className="relative z-10 pt-24 md:pt-30 px-5 md:px-10">
+      <div className="relative z-20 pt-24 md:pt-30 px-5 md:px-10" style={{ isolation: "isolate" }}>
         <div className="max-w-[1280px] mx-auto">
           <div className="flex items-start gap-10 md:gap-14">
             {/* Left column — Bio */}
@@ -251,12 +251,12 @@ export default function AboutPage() {
 
       {/* 3D Cylindrical Carousel — CLOU Architects style */}
       <motion.div
-        className="absolute pointer-events-none"
+        className="hidden lg:block fixed pointer-events-none z-0"
         style={{
           width: 900,
-          height: 500,
-          bottom: -20,
-          right: -60,
+          height: 480,
+          bottom: -40,
+          right: -80,
           perspective: "1200px",
           perspectiveOrigin: "80% 45%",
         }}
@@ -268,9 +268,9 @@ export default function AboutPage() {
           style={{
             position: "absolute",
             left: "72%",
-            top: "55%",
+            top: "52%",
             transform:
-              "translate(-50%, -50%) rotateX(-1.5deg) rotateY(22deg) rotateZ(-1deg)",
+              "translate(-50%, -50%) rotateX(-2.5deg) rotateY(22deg) rotateZ(-1deg)",
             transformStyle: "preserve-3d",
           }}
         >
