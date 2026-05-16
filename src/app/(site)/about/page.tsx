@@ -29,8 +29,8 @@ const CAROUSEL_IMAGES = [
 ];
 
 const N = CAROUSEL_IMAGES.length;
-const CARD_W = 180;
-const CARD_H = 240;
+const CARD_W = 140;
+const CARD_H = 185;
 const GAP = 2;
 const RADIUS = Math.round((CARD_W + GAP) * N / (2 * Math.PI));
 
@@ -136,15 +136,15 @@ function PortraitPhoto() {
 
   return (
     <motion.div
-      className="hidden md:flex justify-center items-start"
+      className="hidden md:block"
       initial={{ clipPath: "inset(100% 0 0 0)" }}
       animate={{ clipPath: "inset(0% 0% 0% 0%)" }}
       transition={{ duration: 1.2, ease: [0.76, 0, 0.24, 1], delay: 0.2 }}
     >
-      <div style={{ perspective: "600px" }} className="w-full max-w-[340px]">
+      <div style={{ perspective: "600px" }} className="w-[180px]">
         <div
           ref={ref}
-          className="w-full aspect-[3/4] overflow-hidden shadow-2xl relative"
+          className="w-full aspect-[2/3] overflow-hidden shadow-xl relative"
           style={{
             transformStyle: "preserve-3d",
           }}
@@ -161,7 +161,7 @@ function PortraitPhoto() {
             alt="Dario Tonini"
             fill
             className="object-cover pointer-events-none"
-            sizes="340px"
+            sizes="180px"
             quality={85}
             priority
           />
@@ -192,10 +192,10 @@ export default function AboutPage() {
 
   return (
     <section className="relative min-h-screen overflow-hidden bg-white text-[#000]">
-      {/* TOP — Bio + Portrait Grid */}
+      {/* TOP — Bio + Portrait */}
       <div className="relative z-10 pt-28 md:pt-36 px-5 md:px-10">
         <div className="max-w-[1280px] mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16 items-start">
+          <div className="flex items-start gap-10 md:gap-14">
             {/* Left column — Bio */}
             <motion.div
               className="flex flex-col gap-8 md:gap-10 max-w-[560px]"
@@ -229,7 +229,7 @@ export default function AboutPage() {
               </div>
             </motion.div>
 
-            {/* Right column — Portrait */}
+            {/* Portrait — small, aligned to bio height */}
             <PortraitPhoto />
           </div>
         </div>
@@ -237,12 +237,14 @@ export default function AboutPage() {
 
       {/* BOTTOM — 3D Cylindrical Carousel (Clou Architects style) */}
       <motion.div
-        className="absolute bottom-[-12%] right-[-12%] pointer-events-none"
+        className="absolute pointer-events-none"
         style={{
-          width: "120vw",
-          height: "55vh",
-          perspective: "1200px",
-          perspectiveOrigin: "40% 50%",
+          bottom: "-8%",
+          right: "-18%",
+          width: "110vw",
+          height: "48vh",
+          perspective: "900px",
+          perspectiveOrigin: "30% 40%",
         }}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -251,10 +253,10 @@ export default function AboutPage() {
         <div
           style={{
             position: "absolute",
-            left: "45%",
+            left: "50%",
             top: "50%",
             transform:
-              "translate(-50%, -50%) rotateX(-14deg) rotateY(28deg) rotateZ(-4deg)",
+              "translate(-50%, -50%) rotateX(-22deg) rotateY(34deg) rotateZ(-8deg)",
             transformStyle: "preserve-3d",
           }}
         >
@@ -281,9 +283,8 @@ export default function AboutPage() {
                   top: 0,
                   left: 0,
                   transform: `rotateY(${i * (360 / N)}deg) translateZ(${RADIUS}px)`,
-                  backfaceVisibility: "hidden",
                   transformStyle: "preserve-3d",
-                  boxShadow: "0 2px 16px rgba(0,0,0,0.08)",
+                  boxShadow: "0 2px 12px rgba(0,0,0,0.06)",
                 }}
               >
                 <Image
@@ -291,7 +292,7 @@ export default function AboutPage() {
                   alt=""
                   fill
                   className="object-cover"
-                  sizes="180px"
+                  sizes="140px"
                   quality={75}
                 />
               </div>
