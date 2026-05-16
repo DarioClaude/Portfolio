@@ -31,11 +31,17 @@ const CAROUSEL_IMAGES = [
   "/images/gallery/para-bellum/3.jpg",
   "/images/gallery/cirro/6.jpg",
   "/images/gallery/marlay/5.jpg",
+  "/images/gallery/garden/7.jpg",
+  "/images/gallery/kora/2.jpg",
+  "/images/gallery/ship-studio/7.jpg",
+  "/images/gallery/studio-17/6.jpg",
+  "/images/gallery/volumaker/7.jpg",
+  "/images/gallery/para-bellum/5.jpg",
 ];
 
 const N = CAROUSEL_IMAGES.length;
 const CARD_W = 130;
-const CARD_H = 170;
+const CARD_H = 100;
 const GAP = 2;
 const RADIUS = Math.round((CARD_W + GAP) * N / (2 * Math.PI));
 
@@ -262,7 +268,7 @@ export default function AboutPage() {
             left: "72%",
             top: "55%",
             transform:
-              "translate(-50%, -50%) rotateX(-5deg) rotateY(22deg) rotateZ(-3deg)",
+              "translate(-50%, -50%) rotateX(-8deg) rotateY(22deg) rotateZ(-3deg)",
             transformStyle: "preserve-3d",
           }}
         >
