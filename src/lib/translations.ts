@@ -84,6 +84,15 @@ export const translations: Record<Lang, Record<string, string>> = {
     "aria.instagram": "Instagram",
     "aria.linkedin": "LinkedIn",
 
+    // Project titles
+    "project.football.title": "Football",
+    "project.travel.title": "Voyage",
+    "project.rugby.title": "Rugby",
+    "project.tourdefrance.title": "Tour de France",
+    "project.running.title": "Course",
+    "project.otherssports.title": "Autres Sports",
+    "project.artisanat.title": "Artisanat",
+
     // Project descriptions
     "project.football.desc": "Photographie sportive capturant l'intensité et la passion du football.",
     "project.travel.desc": "Reportage de voyage à travers le monde, des paysages aux rencontres.",
@@ -91,6 +100,7 @@ export const translations: Record<Lang, Record<string, string>> = {
     "project.tourdefrance.desc": "Le Tour de France immortalisé à travers l'effort et l'asphalte.",
     "project.running.desc": "L'athlétisme en mouvement — sprint, fond et courses de rue.",
     "project.otherssports.desc": "Une sélection éclectique de sports variés, du basket au surf.",
+    "project.artisanat.desc": "L'artisanat sous un regard photographique — matières, gestes et savoir-faire.",
   },
 
   en: {
@@ -176,6 +186,15 @@ export const translations: Record<Lang, Record<string, string>> = {
     "aria.instagram": "Instagram",
     "aria.linkedin": "LinkedIn",
 
+    // Project titles
+    "project.football.title": "Football",
+    "project.travel.title": "Travel",
+    "project.rugby.title": "Rugby",
+    "project.tourdefrance.title": "Tour de France",
+    "project.running.title": "Running",
+    "project.otherssports.title": "Others Sports",
+    "project.artisanat.title": "Craftsmanship",
+
     // Project descriptions
     "project.football.desc": "Sports photography capturing the intensity and passion of football.",
     "project.travel.desc": "Travel reportage across the world — landscapes and encounters.",
@@ -183,6 +202,7 @@ export const translations: Record<Lang, Record<string, string>> = {
     "project.tourdefrance.desc": "The Tour de France immortalized through effort and tarmac.",
     "project.running.desc": "Athletics in motion — sprints, distance, and street races.",
     "project.otherssports.desc": "An eclectic selection of various sports, from basketball to surfing.",
+    "project.artisanat.desc": "Craftsmanship through a photographic lens — materials, gestures and know-how.",
   },
 
   es: {
@@ -268,6 +288,15 @@ export const translations: Record<Lang, Record<string, string>> = {
     "aria.instagram": "Instagram",
     "aria.linkedin": "LinkedIn",
 
+    // Project titles
+    "project.football.title": "Fútbol",
+    "project.travel.title": "Viaje",
+    "project.rugby.title": "Rugby",
+    "project.tourdefrance.title": "Tour de Francia",
+    "project.running.title": "Running",
+    "project.otherssports.title": "Otros Deportes",
+    "project.artisanat.title": "Artesanía",
+
     // Project descriptions
     "project.football.desc": "Fotografía deportiva capturando la intensidad y pasión del fútbol.",
     "project.travel.desc": "Reportaje de viajes por el mundo — paisajes y encuentros.",
@@ -275,5 +304,6 @@ export const translations: Record<Lang, Record<string, string>> = {
     "project.tourdefrance.desc": "El Tour de Francia inmortalizado a través del esfuerzo y el asfalto.",
     "project.running.desc": "Atletismo en movimiento — sprints, fondo y carreras callejeras.",
     "project.otherssports.desc": "Una selección ecléctica de deportes variados, del baloncesto al surf.",
+    "project.artisanat.desc": "La artesanía bajo una mirada fotográfica — materiales, gestos y saber hacer.",
   },
 };

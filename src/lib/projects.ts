@@ -8,6 +8,7 @@ export interface Project {
   id: number;
   slug: string;
   title: string;
+  titleKey: string;
   imagePath: string;
   bg: string;
   accent: "white" | "black";
@@ -24,6 +25,7 @@ export const projects: Project[] = [
     id: 1,
     slug: "football",
     title: "Football",
+    titleKey: "project.football.title",
     imagePath: "/images/work-football.jpg",
     bg: "bg-neutral-800",
     accent: "white",
@@ -38,6 +40,7 @@ export const projects: Project[] = [
     id: 2,
     slug: "travel",
     title: "Travel",
+    titleKey: "project.travel.title",
     imagePath: "/images/work-travel.jpg",
     bg: "bg-neutral-700",
     accent: "white",
@@ -52,6 +55,7 @@ export const projects: Project[] = [
     id: 3,
     slug: "rugby",
     title: "Rugby",
+    titleKey: "project.rugby.title",
     imagePath: "/images/work-rugby.jpg",
     bg: "bg-neutral-800",
     accent: "white",
@@ -66,6 +70,7 @@ export const projects: Project[] = [
     id: 4,
     slug: "tour-de-france",
     title: "Tour de France",
+    titleKey: "project.tourdefrance.title",
     imagePath: "/images/work-tour de france.jpg",
     bg: "bg-neutral-700",
     accent: "white",
@@ -80,6 +85,7 @@ export const projects: Project[] = [
     id: 5,
     slug: "running",
     title: "Running",
+    titleKey: "project.running.title",
     imagePath: "/images/work-course.jpg",
     bg: "bg-neutral-800",
     accent: "white",
@@ -94,6 +100,7 @@ export const projects: Project[] = [
     id: 6,
     slug: "others-sports",
     title: "Others Sports",
+    titleKey: "project.otherssports.title",
     imagePath: "/images/work-others sports.jpg",
     bg: "bg-neutral-700",
     accent: "white",
@@ -104,10 +111,23 @@ export const projects: Project[] = [
     year: 2024,
     gallery: [],
   },
+  {
+    id: 7,
+    slug: "artisanat",
+    title: "Artisanat",
+    titleKey: "project.artisanat.title",
+    imagePath: "/images/gallery/volumaker/1.jpg",
+    bg: "bg-neutral-800",
+    accent: "white",
+    textColor: "text-white",
+    descriptionKey: "project.artisanat.desc",
+    category: "Artisanat",
+    client: "Dario Tonini",
+    year: 2024,
+    gallery: [],
+  },
 ];
 
-/** Carousel entries — original project names for the hero section.
- *  Slugs point to the actual sport-project pages so clicks resolve. */
 export const carouselProjects = [
   { slug: "football", title: "MARLAY", imagePath: "/images/photo1.jpg" },
   { slug: "travel", title: "GARDEN", imagePath: "/images/photo2.jpg" },

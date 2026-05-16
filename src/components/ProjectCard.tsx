@@ -5,6 +5,7 @@ import Image from "next/image";
 import { motion, useInView } from "framer-motion";
 import Link from "next/link";
 import type { Project } from "@/lib/projects";
+import { useTranslation } from "@/context/LanguageContext";
 
 interface Props {
   project: Project;
@@ -14,6 +15,7 @@ interface Props {
 export default function ProjectCard({ project, index }: Props) {
   const ref = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, { once: true, margin: "-80px" });
+  const { t } = useTranslation();
 
   return (
     <motion.div
@@ -46,19 +48,17 @@ export default function ProjectCard({ project, index }: Props) {
             <div className="w-full h-full bg-neutral-200 animate-pulse" />
           )}
 
-          {/* Soft gradient — just tall enough to lift the title and arrow */}
-          <div
-            aria-hidden
-            className="pointer-events-none absolute inset-x-0 bottom-0 h-14 md:h-16 z-10 bg-gradient-to-t from-white/90 via-white/40 to-transparent"
-          />
-
-          {/* Project info overlay — title (left) + arrow (right) */}
-          <div className="absolute inset-x-0 bottom-0 z-20 flex justify-between items-center px-3 py-2.5 md:px-4 md:py-3">
-            <span className="font-sans text-xs md:text-sm font-medium text-[#1a1a1a] tracking-tight">
-              {project.title}
-            </span>
-            <span className="text-[#1a1a1a] opacity-60 translate-x-1 transition-all duration-500 ease-out group-hover:opacity-100 group-hover:translate-x-0">
-              →
+          <div className="absolute inset-x-0 bottom-0 z-20 flex items-center px-3 py-2.5 md:px-4 md:py-3">
+            <span className="inline-flex items-center justify-center font-sans font-normal tracking-normal text-[11px] md:text-[13px] px-4 py-2 md:px-6 md:py-2.5 rounded overflow-hidden bg-[#1A1A1A] text-white shadow-sm transition-all duration-500 ease-out hover:shadow-lg group-hover:bg-[#0000ff]">
+              <span className="inline-block transition-transform duration-500 ease-out group-hover:-translate-x-3">
+                {t(project.titleKey)}
+              </span>
+              <span
+                aria-hidden
+                className="pointer-events-none absolute right-2 md:right-3 opacity-0 translate-x-6 transition-all duration-500 ease-out group-hover:opacity-100 group-hover:translate-x-0"
+              >
+                →
+              </span>
             </span>
           </div>
         </div>

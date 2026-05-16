@@ -60,9 +60,11 @@ export default function Navbar() {
 
         {/* Right: CTA — hidden on About page since it already links there */}
         {pathname !== "/about" && (
-          <Button href="/about" variant="dark" size="sm">
-            {t("nav.cta")}
-          </Button>
+          <span data-cursor-noinvert>
+            <Button href="/about" variant="dark" size="sm">
+              {t("nav.cta")}
+            </Button>
+          </span>
         )}
       </div>
     </motion.header>

@@ -73,10 +73,11 @@ export default function LanguageSelector() {
         className="flex items-center gap-2 px-3 py-1.5 rounded-full border border-[#E5E7EB] dark:border-[#262626] bg-white dark:bg-[#171717] hover:border-[#D1D5DB] dark:hover:border-[#3f3f46] transition-colors cursor-pointer"
         data-cursor-hover
         data-cursor-precise
+        data-cursor-noinvert
         aria-label={t("aria.language")}
       >
         <Flag code={lang} />
-        <span className="text-xs font-medium text-[#1A1A1A] dark:text-[#f5f5f5] leading-none">{currentLabel}</span>
+        <span className="text-xs font-medium text-[#1A1A1A] leading-none">{currentLabel}</span>
         <svg
           width="8"
           height="5"

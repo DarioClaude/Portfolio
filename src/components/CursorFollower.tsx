@@ -12,6 +12,7 @@ export default function CursorFollower() {
   const smoothY = useSpring(cursorY, springConfig);
   const [isHovering, setIsHovering] = useState(false);
   const [isHidden, setIsHidden] = useState(false);
+  const [noInvert, setNoInvert] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
   const rafRef = useRef<number>(0);
 
@@ -30,12 +31,12 @@ export default function CursorFollower() {
   useEffect(() => {
     const onMouseOver = (e: MouseEvent) => {
       const target = e.target as HTMLElement;
-      const interactive = target.closest(
-        "a, button, [data-cursor-hover]"
-      );
+      const interactive = target.closest("a, button, [data-cursor-hover]");
       const hidden = target.closest("[data-cursor-hide]");
+      const noinv = target.closest("[data-cursor-noinvert]");
       setIsHovering(!!interactive);
       setIsHidden(!!hidden);
+      setNoInvert(!!noinv);
     };
 
     const onLeave = () => setIsVisible(false);
@@ -62,7 +63,7 @@ export default function CursorFollower() {
   return (
     <div
       className="fixed top-0 left-0 z-[10000] pointer-events-none"
-      style={{ mixBlendMode: "difference" }}
+      style={{ mixBlendMode: noInvert ? "normal" : "difference" }}
     >
       <motion.div
         style={{
@@ -77,7 +78,7 @@ export default function CursorFollower() {
       >
         <motion.div
           className="rounded-full"
-          style={{ backgroundColor: "#fff" }}
+          style={{ backgroundColor: noInvert ? "#000" : "#fff" }}
           animate={{
             width: isHidden ? 0 : isHovering ? 18 : 10,
             height: isHidden ? 0 : isHovering ? 18 : 10,
