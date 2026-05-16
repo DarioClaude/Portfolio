@@ -10,34 +10,9 @@ import { useTranslation } from "@/context/LanguageContext";
 
 const spring = { type: "spring" as const, stiffness: 100, damping: 22 };
 
-const CAROUSEL_IMAGES = [
-  "/images/gallery/cirro/1.jpg",
-  "/images/gallery/garden/2.jpg",
-  "/images/gallery/kora/3.jpg",
-  "/images/gallery/marlay/4.jpg",
-  "/images/gallery/ship-studio/5.jpg",
-  "/images/gallery/studio-17/1.jpg",
-  "/images/gallery/studio-arct/2.jpg",
-  "/images/gallery/volumaker/3.jpg",
-  "/images/gallery/para-bellum/1.jpg",
-  "/images/gallery/cirro/4.jpg",
-  "/images/gallery/garden/5.jpg",
-  "/images/gallery/kora/6.jpg",
-  "/images/gallery/marlay/1.jpg",
-  "/images/gallery/ship-studio/3.jpg",
-  "/images/gallery/studio-17/4.jpg",
-  "/images/gallery/studio-arct/5.jpg",
-  "/images/gallery/volumaker/5.jpg",
-  "/images/gallery/para-bellum/3.jpg",
-  "/images/gallery/cirro/6.jpg",
-  "/images/gallery/marlay/5.jpg",
-  "/images/gallery/garden/7.jpg",
-  "/images/gallery/kora/2.jpg",
-  "/images/gallery/ship-studio/7.jpg",
-  "/images/gallery/studio-17/6.jpg",
-  "/images/gallery/volumaker/7.jpg",
-  "/images/gallery/para-bellum/5.jpg",
-];
+const CAROUSEL_IMAGES = Array.from({ length: 26 }, (_, i) =>
+  `/images/carousel/carousel-${String(i + 1).padStart(2, "0")}.jpg`
+);
 
 const N = CAROUSEL_IMAGES.length;
 const CARD_W = 152;
