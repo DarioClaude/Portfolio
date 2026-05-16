@@ -240,9 +240,9 @@ export default function AboutPage() {
             style={{
               position: "absolute",
               right: -80,
-              bottom: 100,
+              bottom: 30,
               transform:
-                "rotateX(-2.9deg) rotateY(22deg) rotateZ(1deg)",
+                "rotateX(-3.5deg) rotateY(22deg) rotateZ(1deg)",
               transformStyle: "preserve-3d",
             }}
           >
