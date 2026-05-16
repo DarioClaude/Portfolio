@@ -72,13 +72,6 @@ export default function CarouselCard({ slug, title, imagePath, cardW }: Props) {
               <span className="text-xs font-normal text-neutral-500">{title}</span>
             </div>
           )}
-          <div
-            className={`absolute inset-0 flex items-center justify-center bg-black/30 transition-opacity duration-300 ${
-              hovering ? "opacity-100" : "opacity-0"
-            }`}
-          >
-            <span className="text-white text-xs font-medium tracking-wide">See Project</span>
-          </div>
         </Link>
       </div>
     </div>

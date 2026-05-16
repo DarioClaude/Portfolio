@@ -60,24 +60,32 @@ export default function CursorFollower() {
   }
 
   return (
-    <motion.div
+    <div
       className="fixed top-0 left-0 z-[10000] pointer-events-none"
-      style={{
-        x: smoothX,
-        y: smoothY,
-        translateX: "-50%",
-        translateY: "-50%",
-      }}
+      style={{ mixBlendMode: "difference" }}
     >
       <motion.div
-        className="rounded-full bg-white mix-blend-difference"
-        animate={{
-          width: isHidden ? 0 : isHovering ? 18 : 10,
-          height: isHidden ? 0 : isHovering ? 18 : 10,
-          opacity: isVisible && !isHidden ? 1 : 0,
+        style={{
+          position: "fixed",
+          top: 0,
+          left: 0,
+          x: smoothX,
+          y: smoothY,
+          translateX: "-50%",
+          translateY: "-50%",
         }}
-        transition={{ type: "spring", stiffness: 300, damping: 25 }}
-      />
-    </motion.div>
+      >
+        <motion.div
+          className="rounded-full"
+          style={{ backgroundColor: "#fff" }}
+          animate={{
+            width: isHidden ? 0 : isHovering ? 18 : 10,
+            height: isHidden ? 0 : isHovering ? 18 : 10,
+            opacity: isVisible && !isHidden ? 1 : 0,
+          }}
+          transition={{ type: "spring", stiffness: 300, damping: 25 }}
+        />
+      </motion.div>
+    </div>
   );
 }
