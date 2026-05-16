@@ -268,6 +268,7 @@ export default function AboutPage() {
                     height: CARD_H,
                     top: 0,
                     left: 0,
+                    borderRadius: 6,
                     transform: `rotateY(${i * (360 / N)}deg) translateZ(${RADIUS}px)`,
                     transformStyle: "preserve-3d",
                     boxShadow: "0 2px 12px rgba(0,0,0,0.06)",
