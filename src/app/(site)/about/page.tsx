@@ -40,8 +40,8 @@ const CAROUSEL_IMAGES = [
 ];
 
 const N = CAROUSEL_IMAGES.length;
-const CARD_W = 160;
-const CARD_H = 120;
+const CARD_W = 145;
+const CARD_H = 110;
 const GAP = 2;
 const RADIUS = Math.round((CARD_W + GAP) * N / (2 * Math.PI));
 
@@ -264,9 +264,9 @@ export default function AboutPage() {
           style={{
             position: "absolute",
             right: -80,
-            bottom: 60,
+            bottom: 40,
             transform:
-              "rotateX(0deg) rotateY(22deg) rotateZ(0deg)",
+              "rotateX(-2.5deg) rotateY(22deg) rotateZ(-1deg)",
             transformStyle: "preserve-3d",
           }}
         >
