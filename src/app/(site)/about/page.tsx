@@ -235,6 +235,17 @@ export default function AboutPage() {
         animate={{ opacity: 1 }}
         transition={{ duration: 1.5, delay: 0.6 }}
       >
+        {/* Gradient mask to smooth the left edge transition */}
+        <div
+          className="absolute z-10 pointer-events-none"
+          style={{
+            right: "38%",
+            bottom: 0,
+            width: "25%",
+            height: "60%",
+            background: "linear-gradient(to right, white 0%, white 30%, transparent 100%)",
+          }}
+        />
         <Link href="/work" className="absolute inset-0">
           <div
             style={{
@@ -268,9 +279,7 @@ export default function AboutPage() {
                     height: CARD_H,
                     top: 0,
                     left: 0,
-                    background: "#1a1a1a",
                     transform: `rotateY(${i * (360 / N)}deg) translateZ(${RADIUS}px)`,
-                    backfaceVisibility: "visible",
                     boxShadow: "0 2px 12px rgba(0,0,0,0.06)",
                   }}
                 >
