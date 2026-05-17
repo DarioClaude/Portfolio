@@ -1,25 +1,21 @@
 "use client";
 
-import { useEffect, useState, useRef, useCallback } from "react";
+import { useEffect, useState, useRef, useCallback, Suspense } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import dynamic from "next/dynamic";
 import { motion } from "framer-motion";
 import Button from "@/components/ui/Button";
 import AvatarTilt from "@/components/AvatarTilt";
 import SocialIcons from "@/components/SocialIcons";
 import { useTranslation } from "@/context/LanguageContext";
 
+const CylinderCarousel = dynamic(() => import("@/components/CylinderCarousel"), {
+  ssr: false,
+});
+
 const spring = { type: "spring" as const, stiffness: 100, damping: 22 };
 
-const CAROUSEL_IMAGES = Array.from({ length: 26 }, (_, i) =>
-  `/images/carousel/carousel-${String(i + 1).padStart(2, "0")}.jpg`
-);
-
-const N = CAROUSEL_IMAGES.length;
-const CARD_W = 176;
-const CARD_H = 132;
-const GAP = 11;
-const RADIUS = Math.round(((CARD_W + GAP) * N) / (2 * Math.PI));
 
 function Pill({ children }: { children: React.ReactNode }) {
   return (
@@ -225,65 +221,14 @@ export default function AboutPage() {
         </div>
       </div>
 
-      {/* 3D Cylindrical Carousel — CLOU Architects style */}
-      <motion.div
-        className="hidden lg:block fixed inset-0 z-0"
-        style={{
-          perspective: "1200px",
-          perspectiveOrigin: "85% 80%",
-        }}
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 1.5, delay: 0.6 }}
-      >
-        <Link
-          href="/work"
-          className="absolute inset-0"
-        >
-          <div
-            style={{
-              position: "absolute",
-              right: -80,
-              bottom: 30,
-              transform:
-                "rotateX(-3.5deg) rotateY(22deg) rotateZ(1deg)",
-              transformStyle: "preserve-3d",
-            }}
-          >
-            <div
-              style={{
-                width: CARD_W,
-                height: CARD_H,
-                transformStyle: "preserve-3d",
-                animation: "carousel-spin 110s linear infinite",
-              }}
-            >
-              {CAROUSEL_IMAGES.map((src, i) => (
-                <div
-                  key={i}
-                  className="absolute overflow-hidden"
-                  style={{
-                    width: CARD_W,
-                    height: CARD_H,
-                    top: 0,
-                    left: 0,
-                    borderRadius: 3,
-                    transform: `rotateY(${i * (360 / N)}deg) translateZ(${RADIUS}px)`,
-                    boxShadow: "0 2px 12px rgba(0,0,0,0.06)",
-                  }}
-                >
-                  <img
-                    src={src}
-                    alt=""
-                    loading="eager"
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-              ))}
-            </div>
-          </div>
+      {/* 3D Cylindrical Carousel — WebGL */}
+      <div className="hidden lg:block fixed inset-0 z-0 pointer-events-none">
+        <Link href="/work" className="absolute inset-0 pointer-events-auto">
+          <Suspense fallback={null}>
+            <CylinderCarousel />
+          </Suspense>
         </Link>
-      </motion.div>
+      </div>
     </section>
   );
 }

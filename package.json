@@ -11,10 +11,13 @@
   "dependencies": {
     "@fontsource-variable/montserrat": "^5.2.8",
     "@next/font": "^14.2.15",
+    "@react-three/drei": "^10.7.7",
+    "@react-three/fiber": "^9.6.1",
     "framer-motion": "^12.38.0",
     "next": "14.2.35",
     "react": "^18",
-    "react-dom": "^18"
+    "react-dom": "^18",
+    "three": "^0.184.0"
   },
   "devDependencies": {
     "@types/node": "^20",
