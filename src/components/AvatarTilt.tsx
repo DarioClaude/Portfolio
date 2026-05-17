@@ -24,7 +24,7 @@ export default function AvatarTilt({ showTooltip = false }: Props) {
   }, []);
 
   return (
-    <div className="relative inline-flex flex-col items-center">
+    <div className="relative w-fit">
       <AnimatePresence>
         {showTooltip && hovering && (
           <motion.div
