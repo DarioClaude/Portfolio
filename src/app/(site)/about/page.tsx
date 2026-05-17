@@ -18,7 +18,12 @@ const CAROUSEL_IMAGES = Array.from({ length: 26 }, (_, i) =>
 const N = CAROUSEL_IMAGES.length;
 const CARD_W = 196;
 const CARD_H = 147;
-const RADIUS = Math.round((CARD_W * N) / (2 * Math.PI));
+const GAP = 3;
+const SLICES = 4;
+const SLICE_W = CARD_W / SLICES;
+const OVERLAP = 4;
+const TOTAL_PANELS = N * SLICES;
+const RADIUS = Math.round(((SLICE_W + GAP) * TOTAL_PANELS) / (2 * Math.PI));
 
 function Pill({ children }: { children: React.ReactNode }) {
   return (
@@ -253,41 +258,48 @@ export default function AboutPage() {
               transformStyle: "preserve-3d",
             }}
           >
-            <motion.div
+            <div
               style={{
-                width: CARD_W,
+                width: SLICE_W,
                 height: CARD_H,
                 transformStyle: "preserve-3d",
-              }}
-              animate={{ rotateY: -360 }}
-              transition={{
-                duration: 110,
-                ease: "linear",
-                repeat: Infinity,
+                animation: "carousel-spin 110s linear infinite",
               }}
             >
-              {CAROUSEL_IMAGES.map((src, i) => (
-                <div
-                  key={src + i}
-                  className="absolute overflow-hidden"
-                  style={{
-                    width: CARD_W,
-                    height: CARD_H,
-                    top: 0,
-                    left: 0,
-                    transform: `rotateY(${i * (360 / N)}deg) translateZ(${RADIUS}px)`,
-                    boxShadow: "0 2px 12px rgba(0,0,0,0.06)",
-                  }}
-                >
-                  <img
-                    src={src}
-                    alt=""
-                    loading="eager"
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-              ))}
-            </motion.div>
+              {CAROUSEL_IMAGES.flatMap((src, i) =>
+                Array.from({ length: SLICES }, (_, j) => {
+                  const panelIndex = i * SLICES + j;
+                  return (
+                    <div
+                      key={`${i}-${j}`}
+                      className="absolute overflow-hidden"
+                      style={{
+                        width: SLICE_W + OVERLAP * 2,
+                        height: CARD_H,
+                        top: 0,
+                        left: -OVERLAP,
+                        transform: `rotateY(${panelIndex * (360 / TOTAL_PANELS)}deg) translateZ(${RADIUS}px)`,
+                      }}
+                    >
+                      <img
+                        src={src}
+                        alt=""
+                        loading="eager"
+                        decoding="async"
+                        style={{
+                          position: "absolute",
+                          width: CARD_W,
+                          height: CARD_H,
+                          left: -j * SLICE_W + OVERLAP,
+                          top: 0,
+                          objectFit: "cover",
+                        }}
+                      />
+                    </div>
+                  );
+                })
+              )}
+            </div>
           </div>
         </Link>
       </motion.div>
