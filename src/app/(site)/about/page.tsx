@@ -16,9 +16,9 @@ const CAROUSEL_IMAGES = Array.from({ length: 26 }, (_, i) =>
 );
 
 const N = CAROUSEL_IMAGES.length;
-const CARD_W = 196;
-const CARD_H = 147;
-const GAP = 36;
+const CARD_W = 176;
+const CARD_H = 132;
+const GAP = 18;
 const RADIUS = Math.round(((CARD_W + GAP) * N) / (2 * Math.PI));
 
 function Pill({ children }: { children: React.ReactNode }) {
@@ -239,10 +239,6 @@ export default function AboutPage() {
         <Link
           href="/work"
           className="absolute inset-0"
-          style={{
-            maskImage: "linear-gradient(to left, black 55%, transparent 85%)",
-            WebkitMaskImage: "linear-gradient(to left, black 55%, transparent 85%)",
-          }}
         >
           <div
             style={{
@@ -276,6 +272,7 @@ export default function AboutPage() {
                     height: CARD_H,
                     top: 0,
                     left: 0,
+                    borderRadius: 3,
                     transform: `rotateY(${i * (360 / N)}deg) translateZ(${RADIUS}px)`,
                     boxShadow: "0 2px 12px rgba(0,0,0,0.06)",
                   }}
