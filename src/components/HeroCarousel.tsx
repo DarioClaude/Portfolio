@@ -14,15 +14,23 @@ const ANGLE_STEP = 360 / CARD_COUNT; // 60deg
 
 // Fluid dimensions — computed from container width for proportional scaling
 function getFluidDims(containerW: number) {
-  const t = Math.min(Math.max((containerW - 320) / 1480, 0), 1);
-  const cardW = Math.round(200 + t * 220);
+  if (containerW < 768) {
+    const t = Math.min(Math.max((containerW - 320) / 448, 0), 1);
+    const cardW = Math.round(150 + t * 50);
+    const cardH = Math.round(cardW / 1.5);
+    const radius = Math.round(170 + t * 50);
+    return { cardW, cardH, radius };
+  }
+  const t = Math.min(Math.max((containerW - 900) / 900, 0), 1);
+  const cardW = Math.round(340 + t * 80);
   const cardH = Math.round(cardW / 1.5);
-  const radius = Math.round(220 + t * 250);
+  const radius = Math.round(380 + t * 90);
   return { cardW, cardH, radius };
 }
 
 export default function HeroCarousel() {
   const [globalRotation, setGlobalRotation] = useState(0);
+  const [isMobile, setIsMobile] = useState(false);
   const [dims, setDims] = useState({ cardW: 380, cardH: 253, radius: 430 });
   const [isHoveringWheel, setIsHoveringWheel] = useState(false);
   const autoRotateRef = useRef(true);
@@ -33,6 +41,8 @@ export default function HeroCarousel() {
 
   useEffect(() => {
     const update = () => {
+      const mobile = window.innerWidth < 768;
+      setIsMobile(mobile);
       const containerW = sectionRef.current?.offsetWidth ?? window.innerWidth;
       setDims(getFluidDims(Math.min(containerW, 1800)));
     };
@@ -115,11 +125,11 @@ export default function HeroCarousel() {
       <div
         className="absolute left-1/2"
         style={{
-          top: "42%",
+          top: isMobile ? "45%" : "42%",
           transform: "translate(-50%, -50%)",
           width: dims.cardW,
           height: dims.cardH,
-          perspective: "1500px",
+          perspective: isMobile ? "1000px" : "1500px",
         }}
       >
         <div
@@ -167,26 +177,28 @@ export default function HeroCarousel() {
       {/* ===== FOOTER BIO — anchored within the container ===== */}
       <div
         className="absolute left-0 right-0 flex justify-between items-end pointer-events-none z-10"
-        style={{ bottom: "clamp(24px, 8vh, 140px)", padding: "0 clamp(20px, 3vw, 40px)" }}
+        style={{
+          bottom: isMobile ? "24px" : "clamp(40px, 12vh, 140px)",
+          padding: "0 clamp(20px, 3vw, 40px)",
+        }}
       >
         <motion.div
           className="pointer-events-auto"
-          style={{ maxWidth: "clamp(260px, 35vw, 520px)" }}
+          style={{ maxWidth: isMobile ? "260px" : "520px" }}
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.4 }}
         >
-          <p className="font-normal leading-snug tracking-tight text-[#1A1A1A] dark:text-[#f5f5f5] whitespace-pre-line" style={{ fontSize: "clamp(13px, 1.3vw, 18px)" }}>
+          <p className="text-sm md:text-lg font-normal leading-snug md:leading-tight tracking-tight text-[#1A1A1A] dark:text-[#f5f5f5] whitespace-pre-line">
             {renderBold(t("hero.bio"), "text-[#0000ff]")}
           </p>
-          <p className="font-light leading-snug tracking-tight text-[#9CA3AF] dark:text-[#71717a]" style={{ fontSize: "clamp(13px, 1.3vw, 18px)", marginTop: "clamp(4px, 0.3vw, 6px)" }}>
+          <p className="text-sm md:text-lg font-light leading-snug md:leading-tight tracking-tight text-[#9CA3AF] dark:text-[#71717a] mt-1 md:mt-1.5">
             {t("hero.sub")}
           </p>
         </motion.div>
 
         <motion.div
-          className="flex flex-col items-end pointer-events-auto"
-          style={{ gap: "clamp(4px, 0.5vw, 8px)" }}
+          className="flex flex-col items-end gap-1 md:gap-2 pointer-events-auto"
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.5 }}

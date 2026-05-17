@@ -1,7 +1,7 @@
 "use client";
 
-import { useRef, useMemo, useState } from "react";
-import { Canvas, useFrame, useLoader } from "@react-three/fiber";
+import { useRef, useMemo, useState, useEffect } from "react";
+import { Canvas, useFrame, useLoader, useThree } from "@react-three/fiber";
 import * as THREE from "three";
 
 const CAROUSEL_IMAGES = Array.from({ length: 26 }, (_, i) =>
@@ -57,9 +57,28 @@ function CardOnCylinder({
   return <mesh ref={mesh} geometry={geometry} material={material} />;
 }
 
+function ResponsiveCamera() {
+  const { camera, size } = useThree();
+  useEffect(() => {
+    const cam = camera as THREE.PerspectiveCamera;
+    if (size.width < 768) {
+      cam.position.set(0, 0, 8);
+      cam.fov = 35;
+    } else {
+      cam.position.set(0, 0, 5);
+      cam.fov = 35;
+    }
+    cam.updateProjectionMatrix();
+  }, [camera, size]);
+  return null;
+}
+
 function RotatingCylinder() {
   const groupRef = useRef<THREE.Group>(null);
   const textures = useLoader(THREE.TextureLoader, CAROUSEL_IMAGES);
+  const { size } = useThree();
+
+  const isMobile = size.width < 768;
 
   useFrame((_, delta) => {
     if (groupRef.current) {
@@ -71,7 +90,8 @@ function RotatingCylinder() {
     <group
       ref={groupRef}
       rotation={[-0.06, 0.38, 0.017]}
-      position={[2.8, -0.6, 0]}
+      position={isMobile ? [1.5, -0.3, 0] : [2.8, -0.6, 0]}
+      scale={isMobile ? 0.6 : 1}
     >
       {textures.map((tex, i) => (
         <CardOnCylinder key={i} texture={tex} index={i} />
@@ -95,6 +115,7 @@ export default function CylinderCarousel() {
         onCreated={() => setReady(true)}
         style={{ background: "transparent" }}
       >
+        <ResponsiveCamera />
         <RotatingCylinder />
       </Canvas>
     </div>

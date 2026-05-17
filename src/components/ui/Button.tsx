@@ -61,7 +61,7 @@ export default function Button({
 
   const base =
     "group font-sans relative inline-flex items-center justify-center " +
-    "font-normal tracking-normal rounded overflow-hidden " +
+    "font-normal tracking-normal rounded overflow-hidden whitespace-nowrap " +
     "transition-all duration-500 ease-out " +
     "active:shadow-inner active:scale-[0.97] active:translate-y-[1px]";
 
