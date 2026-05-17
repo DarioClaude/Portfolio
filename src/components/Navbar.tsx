@@ -25,9 +25,15 @@ export default function Navbar() {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6, delay: 0.1 }}
     >
-      <div className="max-w-[1800px] mx-auto flex items-center justify-between px-5 py-3 md:px-10 md:py-5">
-        {/* Left: Nav links — px matches hero bio so "Home" aligns with it */}
-        <nav className="flex items-center gap-3 md:gap-6">
+      <div
+        className="max-w-[1800px] mx-auto flex items-center justify-between"
+        style={{ padding: "clamp(12px, 1.5vw, 20px) clamp(20px, 3vw, 40px)" }}
+      >
+        {/* Left: Nav links */}
+        <nav
+          className="flex items-center"
+          style={{ gap: "clamp(12px, 2vw, 24px)" }}
+        >
           {navLinks.map((link) => {
             const isActive =
               link.href === "/"
@@ -42,9 +48,10 @@ export default function Navbar() {
                 className="relative group"
               >
                 <span
-                  className="text-sm md:text-base transition-colors"
+                  className="transition-colors"
                   style={{
                     fontWeight: 400,
+                    fontSize: "clamp(13px, 1.1vw, 16px)",
                     color: isActive ? "#0000ff" : "#6B7280",
                   }}
                 >

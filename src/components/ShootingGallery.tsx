@@ -46,10 +46,11 @@ export default function ShootingGallery({ images }: { images: GalleryImage[] }) 
 
   return (
     <div
-      className="max-w-5xl mx-auto px-6"
+      className="max-w-5xl mx-auto"
       style={{
         columnCount: 3,
-        columnGap: "1.25rem",
+        columnGap: "clamp(12px, 1.5vw, 20px)",
+        padding: "0 clamp(16px, 3vw, 24px)",
       }}
     >
       {images.map((image, i) => (

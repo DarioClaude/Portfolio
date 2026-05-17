@@ -13,21 +13,16 @@ const CARD_COUNT = 6;
 const ANGLE_STEP = 360 / CARD_COUNT; // 60deg
 
 // Fluid dimensions — computed from container width for proportional scaling
-function getFluidDims(containerW: number, isMobile: boolean) {
-  if (isMobile) return { cardW: 280, cardH: 187, radius: 300 };
-  // Scale between 1024px and 1800px containers
-  // At ~1200px (125% zoom on 1440): cards are ~380px
-  // At 1800px: cards are ~420px
-  const t = Math.min(Math.max((containerW - 900) / 900, 0), 1);
-  const cardW = Math.round(340 + t * 80); // 340 → 420
-  const cardH = Math.round(cardW / 1.5);  // 3:2 ratio preserved
-  const radius = Math.round(380 + t * 90); // 380 → 470
+function getFluidDims(containerW: number) {
+  const t = Math.min(Math.max((containerW - 320) / 1480, 0), 1);
+  const cardW = Math.round(200 + t * 220);
+  const cardH = Math.round(cardW / 1.5);
+  const radius = Math.round(220 + t * 250);
   return { cardW, cardH, radius };
 }
 
 export default function HeroCarousel() {
   const [globalRotation, setGlobalRotation] = useState(0);
-  const [isMobile, setIsMobile] = useState(false);
   const [dims, setDims] = useState({ cardW: 380, cardH: 253, radius: 430 });
   const [isHoveringWheel, setIsHoveringWheel] = useState(false);
   const autoRotateRef = useRef(true);
@@ -36,13 +31,10 @@ export default function HeroCarousel() {
   const sectionRef = useRef<HTMLElement>(null);
   const { t } = useTranslation();
 
-  // Responsive + fluid sizing based on container width
   useEffect(() => {
     const update = () => {
-      const mobile = window.innerWidth < 768;
-      setIsMobile(mobile);
       const containerW = sectionRef.current?.offsetWidth ?? window.innerWidth;
-      setDims(getFluidDims(Math.min(containerW, 1800), mobile));
+      setDims(getFluidDims(Math.min(containerW, 1800)));
     };
     update();
     window.addEventListener("resize", update);
@@ -52,16 +44,15 @@ export default function HeroCarousel() {
   // Auto-rotation — slow luxury feel
   useEffect(() => {
     let raf: number;
-    const speed = isMobile ? 0.015 : 0.02;
     const rotate = () => {
       if (autoRotateRef.current && !isHoveringWheel) {
-        setGlobalRotation((prev) => prev - speed);
+        setGlobalRotation((prev) => prev - 0.018);
       }
       raf = requestAnimationFrame(rotate);
     };
     raf = requestAnimationFrame(rotate);
     return () => cancelAnimationFrame(raf);
-  }, [isMobile, isHoveringWheel]);
+  }, [isHoveringWheel]);
 
   // Keyboard: Left/Right snap by 60deg
   const handleKeyDown = useCallback((e: KeyboardEvent) => {
@@ -99,7 +90,6 @@ export default function HeroCarousel() {
 
   // Mouse drag for desktop
   const handlePointerDown = useCallback((e: React.PointerEvent) => {
-    if (isMobile) return;
     autoRotateRef.current = false;
     dragStartX.current = e.clientX;
     dragStartRotation.current = globalRotation;
@@ -115,21 +105,21 @@ export default function HeroCarousel() {
     };
     window.addEventListener("pointermove", onMove);
     window.addEventListener("pointerup", onUp);
-  }, [isMobile, globalRotation]);
+  }, [globalRotation]);
 
   return (
     <section ref={sectionRef} className="relative w-full h-screen overflow-hidden">
-      {!isMobile && <ProjectCursorPill visible={isHoveringWheel} />}
+      <ProjectCursorPill visible={isHoveringWheel} />
 
       {/* ===== CAROUSEL — centered within the max-w container ===== */}
       <div
         className="absolute left-1/2"
         style={{
-          top: isMobile ? "50%" : "42%",
-          transform: isMobile ? "translate(-50%, -60%)" : "translate(-50%, -50%)",
+          top: "42%",
+          transform: "translate(-50%, -50%)",
           width: dims.cardW,
           height: dims.cardH,
-          perspective: isMobile ? "1000px" : "1500px",
+          perspective: "1500px",
         }}
       >
         <div
@@ -176,25 +166,27 @@ export default function HeroCarousel() {
 
       {/* ===== FOOTER BIO — anchored within the container ===== */}
       <div
-        className="absolute left-0 right-0 px-5 md:px-10 flex justify-between items-end pointer-events-none z-10"
-        style={isMobile ? { bottom: "24px" } : { bottom: "clamp(40px, 12vh, 140px)" }}
+        className="absolute left-0 right-0 flex justify-between items-end pointer-events-none z-10"
+        style={{ bottom: "clamp(24px, 8vh, 140px)", padding: "0 clamp(20px, 3vw, 40px)" }}
       >
         <motion.div
-          className="max-w-[300px] md:max-w-[520px] pointer-events-auto"
+          className="pointer-events-auto"
+          style={{ maxWidth: "clamp(260px, 35vw, 520px)" }}
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.4 }}
         >
-          <p className="text-sm md:text-lg font-normal leading-snug md:leading-tight tracking-tight text-[#1A1A1A] dark:text-[#f5f5f5] whitespace-pre-line">
+          <p className="font-normal leading-snug tracking-tight text-[#1A1A1A] dark:text-[#f5f5f5] whitespace-pre-line" style={{ fontSize: "clamp(13px, 1.3vw, 18px)" }}>
             {renderBold(t("hero.bio"), "text-[#0000ff]")}
           </p>
-          <p className="text-sm md:text-lg font-light leading-snug md:leading-tight tracking-tight text-[#9CA3AF] dark:text-[#71717a] mt-1 md:mt-1.5">
+          <p className="font-light leading-snug tracking-tight text-[#9CA3AF] dark:text-[#71717a]" style={{ fontSize: "clamp(13px, 1.3vw, 18px)", marginTop: "clamp(4px, 0.3vw, 6px)" }}>
             {t("hero.sub")}
           </p>
         </motion.div>
 
         <motion.div
-          className="flex flex-col items-end gap-1 md:gap-2 pointer-events-auto"
+          className="flex flex-col items-end pointer-events-auto"
+          style={{ gap: "clamp(4px, 0.5vw, 8px)" }}
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.5 }}

@@ -9,9 +9,9 @@ export const metadata = {
 export default function WorkPage() {
   return (
     <>
-      <section className="pt-24 md:pt-28 pb-12 md:pb-20">
-        {/* Title — Brutalist Swiss typography */}
-        <div className="px-5 md:px-10 mb-10 md:mb-16">
+      <section style={{ paddingTop: "clamp(96px, 10vw, 112px)", paddingBottom: "clamp(48px, 5vw, 80px)" }}>
+        {/* Title */}
+        <div style={{ padding: "0 clamp(20px, 3vw, 40px)", marginBottom: "clamp(40px, 5vw, 64px)" }}>
           <WorkTitle />
         </div>
 
@@ -21,8 +21,8 @@ export default function WorkPage() {
         </div>
       </section>
 
-      {/* Identity block — matches home page bottom-right section */}
-      <div className="px-5 md:px-10 pb-8 md:pb-12">
+      {/* Identity block */}
+      <div style={{ padding: "0 clamp(20px, 3vw, 40px) clamp(32px, 3vw, 48px)" }}>
         <WorkIdentity />
       </div>
     </>

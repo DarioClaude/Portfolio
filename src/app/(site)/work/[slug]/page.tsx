@@ -28,7 +28,7 @@ export default function ProjectDetailPage({ params }: Props) {
 
   return (
     <>
-      <section className="pt-28 md:pt-36 pb-20">
+      <section style={{ paddingTop: "clamp(112px, 12vw, 144px)", paddingBottom: "80px" }}>
         {/* Header: Title + Description + Metadata */}
         <ProjectDetailContent
           title={project.title}
@@ -40,7 +40,7 @@ export default function ProjectDetailPage({ params }: Props) {
 
         {/* Gallery — masonry 3-col */}
         {project.gallery.length > 0 && (
-          <div className="mt-14 md:mt-20">
+          <div style={{ marginTop: "clamp(56px, 6vw, 80px)" }}>
             <ShootingGallery images={project.gallery} />
           </div>
         )}

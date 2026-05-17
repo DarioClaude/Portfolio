@@ -12,7 +12,7 @@ export default function Footer() {
 
   return (
     <footer ref={ref} className="border-t border-[#E5E7EB] dark:border-[#262626]">
-      <div className="flex flex-col md:flex-row justify-between gap-12 p-10">
+      <div className="flex flex-col md:flex-row justify-between" style={{ gap: "clamp(24px, 4vw, 48px)", padding: "clamp(24px, 3vw, 40px)" }}>
         {/* Left: Bio */}
         <motion.div
           className="max-w-[450px]"

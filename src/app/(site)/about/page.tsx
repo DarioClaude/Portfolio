@@ -119,12 +119,11 @@ function PortraitPhoto() {
 
   return (
     <motion.div
-      className="hidden md:block"
       initial={{ clipPath: "inset(100% 0 0 0)" }}
       animate={{ clipPath: "inset(0% 0% 0% 0%)" }}
       transition={{ duration: 1.2, ease: [0.76, 0, 0.24, 1], delay: 0.2 }}
     >
-      <div style={{ perspective: "600px" }} className="w-[180px]">
+      <div style={{ perspective: "600px", width: "clamp(100px, 13vw, 180px)" }}>
         <div
           ref={ref}
           className="w-full aspect-[2/3] overflow-hidden rounded-md relative"
@@ -176,12 +175,13 @@ export default function AboutPage() {
   return (
     <section className="relative min-h-screen overflow-hidden bg-white text-[#000]">
       {/* TOP — Bio + Portrait */}
-      <div className="relative z-20 pt-24 md:pt-30 px-5 md:px-10" style={{ isolation: "isolate" }}>
+      <div className="relative z-20" style={{ paddingTop: "clamp(96px, 10vw, 120px)", paddingLeft: "clamp(20px, 3vw, 40px)", paddingRight: "clamp(20px, 3vw, 40px)", isolation: "isolate" }}>
         <div className="max-w-[1280px] mx-auto">
-          <div className="flex items-start gap-10 md:gap-14">
+          <div className="flex items-start" style={{ gap: "clamp(24px, 4vw, 56px)" }}>
             {/* Left column — Bio */}
             <motion.div
-              className="flex flex-col gap-8 md:gap-10 max-w-[560px]"
+              className="flex flex-col max-w-[560px]"
+              style={{ gap: "clamp(24px, 3vw, 40px)" }}
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={spring}
@@ -191,10 +191,10 @@ export default function AboutPage() {
               </div>
 
               <div>
-                <p className="text-sm md:text-lg font-normal leading-snug md:leading-tight tracking-tight text-[#000] text-justify">
+                <p className="font-normal leading-snug tracking-tight text-[#000] text-justify" style={{ fontSize: "clamp(14px, 1.3vw, 18px)" }}>
                   {t("about.heading")}
                 </p>
-                <p className="text-sm md:text-lg font-light leading-snug md:leading-tight tracking-tight text-[#9CA3AF] mt-1 md:mt-1.5 text-justify">
+                <p className="font-light leading-snug tracking-tight text-[#9CA3AF] text-justify" style={{ fontSize: "clamp(14px, 1.3vw, 18px)", marginTop: "clamp(4px, 0.3vw, 6px)" }}>
                   {t("about.heading.sub")}
                 </p>
               </div>
@@ -222,7 +222,7 @@ export default function AboutPage() {
       </div>
 
       {/* 3D Cylindrical Carousel — WebGL */}
-      <div className="hidden lg:block fixed inset-0 z-0 pointer-events-none">
+      <div className="fixed inset-0 z-0 pointer-events-none">
         <Link href="/work" className="absolute inset-0 pointer-events-auto">
           <Suspense fallback={null}>
             <CylinderCarousel />
