@@ -8,7 +8,7 @@ export default function SocialIcons() {
   const [showInstaPreview, setShowInstaPreview] = useState(false);
 
   return (
-    <div className="flex items-center gap-3">
+    <div className="flex items-center gap-2">
       {/* Instagram */}
       <div
         className="relative"

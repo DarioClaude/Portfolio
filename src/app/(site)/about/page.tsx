@@ -19,11 +19,7 @@ const N = CAROUSEL_IMAGES.length;
 const CARD_W = 176;
 const CARD_H = 132;
 const GAP = 11;
-const SLICES = 4;
-const SLICE_W = CARD_W / SLICES;
-const OVERLAP = 4;
-const CIRCUMFERENCE = N * (CARD_W + GAP);
-const RADIUS = Math.round(CIRCUMFERENCE / (2 * Math.PI));
+const RADIUS = Math.round(((CARD_W + GAP) * N) / (2 * Math.PI));
 
 function Pill({ children }: { children: React.ReactNode }) {
   return (
@@ -194,7 +190,7 @@ export default function AboutPage() {
               animate={{ opacity: 1, y: 0 }}
               transition={spring}
             >
-              <div>
+              <div style={{ marginTop: 10 }}>
                 <Pill>{t("about.pill.aboutMe")}</Pill>
               </div>
 
@@ -256,46 +252,34 @@ export default function AboutPage() {
           >
             <div
               style={{
-                width: SLICE_W,
+                width: CARD_W,
                 height: CARD_H,
                 transformStyle: "preserve-3d",
                 animation: "carousel-spin 110s linear infinite",
               }}
             >
-              {CAROUSEL_IMAGES.flatMap((src, i) =>
-                Array.from({ length: SLICES }, (_, j) => {
-                  const angle = (i * (CARD_W + GAP) + j * SLICE_W) * 360 / CIRCUMFERENCE;
-                  return (
-                    <div
-                      key={`${i}-${j}`}
-                      className="absolute overflow-hidden"
-                      style={{
-                        width: SLICE_W + OVERLAP * 2,
-                        height: CARD_H,
-                        top: 0,
-                        left: -OVERLAP,
-                        borderRadius: j === 0 ? "3px 0 0 3px" : j === SLICES - 1 ? "0 3px 3px 0" : 0,
-                        transform: `rotateY(${angle}deg) translateZ(${RADIUS}px)`,
-                      }}
-                    >
-                      <img
-                        src={src}
-                        alt=""
-                        loading="eager"
-                        decoding="async"
-                        style={{
-                          position: "absolute",
-                          width: CARD_W,
-                          height: CARD_H,
-                          left: -j * SLICE_W + OVERLAP,
-                          top: 0,
-                          objectFit: "cover",
-                        }}
-                      />
-                    </div>
-                  );
-                })
-              )}
+              {CAROUSEL_IMAGES.map((src, i) => (
+                <div
+                  key={i}
+                  className="absolute overflow-hidden"
+                  style={{
+                    width: CARD_W,
+                    height: CARD_H,
+                    top: 0,
+                    left: 0,
+                    borderRadius: 3,
+                    transform: `rotateY(${i * (360 / N)}deg) translateZ(${RADIUS}px)`,
+                    boxShadow: "0 2px 12px rgba(0,0,0,0.06)",
+                  }}
+                >
+                  <img
+                    src={src}
+                    alt=""
+                    loading="eager"
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+              ))}
             </div>
           </div>
         </Link>
