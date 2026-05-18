@@ -73,21 +73,21 @@ function RotatingCylinder({ textures }: { textures: THREE.Texture[] }) {
   const groupRef = useRef<THREE.Group>(null);
   const { size } = useThree();
   const isMobile = size.width < 768;
-  const scrollBoost = useRef(0);
+  const keyBoost = useRef(0);
 
   useEffect(() => {
-    const onWheel = (e: WheelEvent) => {
-      scrollBoost.current += Math.abs(e.deltaY) * 0.0003;
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "ArrowLeft") keyBoost.current += 0.15;
+      if (e.key === "ArrowRight") keyBoost.current -= 0.15;
     };
-    window.addEventListener("wheel", onWheel, { passive: true });
-    return () => window.removeEventListener("wheel", onWheel);
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
   }, []);
 
   useFrame((_, delta) => {
     if (groupRef.current) {
-      const boost = scrollBoost.current;
-      groupRef.current.rotation.y -= delta * (0.06 + boost);
-      scrollBoost.current *= 0.95;
+      groupRef.current.rotation.y -= delta * 0.06 + keyBoost.current;
+      keyBoost.current *= 0.92;
     }
   });
 
