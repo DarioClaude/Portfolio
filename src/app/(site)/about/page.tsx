@@ -114,7 +114,7 @@ function PortraitPhoto() {
     const rect = ref.current.getBoundingClientRect();
     const x = (e.clientX - rect.left) / rect.width - 0.5;
     const y = (e.clientY - rect.top) / rect.height - 0.5;
-    targetRef.current = { rotateX: -y * 14, rotateY: x * 14 };
+    targetRef.current = { rotateX: -y * 24, rotateY: x * 24 };
   };
 
   return (
