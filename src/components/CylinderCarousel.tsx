@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useMemo, useState, useEffect, Suspense } from "react";
+import { useRef, useMemo, useState, useEffect, useCallback, Suspense } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import * as THREE from "three";
 
@@ -59,7 +59,7 @@ function ResponsiveCamera() {
   useEffect(() => {
     const cam = camera as THREE.PerspectiveCamera;
     if (size.width < 768) {
-      cam.position.set(0, 0, 8);
+      cam.position.set(0, 0, 7);
     } else {
       cam.position.set(0, 0, 5);
     }
@@ -69,7 +69,7 @@ function ResponsiveCamera() {
   return null;
 }
 
-function RotatingCylinder({ textures }: { textures: THREE.Texture[] }) {
+function RotatingCylinder({ textures, touchBoostRef }: { textures: THREE.Texture[]; touchBoostRef: React.MutableRefObject<number> }) {
   const groupRef = useRef<THREE.Group>(null);
   const { size } = useThree();
   const isMobile = size.width < 768;
@@ -87,7 +87,9 @@ function RotatingCylinder({ textures }: { textures: THREE.Texture[] }) {
   useFrame((_, delta) => {
     if (groupRef.current) {
       groupRef.current.rotation.y -= delta * 0.06 + keyBoost.current;
+      groupRef.current.rotation.y += touchBoostRef.current;
       keyBoost.current *= 0.92;
+      touchBoostRef.current *= 0.92;
     }
   });
 
@@ -95,8 +97,8 @@ function RotatingCylinder({ textures }: { textures: THREE.Texture[] }) {
     <group
       ref={groupRef}
       rotation={[-0.06, 0.38, 0.017]}
-      position={isMobile ? [1.5, -1.6, 0] : [2.8, -2.3, 0]}
-      scale={isMobile ? 0.6 : 1}
+      position={isMobile ? [1.2, -1.4, 0] : [2.8, -2.3, 0]}
+      scale={isMobile ? 0.75 : 1}
     >
       {textures.map((tex, i) => (
         <CardOnCylinder key={i} texture={tex} index={i} />
@@ -109,6 +111,8 @@ export default function CylinderCarousel() {
   const [textures, setTextures] = useState<THREE.Texture[] | null>(null);
   const [ready, setReady] = useState(false);
   const [error, setError] = useState(false);
+  const touchBoostRef = useRef(0);
+  const lastTouchX = useRef(0);
 
   useEffect(() => {
     const loader = new THREE.TextureLoader();
@@ -132,6 +136,16 @@ export default function CylinderCarousel() {
     });
   }, []);
 
+  const handleTouchStart = useCallback((e: React.TouchEvent) => {
+    lastTouchX.current = e.touches[0].clientX;
+  }, []);
+
+  const handleTouchMove = useCallback((e: React.TouchEvent) => {
+    const dx = e.touches[0].clientX - lastTouchX.current;
+    touchBoostRef.current += dx * 0.003;
+    lastTouchX.current = e.touches[0].clientX;
+  }, []);
+
   if (error || !textures) {
     return null;
   }
@@ -140,6 +154,8 @@ export default function CylinderCarousel() {
     <div
       className="absolute inset-0"
       style={{ opacity: ready ? 1 : 0, transition: "opacity 1.2s ease" }}
+      onTouchStart={handleTouchStart}
+      onTouchMove={handleTouchMove}
     >
       <Canvas
         camera={{ position: [0, 0, 5], fov: 35 }}
@@ -151,7 +167,7 @@ export default function CylinderCarousel() {
       >
         <ResponsiveCamera />
         <Suspense fallback={null}>
-          <RotatingCylinder textures={textures} />
+          <RotatingCylinder textures={textures} touchBoostRef={touchBoostRef} />
         </Suspense>
       </Canvas>
     </div>

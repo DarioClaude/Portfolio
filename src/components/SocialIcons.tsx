@@ -1,18 +1,26 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 
 export default function SocialIcons() {
   const [showInstaPreview, setShowInstaPreview] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768);
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, []);
 
   return (
     <div className="flex items-center gap-2">
       {/* Instagram */}
       <div
         className="relative"
-        onMouseEnter={() => setShowInstaPreview(true)}
+        onMouseEnter={() => { if (!isMobile) setShowInstaPreview(true); }}
         onMouseLeave={() => setShowInstaPreview(false)}
       >
         <a

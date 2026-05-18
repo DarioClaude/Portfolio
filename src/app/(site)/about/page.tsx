@@ -74,6 +74,14 @@ function PortraitPhoto() {
   const rafRef = useRef<number>(0);
   const idleRef = useRef<number>(0);
   const isHoveringRef = useRef(false);
+  const [portraitWidth, setPortraitWidth] = useState("clamp(100px, 13vw, 180px)");
+
+  useEffect(() => {
+    const check = () => setPortraitWidth(window.innerWidth < 768 ? "70px" : "clamp(100px, 13vw, 180px)");
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, []);
 
   const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
 
@@ -123,7 +131,7 @@ function PortraitPhoto() {
       animate={{ opacity: 1, scale: 1 }}
       transition={{ type: "spring", stiffness: 260, damping: 20, delay: 0.3 }}
     >
-      <div style={{ perspective: "600px", width: "clamp(100px, 13vw, 180px)" }}>
+      <div style={{ perspective: "600px", width: portraitWidth }}>
         <div
           ref={ref}
           className="w-full aspect-[2/3] overflow-hidden rounded-md relative"
@@ -156,6 +164,14 @@ function PortraitPhoto() {
 export default function AboutPage() {
   const { t } = useTranslation();
   const [time, setTime] = useState("");
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768);
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, []);
 
   useEffect(() => {
     const format = () => {
@@ -223,11 +239,19 @@ export default function AboutPage() {
 
       {/* 3D Cylindrical Carousel — WebGL */}
       <div className="fixed inset-0 z-0 pointer-events-none">
-        <Link href="/work" className="absolute inset-0 pointer-events-auto">
-          <Suspense fallback={null}>
-            <CylinderCarousel />
-          </Suspense>
-        </Link>
+        {isMobile ? (
+          <div className="absolute inset-0 pointer-events-auto">
+            <Suspense fallback={null}>
+              <CylinderCarousel />
+            </Suspense>
+          </div>
+        ) : (
+          <Link href="/work" className="absolute inset-0 pointer-events-auto">
+            <Suspense fallback={null}>
+              <CylinderCarousel />
+            </Suspense>
+          </Link>
+        )}
       </div>
     </section>
   );

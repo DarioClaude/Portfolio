@@ -16,9 +16,9 @@ const ANGLE_STEP = 360 / CARD_COUNT; // 60deg
 function getFluidDims(containerW: number) {
   if (containerW < 768) {
     const t = Math.min(Math.max((containerW - 320) / 448, 0), 1);
-    const cardW = Math.round(150 + t * 50);
+    const cardW = Math.round(130 + t * 40);
     const cardH = Math.round(cardW / 1.5);
-    const radius = Math.round(170 + t * 50);
+    const radius = Math.round(150 + t * 40);
     return { cardW, cardH, radius };
   }
   const t = Math.min(Math.max((containerW - 900) / 900, 0), 1);
@@ -125,7 +125,7 @@ export default function HeroCarousel() {
       <div
         className="absolute left-1/2"
         style={{
-          top: isMobile ? "45%" : "42%",
+          top: isMobile ? "36%" : "42%",
           transform: "translate(-50%, -50%)",
           width: dims.cardW,
           height: dims.cardH,

@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState, useCallback } from "react";
+import { useRef, useState, useCallback, useEffect } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { useTranslation } from "@/context/LanguageContext";
@@ -13,7 +13,15 @@ export default function AvatarTilt({ showTooltip = false }: Props) {
   const ref = useRef<HTMLDivElement>(null);
   const [tilt, setTilt] = useState({ rotateX: 0, rotateY: 0 });
   const [hovering, setHovering] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
   const { t } = useTranslation();
+
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768);
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, []);
 
   const onMove = useCallback((e: React.MouseEvent) => {
     if (!ref.current) return;
@@ -26,7 +34,7 @@ export default function AvatarTilt({ showTooltip = false }: Props) {
   return (
     <div className="relative" style={{ width: 36, height: 36 }}>
       <AnimatePresence>
-        {showTooltip && hovering && (
+        {showTooltip && hovering && !isMobile && (
           <motion.div
             className="absolute pointer-events-none z-20"
             style={{ bottom: "calc(100% + 6px)", left: "50%" }}

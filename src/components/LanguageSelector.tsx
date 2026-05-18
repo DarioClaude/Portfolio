@@ -77,7 +77,7 @@ export default function LanguageSelector() {
         aria-label={t("aria.language")}
       >
         <Flag code={lang} />
-        <span className="text-xs font-medium text-[#1A1A1A] leading-none">{currentLabel}</span>
+        <span className="text-xs font-medium text-[#1A1A1A] leading-none hidden md:inline">{currentLabel}</span>
         <svg
           width="8"
           height="5"
