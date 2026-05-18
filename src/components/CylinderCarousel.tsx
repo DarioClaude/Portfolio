@@ -84,7 +84,7 @@ function RotatingCylinder({ textures }: { textures: THREE.Texture[] }) {
     <group
       ref={groupRef}
       rotation={[-0.06, 0.38, 0.017]}
-      position={isMobile ? [1.5, -1.15, 0] : [2.8, -1.8, 0]}
+      position={isMobile ? [1.5, -1.7, 0] : [2.8, -2.4, 0]}
       scale={isMobile ? 0.6 : 1}
     >
       {textures.map((tex, i) => (
