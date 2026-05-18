@@ -29,25 +29,24 @@ export default function AvatarTilt({ showTooltip = false }: Props) {
         {showTooltip && hovering && (
           <motion.div
             className="absolute pointer-events-none z-20"
-            style={{ bottom: "calc(100% + 8px)", left: 0, width: 36 }}
-            initial={{ opacity: 0, y: 4 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 4 }}
+            style={{ bottom: "calc(100% + 6px)", left: "50%" }}
+            initial={{ opacity: 0, y: 4, x: "-50%" }}
+            animate={{ opacity: 1, y: 0, x: "-50%" }}
+            exit={{ opacity: 0, y: 4, x: "-50%" }}
             transition={{ duration: 0.15 }}
           >
             <div
-              className="rounded-md shadow-lg overflow-hidden"
+              className="rounded-lg shadow-lg"
               style={{
                 background: "#1A1A1A",
-                padding: "4px 0",
-                width: 36,
+                padding: "5px 10px",
                 textAlign: "center",
+                whiteSpace: "nowrap",
               }}
             >
-              <p className="text-white leading-tight font-bold" style={{ fontSize: 5.5 }}>{t("avatar.name")}</p>
-              <p className="text-gray-400 leading-tight" style={{ fontSize: 4.5 }}>{t("avatar.role")}</p>
+              <p className="text-white leading-tight font-bold" style={{ fontSize: 10 }}>{t("avatar.name")}</p>
+              <p className="text-gray-400 leading-tight" style={{ fontSize: 8.5 }}>{t("avatar.role")}</p>
             </div>
-            {/* Triangle — Instagram-style nub */}
             <div
               style={{
                 width: 0,
