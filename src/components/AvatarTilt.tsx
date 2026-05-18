@@ -28,15 +28,14 @@ export default function AvatarTilt({ showTooltip = false }: Props) {
       <AnimatePresence>
         {showTooltip && hovering && (
           <motion.div
-            className="absolute bottom-full left-1/2 mb-2 bg-[#1A1A1A] rounded-lg px-4 py-2 shadow-lg whitespace-nowrap pointer-events-none z-20"
-            style={{ transform: "translateX(-50%)" }}
-            initial={{ opacity: 0, y: 6 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 6 }}
+            className="absolute bottom-full left-1/2 mb-2 bg-[#1A1A1A] rounded-lg px-3 py-1.5 shadow-lg whitespace-nowrap pointer-events-none z-20"
+            initial={{ opacity: 0, y: 6, x: "-50%" }}
+            animate={{ opacity: 1, y: 0, x: "-50%" }}
+            exit={{ opacity: 0, y: 6, x: "-50%" }}
             transition={{ duration: 0.2 }}
           >
-            <p className="text-xs font-bold text-white">{t("avatar.name")}</p>
-            <p className="text-[10px] text-gray-400">{t("avatar.role")}</p>
+            <p className="text-[11px] font-bold text-white leading-tight">{t("avatar.name")}</p>
+            <p className="text-[9px] text-gray-400 leading-tight">{t("avatar.role")}</p>
           </motion.div>
         )}
       </AnimatePresence>
