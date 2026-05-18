@@ -1,7 +1,7 @@
 "use client";
 
-import { useRef, useMemo, useState, useEffect } from "react";
-import { Canvas, useFrame, useLoader, useThree } from "@react-three/fiber";
+import { useRef, useMemo, useState, useEffect, Suspense } from "react";
+import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import * as THREE from "three";
 
 const CAROUSEL_IMAGES = Array.from({ length: 26 }, (_, i) =>
@@ -25,8 +25,6 @@ function CardOnCylinder({
   texture: THREE.Texture;
   index: number;
 }) {
-  const mesh = useRef<THREE.Mesh>(null);
-
   const geometry = useMemo(() => {
     const startAngle = index * ARC_PER_CARD - HALF_ARC / 2;
     const geo = new THREE.CylinderGeometry(
@@ -50,11 +48,10 @@ function CardOnCylinder({
     return new THREE.MeshBasicMaterial({
       map: texture,
       side: THREE.FrontSide,
-      transparent: false,
     });
   }, [texture]);
 
-  return <mesh ref={mesh} geometry={geometry} material={material} />;
+  return <mesh geometry={geometry} material={material} />;
 }
 
 function ResponsiveCamera() {
@@ -63,21 +60,18 @@ function ResponsiveCamera() {
     const cam = camera as THREE.PerspectiveCamera;
     if (size.width < 768) {
       cam.position.set(0, 0, 8);
-      cam.fov = 35;
     } else {
       cam.position.set(0, 0, 5);
-      cam.fov = 35;
     }
+    cam.fov = 35;
     cam.updateProjectionMatrix();
   }, [camera, size]);
   return null;
 }
 
-function RotatingCylinder() {
+function RotatingCylinder({ textures }: { textures: THREE.Texture[] }) {
   const groupRef = useRef<THREE.Group>(null);
-  const textures = useLoader(THREE.TextureLoader, CAROUSEL_IMAGES);
   const { size } = useThree();
-
   const isMobile = size.width < 768;
 
   useFrame((_, delta) => {
@@ -101,7 +95,35 @@ function RotatingCylinder() {
 }
 
 export default function CylinderCarousel() {
+  const [textures, setTextures] = useState<THREE.Texture[] | null>(null);
   const [ready, setReady] = useState(false);
+  const [error, setError] = useState(false);
+
+  useEffect(() => {
+    const loader = new THREE.TextureLoader();
+    let loaded = 0;
+    const results: THREE.Texture[] = new Array(N);
+
+    CAROUSEL_IMAGES.forEach((src, i) => {
+      loader.load(
+        src,
+        (tex) => {
+          results[i] = tex;
+          loaded++;
+          if (loaded === N) setTextures(results);
+        },
+        undefined,
+        () => {
+          loaded++;
+          if (loaded === N) setTextures(results.filter(Boolean));
+        }
+      );
+    });
+  }, []);
+
+  if (error || !textures) {
+    return null;
+  }
 
   return (
     <div
@@ -113,10 +135,13 @@ export default function CylinderCarousel() {
         gl={{ antialias: true, alpha: true }}
         dpr={[1, 2]}
         onCreated={() => setReady(true)}
+        onError={() => setError(true)}
         style={{ background: "transparent" }}
       >
         <ResponsiveCamera />
-        <RotatingCylinder />
+        <Suspense fallback={null}>
+          <RotatingCylinder textures={textures} />
+        </Suspense>
       </Canvas>
     </div>
   );
