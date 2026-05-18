@@ -119,9 +119,9 @@ function PortraitPhoto() {
 
   return (
     <motion.div
-      initial={{ clipPath: "inset(100% 0 0 0)" }}
-      animate={{ clipPath: "inset(0% 0% 0% 0%)" }}
-      transition={{ duration: 1.2, ease: [0.76, 0, 0.24, 1], delay: 0.2 }}
+      initial={{ opacity: 0, scale: 0 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{ type: "spring", stiffness: 260, damping: 20, delay: 0.3 }}
     >
       <div style={{ perspective: "600px", width: "clamp(100px, 13vw, 180px)" }}>
         <div
