@@ -18,7 +18,7 @@ function getFluidDims(containerW: number) {
     const t = Math.min(Math.max((containerW - 320) / 448, 0), 1);
     const cardW = Math.round(143 + t * 44);
     const cardH = Math.round(cardW / 1.5);
-    const radius = Math.round(138 + t * 36);
+    const radius = Math.round(162 + t * 42);
     return { cardW, cardH, radius };
   }
   const t = Math.min(Math.max((containerW - 900) / 900, 0), 1);
