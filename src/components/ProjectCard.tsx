@@ -49,13 +49,13 @@ export default function ProjectCard({ project, index }: Props) {
           )}
 
           <div className="absolute inset-x-0 bottom-0 z-20 flex items-center px-3 py-2.5 md:px-4 md:py-3">
-            <span className="project-pill relative inline-flex items-center justify-center font-sans font-normal tracking-normal text-[9px] md:text-[11px] px-2.5 py-1 md:px-3 md:py-1.5 rounded-md overflow-hidden bg-white/15 backdrop-blur-md border border-white/25 text-white shadow-[0_2px_8px_rgba(0,0,0,0.25),0_4px_16px_rgba(0,0,0,0.15)] transition-all duration-500 ease-out">
-              <span className="project-pill-label inline-block transition-transform duration-500 ease-out">
+            <span className="work-pill relative inline-flex items-center justify-center font-sans font-normal tracking-normal text-[9px] md:text-[11px] px-2.5 py-1 md:px-3 md:py-1.5 rounded-md overflow-hidden backdrop-blur-md border text-white transition-all duration-500 ease-out">
+              <span className="work-pill-label inline-block transition-transform duration-500 ease-out">
                 {t(project.titleKey)}
               </span>
               <span
                 aria-hidden
-                className="project-pill-arrow pointer-events-none absolute right-2 md:right-2.5 transition-all duration-500 ease-out text-[9px] md:text-[11px]"
+                className="work-pill-arrow pointer-events-none absolute right-2 md:right-2.5 transition-all duration-500 ease-out text-[9px] md:text-[11px]"
               >
                 →
               </span>
