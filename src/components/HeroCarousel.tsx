@@ -33,10 +33,12 @@ export default function HeroCarousel() {
   const [isMobile, setIsMobile] = useState(false);
   const [dims, setDims] = useState({ cardW: 380, cardH: 253, radius: 430 });
   const [isHoveringWheel, setIsHoveringWheel] = useState(false);
+  const [mobileGap, setMobileGap] = useState(80);
   const autoRotateRef = useRef(true);
   const dragStartX = useRef(0);
   const dragStartRotation = useRef(0);
   const sectionRef = useRef<HTMLElement>(null);
+  const mobileTextRef = useRef<HTMLDivElement>(null);
   const { t } = useTranslation();
 
   useEffect(() => {
@@ -50,6 +52,20 @@ export default function HeroCarousel() {
     window.addEventListener("resize", update);
     return () => window.removeEventListener("resize", update);
   }, []);
+
+  useEffect(() => {
+    if (!isMobile) return;
+    const computeGap = () => {
+      if (!mobileTextRef.current) return;
+      const textBottom = mobileTextRef.current.getBoundingClientRect().bottom;
+      const carouselCenterY = window.innerHeight * 0.48 - 97;
+      const carouselTop = carouselCenterY - dims.cardH / 2;
+      setMobileGap(Math.max(carouselTop - textBottom, 15));
+    };
+    requestAnimationFrame(computeGap);
+    window.addEventListener("resize", computeGap);
+    return () => window.removeEventListener("resize", computeGap);
+  }, [isMobile, dims]);
 
   // Auto-rotation — slow luxury feel
   useEffect(() => {
@@ -178,6 +194,7 @@ export default function HeroCarousel() {
       {/* ===== MOBILE: Bio text above carousel, centered ===== */}
       {isMobile && (
         <motion.div
+          ref={mobileTextRef}
           className="absolute left-0 right-0 z-10 text-center pointer-events-auto"
           style={{ top: "clamp(70px, 12vh, 100px)", padding: "0 24px" }}
           initial={{ opacity: 0, y: 20 }}
@@ -197,14 +214,14 @@ export default function HeroCarousel() {
       {isMobile && (
         <motion.div
           className="absolute left-1/2 z-10 pointer-events-auto"
-          style={{ top: `calc(48% - 97px + ${dims.cardH / 2 + 15}px)`, transform: "translateX(-50%)" }}
+          style={{ top: `calc(48% - 97px + ${dims.cardH / 2 + mobileGap}px)`, transform: "translateX(-50%)" }}
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.5 }}
         >
-          <div className="flex items-center" style={{ gap: 2 }}>
+          <div className="flex items-center gap-2">
             <AvatarTilt />
-            <div className="flex flex-col leading-none" style={{ marginRight: 2 }}>
+            <div className="flex flex-col leading-none">
               <p className="text-sm font-normal tracking-tight text-[#1A1A1A] leading-none">Dario Tonini</p>
               <p className="text-xs tracking-[0.5px] text-[#9CA3AF] leading-none mt-0.5">@dariotni</p>
             </div>
