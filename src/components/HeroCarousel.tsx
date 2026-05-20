@@ -33,7 +33,7 @@ export default function HeroCarousel() {
   const [isMobile, setIsMobile] = useState(false);
   const [dims, setDims] = useState({ cardW: 380, cardH: 253, radius: 430 });
   const [isHoveringWheel, setIsHoveringWheel] = useState(false);
-  const [mobileGap, setMobileGap] = useState(80);
+  const [mobileLayout, setMobileLayout] = useState({ carouselCenter: 0, pdpTop: 0, ready: false });
   const autoRotateRef = useRef(true);
   const dragStartX = useRef(0);
   const dragStartRotation = useRef(0);
@@ -55,19 +55,23 @@ export default function HeroCarousel() {
 
   useEffect(() => {
     if (!isMobile) return;
-    const computeGap = () => {
+    const compute = () => {
       if (!mobileTextRef.current) return;
       const vh = window.innerHeight;
       const textTop = Math.max(70, Math.min(0.12 * vh, 100));
       const textHeight = mobileTextRef.current.offsetHeight;
       const textBottom = textTop + textHeight;
-      const carouselCenterY = vh * 0.48 - 87;
-      const carouselTop = carouselCenterY - dims.cardH / 2;
-      setMobileGap(Math.max(carouselTop - textBottom, 15));
+      const pdpHeight = 40;
+      const bottomMargin = textTop;
+      const pdpTop = vh - bottomMargin - pdpHeight;
+      const availableSpace = pdpTop - textBottom - dims.cardH;
+      const gap = Math.max(availableSpace / 2, 15);
+      const carouselCenter = textBottom + gap + dims.cardH / 2;
+      setMobileLayout({ carouselCenter, pdpTop, ready: true });
     };
-    requestAnimationFrame(computeGap);
-    window.addEventListener("resize", computeGap);
-    return () => window.removeEventListener("resize", computeGap);
+    requestAnimationFrame(compute);
+    window.addEventListener("resize", compute);
+    return () => window.removeEventListener("resize", compute);
   }, [isMobile, dims]);
 
   // Auto-rotation — slow luxury feel
@@ -144,7 +148,7 @@ export default function HeroCarousel() {
       <div
         className="absolute left-1/2"
         style={{
-          top: isMobile ? "calc(48% - 87px)" : "42%",
+          top: isMobile ? `${mobileLayout.carouselCenter}px` : "42%",
           transform: "translate(-50%, -50%)",
           width: dims.cardW,
           height: dims.cardH,
@@ -217,7 +221,7 @@ export default function HeroCarousel() {
       {isMobile && (
         <motion.div
           className="absolute left-0 right-0 z-10 flex justify-center pointer-events-auto"
-          style={{ top: `calc(48% - 87px + ${dims.cardH / 2 + mobileGap}px)` }}
+          style={{ top: `${mobileLayout.pdpTop}px` }}
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.5 }}
