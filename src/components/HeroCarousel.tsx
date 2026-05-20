@@ -125,7 +125,7 @@ export default function HeroCarousel() {
       <div
         className="absolute left-1/2"
         style={{
-          top: isMobile ? "calc(48% - 60px)" : "42%",
+          top: isMobile ? "calc(48% - 95px)" : "42%",
           transform: "translate(-50%, -50%)",
           width: dims.cardW,
           height: dims.cardH,
