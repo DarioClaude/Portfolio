@@ -89,7 +89,7 @@ function RotatingCylinder({ textures, touchBoostRef }: { textures: THREE.Texture
       groupRef.current.rotation.y -= delta * 0.06 + keyBoost.current;
       groupRef.current.rotation.y += touchBoostRef.current;
       keyBoost.current *= 0.92;
-      touchBoostRef.current *= 0.92;
+      touchBoostRef.current *= 0.85;
     }
   });
 
@@ -142,7 +142,7 @@ export default function CylinderCarousel() {
 
   const handleTouchMove = useCallback((e: React.TouchEvent) => {
     const dx = e.touches[0].clientX - lastTouchX.current;
-    touchBoostRef.current += dx * 0.003;
+    touchBoostRef.current += dx * 0.0004;
     lastTouchX.current = e.touches[0].clientX;
   }, []);
 

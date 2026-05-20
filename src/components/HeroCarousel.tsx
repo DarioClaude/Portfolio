@@ -18,7 +18,7 @@ function getFluidDims(containerW: number) {
     const t = Math.min(Math.max((containerW - 320) / 448, 0), 1);
     const cardW = Math.round(200 + t * 50);
     const cardH = Math.round(cardW / 1.5);
-    const radius = Math.round(200 + t * 40);
+    const radius = Math.round(140 + t * 30);
     return { cardW, cardH, radius };
   }
   const t = Math.min(Math.max((containerW - 900) / 900, 0), 1);
@@ -56,13 +56,13 @@ export default function HeroCarousel() {
     let raf: number;
     const rotate = () => {
       if (autoRotateRef.current && !isHoveringWheel) {
-        setGlobalRotation((prev) => prev - 0.018);
+        setGlobalRotation((prev) => prev - (isMobile ? 0.04 : 0.018));
       }
       raf = requestAnimationFrame(rotate);
     };
     raf = requestAnimationFrame(rotate);
     return () => cancelAnimationFrame(raf);
-  }, [isHoveringWheel]);
+  }, [isHoveringWheel, isMobile]);
 
   // Keyboard: Left/Right snap by 60deg
   const handleKeyDown = useCallback((e: KeyboardEvent) => {
@@ -142,6 +142,7 @@ export default function HeroCarousel() {
             transition: autoRotateRef.current
               ? "none"
               : "transform 0.8s cubic-bezier(0.23, 1, 0.32, 1)",
+            touchAction: isMobile ? "none" : undefined,
           }}
           onMouseEnter={() => setIsHoveringWheel(true)}
           onMouseLeave={() => setIsHoveringWheel(false)}
