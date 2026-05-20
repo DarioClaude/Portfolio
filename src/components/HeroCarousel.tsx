@@ -16,9 +16,9 @@ const ANGLE_STEP = 360 / CARD_COUNT; // 60deg
 function getFluidDims(containerW: number) {
   if (containerW < 768) {
     const t = Math.min(Math.max((containerW - 320) / 448, 0), 1);
-    const cardW = Math.round(130 + t * 40);
+    const cardW = Math.round(200 + t * 50);
     const cardH = Math.round(cardW / 1.5);
-    const radius = Math.round(150 + t * 40);
+    const radius = Math.round(200 + t * 40);
     return { cardW, cardH, radius };
   }
   const t = Math.min(Math.max((containerW - 900) / 900, 0), 1);
@@ -82,17 +82,17 @@ export default function HeroCarousel() {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [handleKeyDown]);
 
-  // Touch/drag handlers for mobile swipe
+  // Touch/drag handlers — vertical swipe on mobile (wheel), horizontal on desktop
   const handleTouchStart = useCallback((e: React.TouchEvent) => {
     autoRotateRef.current = false;
-    dragStartX.current = e.touches[0].clientX;
+    dragStartX.current = isMobile ? e.touches[0].clientY : e.touches[0].clientX;
     dragStartRotation.current = globalRotation;
-  }, [globalRotation]);
+  }, [globalRotation, isMobile]);
 
   const handleTouchMove = useCallback((e: React.TouchEvent) => {
-    const dx = e.touches[0].clientX - dragStartX.current;
-    setGlobalRotation(dragStartRotation.current + dx * 0.5);
-  }, []);
+    const d = (isMobile ? e.touches[0].clientY : e.touches[0].clientX) - dragStartX.current;
+    setGlobalRotation(dragStartRotation.current + d * (isMobile ? -0.5 : 0.5));
+  }, [isMobile]);
 
   const handleTouchEnd = useCallback(() => {
     setTimeout(() => { autoRotateRef.current = true; }, 2000);
@@ -125,18 +125,20 @@ export default function HeroCarousel() {
       <div
         className="absolute left-1/2"
         style={{
-          top: isMobile ? "36%" : "42%",
+          top: isMobile ? "40%" : "42%",
           transform: "translate(-50%, -50%)",
           width: dims.cardW,
           height: dims.cardH,
-          perspective: isMobile ? "1000px" : "1500px",
+          perspective: isMobile ? "800px" : "1500px",
         }}
       >
         <div
           className="relative w-full h-full"
           style={{
             transformStyle: "preserve-3d",
-            transform: `rotateY(${globalRotation}deg)`,
+            transform: isMobile
+              ? `rotateX(${globalRotation}deg)`
+              : `rotateY(${globalRotation}deg)`,
             transition: autoRotateRef.current
               ? "none"
               : "transform 0.8s cubic-bezier(0.23, 1, 0.32, 1)",
@@ -158,7 +160,9 @@ export default function HeroCarousel() {
                 style={{
                   width: dims.cardW,
                   height: dims.cardH,
-                  transform: `rotateY(${angle}deg) translateZ(${dims.radius}px)`,
+                  transform: isMobile
+                    ? `rotateX(${angle}deg) translateZ(${dims.radius}px)`
+                    : `rotateY(${angle}deg) translateZ(${dims.radius}px)`,
                   backfaceVisibility: "visible",
                 }}
               >
