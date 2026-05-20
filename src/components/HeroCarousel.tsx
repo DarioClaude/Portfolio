@@ -193,21 +193,23 @@ export default function HeroCarousel() {
         </motion.div>
       )}
 
-      {/* ===== MOBILE: Avatar + socials below carousel, right-aligned ===== */}
+      {/* ===== MOBILE: Avatar + name + socials centered below carousel ===== */}
       {isMobile && (
         <motion.div
-          className="absolute z-10 pointer-events-auto flex flex-col items-end gap-1"
-          style={{ bottom: "clamp(20px, 4vh, 40px)", right: "24px" }}
+          className="absolute left-1/2 z-10 pointer-events-auto"
+          style={{ top: `calc(48% - 97px + ${dims.cardH / 2 + 15}px)`, transform: "translateX(-50%)" }}
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.5 }}
         >
-          <AvatarTilt showTooltip />
-          <div className="flex flex-col items-end leading-none">
-            <p className="text-sm font-normal tracking-tight text-[#1A1A1A] leading-none">Dario Tonini</p>
-            <p className="text-xs tracking-[0.5px] text-[#9CA3AF] dark:text-[#71717a] leading-none mt-0.5">@dariotni</p>
+          <div className="flex items-center" style={{ gap: 2 }}>
+            <AvatarTilt />
+            <div className="flex flex-col leading-none" style={{ marginRight: 2 }}>
+              <p className="text-sm font-normal tracking-tight text-[#1A1A1A] leading-none">Dario Tonini</p>
+              <p className="text-xs tracking-[0.5px] text-[#9CA3AF] leading-none mt-0.5">@dariotni</p>
+            </div>
+            <SocialIcons />
           </div>
-          <SocialIcons />
         </motion.div>
       )}
 
