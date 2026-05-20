@@ -61,7 +61,7 @@ export default function HeroCarousel() {
       const textTop = Math.max(70, Math.min(0.12 * vh, 100));
       const textHeight = mobileTextRef.current.offsetHeight;
       const textBottom = textTop + textHeight;
-      const carouselCenterY = vh * 0.48 - 97;
+      const carouselCenterY = vh * 0.48 - 87;
       const carouselTop = carouselCenterY - dims.cardH / 2;
       setMobileGap(Math.max(carouselTop - textBottom, 15));
     };
@@ -144,7 +144,7 @@ export default function HeroCarousel() {
       <div
         className="absolute left-1/2"
         style={{
-          top: isMobile ? "calc(48% - 97px)" : "42%",
+          top: isMobile ? "calc(48% - 87px)" : "42%",
           transform: "translate(-50%, -50%)",
           width: dims.cardW,
           height: dims.cardH,
@@ -217,7 +217,7 @@ export default function HeroCarousel() {
       {isMobile && (
         <motion.div
           className="absolute left-0 right-0 z-10 flex justify-center pointer-events-auto"
-          style={{ top: `calc(48% - 97px + ${dims.cardH / 2 + mobileGap + 20}px)` }}
+          style={{ top: `calc(48% - 87px + ${dims.cardH / 2 + mobileGap}px)` }}
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.5 }}
