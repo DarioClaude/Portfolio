@@ -135,7 +135,7 @@ function PortraitPhoto() {
       initial={{ opacity: 0, scale: 0 }}
       animate={{ opacity: 1, scale: 1 }}
       transition={{ type: "spring", stiffness: 260, damping: 20, delay: 0.3 }}
-      style={isMobilePortrait ? { marginTop: 56 } : undefined}
+      style={{ marginTop: isMobilePortrait ? 56 : "clamp(54px, 6vw, 80px)" }}
     >
       <div style={{ perspective: "600px", width: portraitWidth }}>
         <div
