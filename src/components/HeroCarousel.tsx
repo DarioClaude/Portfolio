@@ -57,8 +57,11 @@ export default function HeroCarousel() {
     if (!isMobile) return;
     const computeGap = () => {
       if (!mobileTextRef.current) return;
-      const textBottom = mobileTextRef.current.getBoundingClientRect().bottom;
-      const carouselCenterY = window.innerHeight * 0.48 - 97;
+      const vh = window.innerHeight;
+      const textTop = Math.max(70, Math.min(0.12 * vh, 100));
+      const textHeight = mobileTextRef.current.offsetHeight;
+      const textBottom = textTop + textHeight;
+      const carouselCenterY = vh * 0.48 - 97;
       const carouselTop = carouselCenterY - dims.cardH / 2;
       setMobileGap(Math.max(carouselTop - textBottom, 15));
     };
