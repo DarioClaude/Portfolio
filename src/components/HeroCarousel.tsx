@@ -18,7 +18,7 @@ function getFluidDims(containerW: number) {
     const t = Math.min(Math.max((containerW - 320) / 448, 0), 1);
     const cardW = Math.round(143 + t * 44);
     const cardH = Math.round(cardW / 1.5);
-    const radius = Math.round(cardW * 1.12);
+    const radius = Math.round(cardW * 1.04);
     return { cardW, cardH, radius };
   }
   const t = Math.min(Math.max((containerW - 900) / 900, 0), 1);
@@ -125,7 +125,7 @@ export default function HeroCarousel() {
       <div
         className="absolute left-1/2"
         style={{
-          top: isMobile ? "calc(48% - 95px)" : "42%",
+          top: isMobile ? "calc(48% - 97px)" : "42%",
           transform: "translate(-50%, -50%)",
           width: dims.cardW,
           height: dims.cardH,

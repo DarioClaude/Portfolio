@@ -35,7 +35,7 @@ export default function ProjectCard({ project, index }: Props) {
         className="block group"
         data-cursor-hover
       >
-        <div className="relative rounded-lg overflow-hidden aspect-[3/4] border border-black/10">
+        <div className="relative rounded overflow-hidden aspect-[3/4] border border-black/10">
           {project.imagePath ? (
             <Image
               src={project.imagePath}
