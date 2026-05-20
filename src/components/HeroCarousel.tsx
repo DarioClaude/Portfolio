@@ -16,9 +16,9 @@ const ANGLE_STEP = 360 / CARD_COUNT; // 60deg
 function getFluidDims(containerW: number) {
   if (containerW < 768) {
     const t = Math.min(Math.max((containerW - 320) / 448, 0), 1);
-    const cardW = Math.round(200 + t * 50);
+    const cardW = Math.round(130 + t * 40);
     const cardH = Math.round(cardW / 1.5);
-    const radius = Math.round(140 + t * 30);
+    const radius = Math.round(150 + t * 40);
     return { cardW, cardH, radius };
   }
   const t = Math.min(Math.max((containerW - 900) / 900, 0), 1);
@@ -82,17 +82,17 @@ export default function HeroCarousel() {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [handleKeyDown]);
 
-  // Touch/drag handlers — vertical swipe on mobile (wheel), horizontal on desktop
+  // Touch/drag handlers — horizontal swipe
   const handleTouchStart = useCallback((e: React.TouchEvent) => {
     autoRotateRef.current = false;
-    dragStartX.current = isMobile ? e.touches[0].clientY : e.touches[0].clientX;
+    dragStartX.current = e.touches[0].clientX;
     dragStartRotation.current = globalRotation;
-  }, [globalRotation, isMobile]);
+  }, [globalRotation]);
 
   const handleTouchMove = useCallback((e: React.TouchEvent) => {
-    const d = (isMobile ? e.touches[0].clientY : e.touches[0].clientX) - dragStartX.current;
-    setGlobalRotation(dragStartRotation.current + d * (isMobile ? -0.5 : 0.5));
-  }, [isMobile]);
+    const dx = e.touches[0].clientX - dragStartX.current;
+    setGlobalRotation(dragStartRotation.current + dx * 0.5);
+  }, []);
 
   const handleTouchEnd = useCallback(() => {
     setTimeout(() => { autoRotateRef.current = true; }, 2000);
@@ -129,20 +129,18 @@ export default function HeroCarousel() {
           transform: "translate(-50%, -50%)",
           width: dims.cardW,
           height: dims.cardH,
-          perspective: isMobile ? "800px" : "1500px",
+          perspective: isMobile ? "1000px" : "1500px",
         }}
       >
         <div
           className="relative w-full h-full"
           style={{
             transformStyle: "preserve-3d",
-            transform: isMobile
-              ? `rotateX(${globalRotation}deg)`
-              : `rotateY(${globalRotation}deg)`,
+            transform: `rotateY(${globalRotation}deg)`,
             transition: autoRotateRef.current
               ? "none"
               : "transform 0.8s cubic-bezier(0.23, 1, 0.32, 1)",
-            touchAction: isMobile ? "none" : undefined,
+            touchAction: "pan-y",
           }}
           onMouseEnter={() => setIsHoveringWheel(true)}
           onMouseLeave={() => setIsHoveringWheel(false)}
@@ -161,9 +159,7 @@ export default function HeroCarousel() {
                 style={{
                   width: dims.cardW,
                   height: dims.cardH,
-                  transform: isMobile
-                    ? `rotateX(${angle}deg) translateZ(${dims.radius}px) rotateX(${-angle - globalRotation}deg)`
-                    : `rotateY(${angle}deg) translateZ(${dims.radius}px)`,
+                  transform: `rotateY(${angle}deg) translateZ(${dims.radius}px)`,
                   backfaceVisibility: "visible",
                 }}
               >
