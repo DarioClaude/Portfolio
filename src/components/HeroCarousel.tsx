@@ -216,8 +216,8 @@ export default function HeroCarousel() {
       {/* ===== MOBILE: Avatar + name + socials centered below carousel ===== */}
       {isMobile && (
         <motion.div
-          className="absolute left-1/2 z-10 pointer-events-auto"
-          style={{ top: `calc(48% - 97px + ${dims.cardH / 2 + mobileGap}px)`, transform: "translateX(-50%)" }}
+          className="absolute left-0 right-0 z-10 flex justify-center pointer-events-auto"
+          style={{ top: `calc(48% - 97px + ${dims.cardH / 2 + mobileGap + 20}px)` }}
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.5 }}
