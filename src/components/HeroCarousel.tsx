@@ -66,8 +66,11 @@ export default function HeroCarousel() {
       const pdpTop = vh - bottomMargin - pdpHeight;
       const availableSpace = pdpTop - textBottom - dims.cardH;
       const gap = Math.max(availableSpace / 2, 15);
-      const carouselCenter = textBottom + gap + dims.cardH / 2;
-      setMobileLayout({ carouselCenter, pdpTop, ready: true });
+      const gapAbove = gap * 0.6;
+      const gapBelow = gap * 0.55;
+      const carouselCenter = textBottom + gapAbove + dims.cardH / 2;
+      const adjustedPdpTop = carouselCenter + dims.cardH / 2 + gapBelow;
+      setMobileLayout({ carouselCenter, pdpTop: adjustedPdpTop, ready: true });
     };
     requestAnimationFrame(compute);
     window.addEventListener("resize", compute);
