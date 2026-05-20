@@ -21,8 +21,8 @@ export default function WorkPage() {
         </div>
       </section>
 
-      {/* Identity block */}
-      <div style={{ padding: "0 clamp(20px, 3vw, 40px) clamp(32px, 3vw, 48px)" }}>
+      {/* Identity block — right-aligned like homepage */}
+      <div className="flex justify-end" style={{ padding: "0 clamp(20px, 3vw, 40px) clamp(32px, 3vw, 48px)" }}>
         <WorkIdentity />
       </div>
     </>

@@ -7,13 +7,13 @@ import SocialIcons from "./SocialIcons";
 export default function WorkIdentity() {
   return (
     <motion.div
-      className="flex flex-col items-start gap-2"
+      className="flex flex-col items-end gap-2"
       initial={{ opacity: 0, y: 30 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.8, delay: 0.3 }}
     >
       <AvatarTilt showTooltip />
-      <div className="flex flex-col items-start leading-none">
+      <div className="flex flex-col items-end leading-none">
         <p className="text-sm md:text-lg font-normal tracking-tight text-[#1A1A1A] dark:text-[#f5f5f5] leading-none">
           Dario Tonini
         </p>

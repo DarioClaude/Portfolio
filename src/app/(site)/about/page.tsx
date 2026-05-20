@@ -75,9 +75,14 @@ function PortraitPhoto() {
   const idleRef = useRef<number>(0);
   const isHoveringRef = useRef(false);
   const [portraitWidth, setPortraitWidth] = useState("clamp(100px, 13vw, 180px)");
+  const [isMobilePortrait, setIsMobilePortrait] = useState(false);
 
   useEffect(() => {
-    const check = () => setPortraitWidth(window.innerWidth < 768 ? "70px" : "clamp(100px, 13vw, 180px)");
+    const check = () => {
+      const mobile = window.innerWidth < 768;
+      setIsMobilePortrait(mobile);
+      setPortraitWidth(mobile ? "70px" : "clamp(100px, 13vw, 180px)");
+    };
     check();
     window.addEventListener("resize", check);
     return () => window.removeEventListener("resize", check);
@@ -130,6 +135,7 @@ function PortraitPhoto() {
       initial={{ opacity: 0, scale: 0 }}
       animate={{ opacity: 1, scale: 1 }}
       transition={{ type: "spring", stiffness: 260, damping: 20, delay: 0.3 }}
+      style={isMobilePortrait ? { marginTop: 56 } : undefined}
     >
       <div style={{ perspective: "600px", width: portraitWidth }}>
         <div
@@ -215,12 +221,12 @@ export default function AboutPage() {
                 </p>
               </div>
 
-              <div className="flex flex-col gap-3">
+              <div className="flex flex-col" style={{ gap: 10 }}>
                 <MetaRow icon={<GlobeIcon />} text={t("about.location.line")} />
                 <MetaRow icon={<ClockIcon />} text={time || "—:—:—"} />
               </div>
 
-              <div className="flex items-center gap-4">
+              <div className="flex items-center gap-4" style={{ marginTop: -2 }}>
                 <AvatarTilt />
                 <Button href="mailto:toninidario@yahoo.fr" variant="dark" size="sm">
                   {t("about.email")}
