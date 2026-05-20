@@ -189,7 +189,7 @@ export default function AboutPage() {
   }, []);
 
   return (
-    <section className="relative min-h-screen overflow-hidden bg-white text-[#000]">
+    <section className={`relative bg-white text-[#000] overflow-hidden ${isMobile ? "h-screen" : "min-h-screen"}`}>
       {/* TOP — Bio + Portrait */}
       <div className="relative z-20" style={{ paddingTop: "clamp(96px, 10vw, 120px)", paddingLeft: "clamp(20px, 3vw, 40px)", paddingRight: "clamp(20px, 3vw, 40px)", isolation: "isolate" }}>
         <div className="max-w-[1280px] mx-auto">

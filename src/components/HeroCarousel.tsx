@@ -125,7 +125,7 @@ export default function HeroCarousel() {
       <div
         className="absolute left-1/2"
         style={{
-          top: isMobile ? "40%" : "42%",
+          top: isMobile ? "48%" : "42%",
           transform: "translate(-50%, -50%)",
           width: dims.cardW,
           height: dims.cardH,
@@ -162,7 +162,7 @@ export default function HeroCarousel() {
                   width: dims.cardW,
                   height: dims.cardH,
                   transform: isMobile
-                    ? `rotateX(${angle}deg) translateZ(${dims.radius}px)`
+                    ? `rotateX(${angle}deg) translateZ(${dims.radius}px) rotateX(${-angle - globalRotation}deg)`
                     : `rotateY(${angle}deg) translateZ(${dims.radius}px)`,
                   backfaceVisibility: "visible",
                 }}
@@ -179,32 +179,30 @@ export default function HeroCarousel() {
         </div>
       </div>
 
-      {/* ===== FOOTER BIO — anchored within the container ===== */}
-      <div
-        className="absolute left-0 right-0 flex justify-between items-end pointer-events-none z-10"
-        style={{
-          bottom: isMobile ? "24px" : "clamp(40px, 12vh, 140px)",
-          padding: "0 clamp(20px, 3vw, 40px)",
-        }}
-      >
+      {/* ===== MOBILE: Bio text above carousel, centered ===== */}
+      {isMobile && (
         <motion.div
-          className="pointer-events-auto"
-          style={{ maxWidth: isMobile ? "260px" : "520px" }}
-          initial={{ opacity: 0, y: 30 }}
+          className="absolute left-0 right-0 z-10 text-center pointer-events-auto"
+          style={{ top: "clamp(70px, 12vh, 100px)", padding: "0 24px" }}
+          initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.4 }}
         >
-          <p className="text-sm md:text-lg font-normal leading-snug md:leading-tight tracking-tight text-[#1A1A1A] dark:text-[#f5f5f5] whitespace-pre-line">
+          <p className="text-sm font-normal leading-snug tracking-tight text-[#1A1A1A] dark:text-[#f5f5f5] whitespace-pre-line">
             {renderBold(t("hero.bio"), "text-[#0000ff]")}
           </p>
-          <p className="text-sm md:text-lg font-light leading-snug md:leading-tight tracking-tight text-[#9CA3AF] dark:text-[#71717a] mt-1 md:mt-1.5">
+          <p className="text-sm font-light leading-snug tracking-tight text-[#9CA3AF] dark:text-[#71717a] mt-1">
             {t("hero.sub")}
           </p>
         </motion.div>
+      )}
 
+      {/* ===== MOBILE: Avatar + socials below carousel, right-aligned ===== */}
+      {isMobile && (
         <motion.div
-          className="flex flex-col items-end gap-1 md:gap-2 pointer-events-auto"
-          initial={{ opacity: 0, y: 30 }}
+          className="absolute z-10 pointer-events-auto flex flex-col items-end gap-1"
+          style={{ bottom: "clamp(20px, 4vh, 40px)", right: "24px" }}
+          initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.5 }}
         >
@@ -215,7 +213,47 @@ export default function HeroCarousel() {
           </div>
           <SocialIcons />
         </motion.div>
-      </div>
+      )}
+
+      {/* ===== DESKTOP: Footer bio — original layout ===== */}
+      {!isMobile && (
+        <div
+          className="absolute left-0 right-0 flex justify-between items-end pointer-events-none z-10"
+          style={{
+            bottom: "clamp(40px, 12vh, 140px)",
+            padding: "0 clamp(20px, 3vw, 40px)",
+          }}
+        >
+          <motion.div
+            className="pointer-events-auto"
+            style={{ maxWidth: "520px" }}
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.4 }}
+          >
+            <p className="text-lg font-normal leading-tight tracking-tight text-[#1A1A1A] dark:text-[#f5f5f5] whitespace-pre-line">
+              {renderBold(t("hero.bio"), "text-[#0000ff]")}
+            </p>
+            <p className="text-lg font-light leading-tight tracking-tight text-[#9CA3AF] dark:text-[#71717a] mt-1.5">
+              {t("hero.sub")}
+            </p>
+          </motion.div>
+
+          <motion.div
+            className="flex flex-col items-end gap-2 pointer-events-auto"
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.5 }}
+          >
+            <AvatarTilt showTooltip />
+            <div className="flex flex-col items-end leading-none">
+              <p className="text-sm font-medium text-[#1A1A1A] leading-none">Dario Tonini</p>
+              <p className="text-xs tracking-[0.5px] text-[#9CA3AF] dark:text-[#71717a] leading-none mt-0.5">@dariotni</p>
+            </div>
+            <SocialIcons />
+          </motion.div>
+        </div>
+      )}
     </section>
   );
 }
