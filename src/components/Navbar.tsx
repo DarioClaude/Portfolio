@@ -1,8 +1,9 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import LanguageSelector from "./LanguageSelector";
 import Button from "./ui/Button";
 import { useTranslation } from "@/context/LanguageContext";
@@ -16,87 +17,190 @@ const navLinks = [
 export default function Navbar() {
   const pathname = usePathname();
   const { t } = useTranslation();
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  useEffect(() => {
+    if (menuOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => { document.body.style.overflow = ""; };
+  }, [menuOpen]);
+
+  useEffect(() => {
+    setMenuOpen(false);
+  }, [pathname]);
+
+  const navPadding = "clamp(12px, 1.5vw, 20px) clamp(20px, 3vw, 40px)";
 
   return (
-    <motion.header
-      className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-sm transition-colors duration-500"
-      style={{ borderBottom: "1px solid rgba(0, 0, 0, 0.06)" }}
-      initial={{ opacity: 0, y: -20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.6, delay: 0.1 }}
-    >
-      <div
-        className="max-w-[1800px] mx-auto flex items-center justify-between"
-        style={{ padding: "clamp(12px, 1.5vw, 20px) clamp(20px, 3vw, 40px)" }}
+    <>
+      <motion.header
+        className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-sm transition-colors duration-500"
+        style={{ borderBottom: "1px solid rgba(0, 0, 0, 0.06)" }}
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, delay: 0.1 }}
       >
-        {/* Left side */}
-        <div className="flex items-center" style={{ gap: "clamp(12px, 2vw, 24px)" }}>
-          {/* Mobile: Get in Touch button as "logo" */}
-          {pathname !== "/about" && (
+        <div
+          className="max-w-[1800px] mx-auto flex items-center justify-between"
+          style={{ padding: navPadding }}
+        >
+          {/* Left side */}
+          <div className="flex items-center" style={{ gap: "clamp(12px, 2vw, 24px)" }}>
+            {/* Mobile: Get in Touch button as "logo" */}
             <span className="md:hidden" data-cursor-noinvert>
               <Button href="/about" variant="dark" size="sm">
                 {t("nav.cta")}
               </Button>
             </span>
-          )}
 
-          {/* Desktop: Nav links */}
-          <nav
-            className="hidden md:flex items-center"
-            style={{ gap: "clamp(12px, 2vw, 24px)" }}
-          >
-            {navLinks.map((link) => {
-              const isActive =
-                link.href === "/"
-                  ? pathname === "/"
-                  : pathname.startsWith(link.href);
+            {/* Desktop: Nav links */}
+            <nav
+              className="hidden md:flex items-center"
+              style={{ gap: "clamp(12px, 2vw, 24px)" }}
+            >
+              {navLinks.map((link) => {
+                const isActive =
+                  link.href === "/"
+                    ? pathname === "/"
+                    : pathname.startsWith(link.href);
 
-              return (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  data-cursor-hover
-                  className="relative group"
-                >
-                  <span
-                    className="transition-colors"
-                    style={{
-                      fontWeight: 400,
-                      fontSize: "clamp(13px, 1.1vw, 16px)",
-                      color: isActive ? "#0000ff" : "#6B7280",
-                    }}
+                return (
+                  <Link
+                    key={link.href}
+                    href={link.href}
+                    data-cursor-hover
+                    className="relative group"
                   >
-                    {t(link.key)}
-                  </span>
-                  <span className="absolute -bottom-0.5 left-0 h-px bg-[#0000ff] w-0 group-hover:w-full transition-all duration-300" />
-                </Link>
-              );
-            })}
-          </nav>
+                    <span
+                      className="transition-colors"
+                      style={{
+                        fontWeight: 400,
+                        fontSize: "clamp(13px, 1.1vw, 16px)",
+                        color: isActive ? "#0000ff" : "#6B7280",
+                      }}
+                    >
+                      {t(link.key)}
+                    </span>
+                    <span className="absolute -bottom-0.5 left-0 h-px bg-[#0000ff] w-0 group-hover:w-full transition-all duration-300" />
+                  </Link>
+                );
+              })}
+            </nav>
 
-          {/* Desktop: Language selector */}
-          <span className="hidden md:inline">
-            <LanguageSelector />
-          </span>
-        </div>
-
-        {/* Right side */}
-        <div className="flex items-center gap-3">
-          {/* Mobile: Language selector */}
-          <span className="md:hidden">
-            <LanguageSelector />
-          </span>
-
-          {/* Desktop: CTA */}
-          {pathname !== "/about" && (
-            <span className="hidden md:inline" data-cursor-noinvert>
-              <Button href="/about" variant="dark" size="sm">
-                {t("nav.cta")}
-              </Button>
+            {/* Desktop: Language selector */}
+            <span className="hidden md:inline">
+              <LanguageSelector />
             </span>
-          )}
+          </div>
+
+          {/* Right side */}
+          <div className="flex items-center gap-3">
+            {/* Mobile: Language selector + Hamburger */}
+            <span className="md:hidden">
+              <LanguageSelector />
+            </span>
+            <button
+              className="md:hidden flex flex-col justify-center items-center w-8 h-8"
+              onClick={() => setMenuOpen(true)}
+              aria-label="Open menu"
+            >
+              <span className="block w-[18px] h-[1.5px] bg-[#1A1A1A]" />
+              <span className="block w-[18px] h-[1.5px] bg-[#1A1A1A] mt-[5px]" />
+              <span className="block w-[18px] h-[1.5px] bg-[#1A1A1A] mt-[5px]" />
+            </button>
+
+            {/* Desktop: CTA */}
+            {pathname !== "/about" && (
+              <span className="hidden md:inline" data-cursor-noinvert>
+                <Button href="/about" variant="dark" size="sm">
+                  {t("nav.cta")}
+                </Button>
+              </span>
+            )}
+          </div>
         </div>
-      </div>
-    </motion.header>
+      </motion.header>
+
+      {/* ===== Mobile Menu Overlay ===== */}
+      <AnimatePresence>
+        {menuOpen && (
+          <motion.div
+            className="fixed inset-0 z-[60] bg-white md:hidden flex flex-col"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.25 }}
+          >
+            {/* Menu header — mirrors navbar position */}
+            <div
+              className="flex items-center justify-between"
+              style={{ padding: navPadding }}
+            >
+              <span data-cursor-noinvert>
+                <Button href="/about" variant="dark" size="sm">
+                  {t("nav.cta")}
+                </Button>
+              </span>
+              <button
+                onClick={() => setMenuOpen(false)}
+                className="w-8 h-8 flex items-center justify-center"
+                aria-label="Close menu"
+              >
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1A1A1A" strokeWidth="1.8" strokeLinecap="round">
+                  <line x1="6" y1="6" x2="18" y2="18" />
+                  <line x1="18" y1="6" x2="6" y2="18" />
+                </svg>
+              </button>
+            </div>
+
+            {/* Nav links — large, stacked */}
+            <nav className="flex-1 flex flex-col px-6 pt-8" style={{ gap: 12 }}>
+              {navLinks.map((link) => {
+                const isActive =
+                  link.href === "/"
+                    ? pathname === "/"
+                    : pathname.startsWith(link.href);
+
+                return (
+                  <Link
+                    key={link.href}
+                    href={link.href}
+                    onClick={() => setMenuOpen(false)}
+                    className="block"
+                  >
+                    <span
+                      className="font-sans"
+                      style={{
+                        fontSize: 28,
+                        fontWeight: isActive ? 700 : 400,
+                        color: isActive ? "#1A1A1A" : "#9CA3AF",
+                        letterSpacing: "-0.01em",
+                      }}
+                    >
+                      {t(link.key)}
+                      {!isActive && (
+                        <span className="ml-1.5 text-[#9CA3AF]" style={{ fontSize: 22 }}>›</span>
+                      )}
+                    </span>
+                  </Link>
+                );
+              })}
+            </nav>
+
+            {/* Bottom CTA */}
+            <div style={{ padding: "0 24px 32px" }}>
+              <div onClick={() => setMenuOpen(false)}>
+                <Button href="/about" variant="dark" size="sm">
+                  {t("nav.cta")}
+                </Button>
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </>
   );
 }
