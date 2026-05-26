@@ -62,7 +62,7 @@ export default function HeroCarousel() {
       const textTop = navbarHeight + 12;
       const textBottom = textTop + bioHeight;
       const bottomPad = 16;
-      const carouselCenter = (textBottom + vh - bottomPad) / 2;
+      const carouselCenter = (textBottom + vh - bottomPad) / 2 - 40;
       setMobileCarouselCenter(carouselCenter);
     };
     requestAnimationFrame(compute);
@@ -199,7 +199,7 @@ export default function HeroCarousel() {
         <motion.div
           ref={mobileBioRef}
           className="absolute left-0 right-0 z-10 pointer-events-auto"
-          style={{ top: 92, padding: "0 24px" }}
+          style={{ top: 97, padding: "0 24px" }}
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.4 }}
