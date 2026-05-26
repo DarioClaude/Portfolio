@@ -32,8 +32,9 @@ export default function ProjectCard({ project, index }: Props) {
     >
       <Link
         href={`/work/${project.slug}`}
-        className="block group"
+        className="block group select-none"
         data-cursor-hover
+        style={{ WebkitTapHighlightColor: "transparent", WebkitTouchCallout: "none" } as React.CSSProperties}
       >
         <div className="relative rounded overflow-hidden aspect-[3/4] border border-black/10">
           {project.imagePath ? (
