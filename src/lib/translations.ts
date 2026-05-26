@@ -62,7 +62,8 @@ export const translations: Record<Lang, Record<string, string>> = {
 
     // Work
     "work.title": "WORK",
-    "work.copyright": "©21 — 26",
+    "work.copyright": "Ces photos sont la propriété de Dario Tonini et ne peuvent être réutilisées sans autorisation.",
+    "work.privacy": "Politique de confidentialité",
 
     // Project detail
     "project.category": "[CATÉGORIE]",
@@ -164,7 +165,8 @@ export const translations: Record<Lang, Record<string, string>> = {
 
     // Work
     "work.title": "WORK",
-    "work.copyright": "©21 — 26",
+    "work.copyright": "These photos are the property of Dario Tonini and may not be reused without permission.",
+    "work.privacy": "Privacy Policy",
 
     // Project detail
     "project.category": "[CATEGORY]",
@@ -266,7 +268,8 @@ export const translations: Record<Lang, Record<string, string>> = {
 
     // Work
     "work.title": "TRABAJO",
-    "work.copyright": "©21 — 26",
+    "work.copyright": "Estas fotos son propiedad de Dario Tonini y no pueden ser reutilizadas sin autorización.",
+    "work.privacy": "Política de privacidad",
 
     // Project detail
     "project.category": "[CATEGORÍA]",
