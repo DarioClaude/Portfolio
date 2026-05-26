@@ -6,6 +6,8 @@ import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import LanguageSelector from "./LanguageSelector";
 import Button from "./ui/Button";
+import AvatarTilt from "./AvatarTilt";
+import SocialIcons from "./SocialIcons";
 import { useTranslation } from "@/context/LanguageContext";
 
 const navLinks = [
@@ -200,13 +202,18 @@ export default function Navbar() {
               })}
             </nav>
 
-            {/* Bottom CTA */}
-            <div style={{ padding: "0 24px 36px" }}>
-              <div onClick={() => setMenuOpen(false)}>
-                <Button href="/about" variant="dark" size="sm">
-                  {t("nav.cta")}
-                </Button>
+            {/* Bottom — identity block (pdp) */}
+            <div className="flex flex-col items-start gap-2" style={{ padding: "0 24px 36px" }}>
+              <AvatarTilt />
+              <div className="flex flex-col items-start leading-none">
+                <p className="text-sm font-normal tracking-tight text-[#1A1A1A] leading-none">
+                  Dario Tonini
+                </p>
+                <p className="text-xs tracking-[0.5px] text-[#9CA3AF] leading-none mt-0.5">
+                  @dariotni
+                </p>
               </div>
+              <SocialIcons />
             </div>
           </motion.div>
         )}
