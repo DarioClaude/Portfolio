@@ -162,7 +162,7 @@ export default function Navbar() {
               className="flex items-center justify-between"
               style={{ padding }}
             >
-              <span data-cursor-noinvert>
+              <span data-cursor-noinvert onClick={() => setMenuOpen(false)}>
                 <Button href="/about" variant="dark" size="sm">
                   {t("nav.cta")}
                 </Button>
