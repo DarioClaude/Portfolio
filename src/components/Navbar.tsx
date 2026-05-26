@@ -21,6 +21,7 @@ export default function Navbar() {
   const { t } = useTranslation();
   const [menuOpen, setMenuOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
     const check = () => setIsMobile(window.innerWidth < 768);
@@ -28,6 +29,13 @@ export default function Navbar() {
     window.addEventListener("resize", check);
     return () => window.removeEventListener("resize", check);
   }, []);
+
+  useEffect(() => {
+    if (!isMobile) return;
+    const onScroll = () => setScrolled(window.scrollY > 10);
+    window.addEventListener("scroll", onScroll, true);
+    return () => window.removeEventListener("scroll", onScroll, true);
+  }, [isMobile]);
 
   useEffect(() => {
     if (menuOpen) {
@@ -49,8 +57,11 @@ export default function Navbar() {
   return (
     <>
       <motion.header
-        className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-sm transition-colors duration-500"
-        style={{ borderBottom: "1px solid rgba(0, 0, 0, 0.06)" }}
+        className="fixed top-0 left-0 right-0 z-50 backdrop-blur-sm transition-all duration-500"
+        style={{
+          borderBottom: "1px solid rgba(0, 0, 0, 0.06)",
+          background: isMobile && scrolled ? "rgba(255,255,255,0.6)" : "rgba(255,255,255,0.8)",
+        }}
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, delay: 0.1 }}

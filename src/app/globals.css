@@ -34,6 +34,12 @@ body {
     overscroll-behavior: none;
     height: 100dvh;
   }
+
+  body.mobile-scroll-allowed,
+  body.mobile-scroll-allowed html {
+    overflow: auto !important;
+    height: auto;
+  }
 }
 
 @media (min-width: 769px) {
