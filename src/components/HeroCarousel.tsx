@@ -33,12 +33,12 @@ export default function HeroCarousel() {
   const [isMobile, setIsMobile] = useState(false);
   const [dims, setDims] = useState({ cardW: 380, cardH: 253, radius: 430 });
   const [isHoveringWheel, setIsHoveringWheel] = useState(false);
-  const [mobileLayout, setMobileLayout] = useState({ carouselCenter: 0, pdpTop: 0, ready: false });
+  const [mobileCarouselCenter, setMobileCarouselCenter] = useState(0);
   const autoRotateRef = useRef(true);
   const dragStartX = useRef(0);
   const dragStartRotation = useRef(0);
   const sectionRef = useRef<HTMLElement>(null);
-  const mobileTextRef = useRef<HTMLDivElement>(null);
+  const mobileBioRef = useRef<HTMLDivElement>(null);
   const { t } = useTranslation();
 
   useEffect(() => {
@@ -56,21 +56,13 @@ export default function HeroCarousel() {
   useEffect(() => {
     if (!isMobile) return;
     const compute = () => {
-      if (!mobileTextRef.current) return;
       const vh = window.innerHeight;
-      const textTop = Math.max(70, Math.min(0.12 * vh, 100));
-      const textHeight = mobileTextRef.current.offsetHeight;
-      const textBottom = textTop + textHeight;
-      const pdpHeight = 40;
-      const bottomMargin = textTop;
-      const pdpTop = vh - bottomMargin - pdpHeight;
-      const availableSpace = pdpTop - textBottom - dims.cardH;
-      const gap = Math.max(availableSpace / 2, 15);
-      const gapAbove = gap * 0.6;
-      const gapBelow = gap * 0.55;
-      const carouselCenter = textBottom + gapAbove + dims.cardH / 2;
-      const adjustedPdpTop = carouselCenter + dims.cardH / 2 + gapBelow;
-      setMobileLayout({ carouselCenter, pdpTop: adjustedPdpTop, ready: true });
+      const navbarBottom = 56;
+      const bioHeight = mobileBioRef.current?.offsetHeight ?? 90;
+      const bottomPad = Math.max(20, vh * 0.03);
+      const bioTop = vh - bottomPad - bioHeight;
+      const carouselCenter = (navbarBottom + bioTop) / 2;
+      setMobileCarouselCenter(carouselCenter);
     };
     requestAnimationFrame(compute);
     window.addEventListener("resize", compute);
@@ -151,7 +143,7 @@ export default function HeroCarousel() {
       <div
         className="absolute left-1/2"
         style={{
-          top: isMobile ? `${mobileLayout.carouselCenter}px` : "42%",
+          top: isMobile ? `${mobileCarouselCenter}px` : "42%",
           transform: "translate(-50%, -50%)",
           width: dims.cardW,
           height: dims.cardH,
@@ -201,42 +193,22 @@ export default function HeroCarousel() {
         </div>
       </div>
 
-      {/* ===== MOBILE: Bio text above carousel, centered ===== */}
+      {/* ===== MOBILE: Bio text at bottom, left-aligned (Marlay-style) ===== */}
       {isMobile && (
         <motion.div
-          ref={mobileTextRef}
-          className="absolute left-0 right-0 z-10 text-center pointer-events-auto"
-          style={{ top: "clamp(70px, 12vh, 100px)", padding: "0 24px" }}
+          ref={mobileBioRef}
+          className="absolute left-0 right-0 z-10 pointer-events-auto"
+          style={{ bottom: "clamp(20px, 3vh, 36px)", padding: "0 24px" }}
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.4 }}
         >
-          <p className="text-sm font-normal leading-snug tracking-tight text-[#1A1A1A] dark:text-[#f5f5f5] whitespace-pre-line">
+          <p className="text-base font-normal leading-snug tracking-tight text-[#1A1A1A] dark:text-[#f5f5f5]">
             {renderBold(t("hero.bio"), "text-[#0000ff]")}
           </p>
-          <p className="text-sm font-light leading-snug tracking-tight text-[#9CA3AF] dark:text-[#71717a] mt-1">
+          <p className="text-base font-light leading-snug tracking-tight text-[#9CA3AF] dark:text-[#71717a] mt-1.5">
             {t("hero.sub")}
           </p>
-        </motion.div>
-      )}
-
-      {/* ===== MOBILE: Avatar + name + socials centered below carousel ===== */}
-      {isMobile && (
-        <motion.div
-          className="absolute left-0 right-0 z-10 flex justify-center pointer-events-auto"
-          style={{ top: `${mobileLayout.pdpTop}px` }}
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.5 }}
-        >
-          <div className="flex items-center gap-2">
-            <AvatarTilt />
-            <div className="flex flex-col leading-none">
-              <p className="text-sm font-normal tracking-tight text-[#1A1A1A] leading-none">Dario Tonini</p>
-              <p className="text-xs tracking-[0.5px] text-[#9CA3AF] leading-none mt-0.5">@dariotni</p>
-            </div>
-            <SocialIcons />
-          </div>
         </motion.div>
       )}
 
