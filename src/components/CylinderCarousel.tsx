@@ -97,7 +97,7 @@ function RotatingCylinder({ textures, touchBoostRef }: { textures: THREE.Texture
     <group
       ref={groupRef}
       rotation={[-0.06, 0.38, 0.017]}
-      position={isMobile ? [1.2, -1.7, 0] : [2.8, -2.3, 0]}
+      position={isMobile ? [1.2, -1.75, 0] : [2.8, -2.3, 0]}
       scale={isMobile ? 0.9 : 1}
     >
       {textures.map((tex, i) => (
