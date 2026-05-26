@@ -62,7 +62,7 @@ export const translations: Record<Lang, Record<string, string>> = {
 
     // Work
     "work.title": "WORK",
-    "work.copyright": "Ces photos sont la propriété de Dario Tonini et ne peuvent être réutilisées sans autorisation.",
+    "work.copyright": "Tous droits réservés. Toutes les photographies de ce site sont la propriété exclusive de Dario Tonini et ne peuvent être reproduites, distribuées ou utilisées sous quelque forme que ce soit sans consentement écrit préalable.",
     "work.privacy": "Politique de confidentialité",
 
     // Project detail
@@ -190,7 +190,7 @@ export const translations: Record<Lang, Record<string, string>> = {
 
     // Work
     "work.title": "WORK",
-    "work.copyright": "These photos are the property of Dario Tonini and may not be reused without permission.",
+    "work.copyright": "All rights reserved. All photographs on this site are the exclusive property of Dario Tonini and may not be reproduced, distributed, or used in any form without prior written consent.",
     "work.privacy": "Privacy Policy",
 
     // Project detail
@@ -318,7 +318,7 @@ export const translations: Record<Lang, Record<string, string>> = {
 
     // Work
     "work.title": "TRABAJO",
-    "work.copyright": "Estas fotos son propiedad de Dario Tonini y no pueden ser reutilizadas sin autorización.",
+    "work.copyright": "Todos los derechos reservados. Todas las fotografías de este sitio son propiedad exclusiva de Dario Tonini y no pueden ser reproducidas, distribuidas ni utilizadas de ninguna forma sin el consentimiento previo por escrito.",
     "work.privacy": "Política de privacidad",
 
     // Project detail
