@@ -163,8 +163,8 @@ export default function Navbar() {
               style={{ padding }}
             >
               <span data-cursor-noinvert>
-                <Button href={pathname === "/about" ? "/" : "/about"} variant="dark" size="sm">
-                  {pathname === "/about" ? t("nav.home") : t("nav.cta")}
+                <Button href="/about" variant="dark" size="sm">
+                  {t("nav.cta")}
                 </Button>
               </span>
               <button
