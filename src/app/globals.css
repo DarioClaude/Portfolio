@@ -28,6 +28,17 @@ body {
   overflow-x: hidden;
 }
 
+@media (max-width: 767px) {
+  html, body {
+    overflow: hidden !important;
+    overscroll-behavior: none;
+    height: 100dvh;
+    position: fixed;
+    width: 100%;
+    touch-action: none;
+  }
+}
+
 @media (min-width: 769px) {
   body {
     min-width: 1024px;

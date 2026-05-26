@@ -159,7 +159,7 @@ export default function HeroCarousel() {
             transition: autoRotateRef.current
               ? "none"
               : "transform 0.8s cubic-bezier(0.23, 1, 0.32, 1)",
-            touchAction: "pan-y",
+            touchAction: isMobile ? "none" : "pan-y",
           }}
           onMouseEnter={() => setIsHoveringWheel(true)}
           onMouseLeave={() => setIsHoveringWheel(false)}
