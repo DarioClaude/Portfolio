@@ -206,9 +206,8 @@ export default function HeroCarousel() {
         >
           <p className="text-[17px] font-normal leading-snug tracking-tight text-[#1A1A1A] dark:text-[#f5f5f5]">
             {renderBold(t("hero.bio"), "text-[#0000ff]")}
-          </p>
-          <p className="text-[17px] font-light leading-snug tracking-tight text-[#6B7280] dark:text-[#a1a1aa] mt-1.5">
-            {t("hero.sub")}
+            <br />
+            <span className="text-[#6B7280] dark:text-[#a1a1aa]">{t("hero.sub")}</span>
           </p>
         </motion.div>
       )}
@@ -231,9 +230,8 @@ export default function HeroCarousel() {
           >
             <p className="text-lg font-normal leading-tight tracking-tight text-[#1A1A1A] dark:text-[#f5f5f5] whitespace-pre-line">
               {renderBold(t("hero.bio"), "text-[#0000ff]")}
-            </p>
-            <p className="text-lg font-light leading-tight tracking-tight text-[#6B7280] dark:text-[#a1a1aa] mt-1.5">
-              {t("hero.sub")}
+              <br />
+              <span className="text-[#6B7280] dark:text-[#a1a1aa]">{t("hero.sub")}</span>
             </p>
           </motion.div>
 
