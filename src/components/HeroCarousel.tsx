@@ -62,7 +62,7 @@ export default function HeroCarousel() {
       const textTop = navbarHeight + 12;
       const textBottom = textTop + bioHeight;
       const bottomPad = 16;
-      const carouselCenter = (textBottom + vh - bottomPad) / 2 - 40;
+      const carouselCenter = (textBottom + vh - bottomPad) / 2 - 70;
       setMobileCarouselCenter(carouselCenter);
     };
     requestAnimationFrame(compute);
