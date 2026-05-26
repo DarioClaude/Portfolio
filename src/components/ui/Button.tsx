@@ -52,11 +52,11 @@ export default function Button({
 
   const variants: Record<Variant, string> = {
     primary:
-      "bg-[#0000ff] text-white shadow-sm hover:shadow-lg",
+      "btn-cta btn-primary bg-[#0000ff] text-white shadow-sm",
     outline:
-      "border-2 border-[#0000ff] text-[#0000ff] bg-transparent hover:bg-[#0000ff] hover:text-white",
+      "btn-cta btn-outline border-2 border-[#0000ff] text-[#0000ff] bg-transparent",
     dark:
-      "bg-[#1A1A1A] text-white shadow-sm hover:shadow-lg hover:bg-[#0000ff]",
+      "btn-cta btn-dark bg-[#1A1A1A] text-white shadow-sm",
   };
 
   const base =
@@ -72,15 +72,13 @@ export default function Button({
     <>
       {/* Label — perfectly centered by default; slides left on hover to open
           a gap for the arrow. */}
-      <span className="inline-block transition-transform duration-500 ease-out group-hover:-translate-x-3">
+      <span className="btn-cta-label inline-block transition-transform duration-500 ease-out">
         {children}
       </span>
 
-      {/* Arrow — absolutely positioned flush with right padding, clipped by
-          overflow-hidden when translated off-stage. */}
       <span
         aria-hidden
-        className={`pointer-events-none absolute ${arrowRight[size]} opacity-0 translate-x-6 transition-all duration-500 ease-out group-hover:opacity-100 group-hover:translate-x-0`}
+        className={`btn-cta-arrow pointer-events-none absolute ${arrowRight[size]} opacity-0 translate-x-6 transition-all duration-500 ease-out`}
       >
         →
       </span>

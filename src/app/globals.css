@@ -118,6 +118,32 @@ body {
   }
 }
 
+/* Button hover — only on real hover devices (no sticky hover on mobile) */
+@media (hover: hover) {
+  .btn-cta.btn-primary:hover,
+  .btn-cta.btn-dark:hover {
+    box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  }
+
+  .btn-cta.btn-dark:hover {
+    background-color: #0000ff;
+  }
+
+  .btn-cta.btn-outline:hover {
+    background-color: #0000ff;
+    color: #fff;
+  }
+
+  .btn-cta:hover .btn-cta-label {
+    transform: translateX(-12px);
+  }
+
+  .btn-cta:hover .btn-cta-arrow {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
 @layer utilities {
   .text-balance {
     text-wrap: balance;
