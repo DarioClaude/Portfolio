@@ -18,6 +18,14 @@ export default function Navbar() {
   const pathname = usePathname();
   const { t } = useTranslation();
   const [menuOpen, setMenuOpen] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768);
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, []);
 
   useEffect(() => {
     if (menuOpen) {
@@ -32,7 +40,9 @@ export default function Navbar() {
     setMenuOpen(false);
   }, [pathname]);
 
-  const navPadding = "clamp(12px, 1.5vw, 20px) clamp(20px, 3vw, 40px)";
+  const padding = isMobile
+    ? "22px 20px"
+    : "clamp(12px, 1.5vw, 20px) clamp(20px, 3vw, 40px)";
 
   return (
     <>
@@ -45,7 +55,7 @@ export default function Navbar() {
       >
         <div
           className="max-w-[1800px] mx-auto flex items-center justify-between"
-          style={{ padding: navPadding }}
+          style={{ padding }}
         >
           {/* Left side */}
           <div className="flex items-center" style={{ gap: "clamp(12px, 2vw, 24px)" }}>
@@ -134,10 +144,10 @@ export default function Navbar() {
             exit={{ opacity: 0 }}
             transition={{ duration: 0.25 }}
           >
-            {/* Menu header — mirrors navbar position */}
+            {/* Menu header — mirrors navbar */}
             <div
               className="flex items-center justify-between"
-              style={{ padding: navPadding }}
+              style={{ padding }}
             >
               <span data-cursor-noinvert>
                 <Button href="/about" variant="dark" size="sm">
@@ -156,8 +166,8 @@ export default function Navbar() {
               </button>
             </div>
 
-            {/* Nav links — large, stacked */}
-            <nav className="flex-1 flex flex-col px-6 pt-8" style={{ gap: 12 }}>
+            {/* Nav links — massive and airy */}
+            <nav className="flex-1 flex flex-col px-6 pt-10" style={{ gap: 20 }}>
               {navLinks.map((link) => {
                 const isActive =
                   link.href === "/"
@@ -174,15 +184,15 @@ export default function Navbar() {
                     <span
                       className="font-sans"
                       style={{
-                        fontSize: 28,
+                        fontSize: 38,
                         fontWeight: isActive ? 700 : 400,
                         color: isActive ? "#1A1A1A" : "#9CA3AF",
-                        letterSpacing: "-0.01em",
+                        letterSpacing: "-0.02em",
                       }}
                     >
                       {t(link.key)}
                       {!isActive && (
-                        <span className="ml-1.5 text-[#9CA3AF]" style={{ fontSize: 22 }}>›</span>
+                        <span className="ml-2 text-[#9CA3AF]" style={{ fontSize: 28 }}>›</span>
                       )}
                     </span>
                   </Link>
@@ -191,7 +201,7 @@ export default function Navbar() {
             </nav>
 
             {/* Bottom CTA */}
-            <div style={{ padding: "0 24px 32px" }}>
+            <div style={{ padding: "0 24px 36px" }}>
               <div onClick={() => setMenuOpen(false)}>
                 <Button href="/about" variant="dark" size="sm">
                   {t("nav.cta")}

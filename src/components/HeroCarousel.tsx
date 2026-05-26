@@ -57,11 +57,12 @@ export default function HeroCarousel() {
     if (!isMobile) return;
     const compute = () => {
       const vh = window.innerHeight;
-      const navbarBottom = 56;
-      const bioHeight = mobileBioRef.current?.offsetHeight ?? 90;
-      const bottomPad = Math.max(20, vh * 0.03);
-      const bioTop = vh - bottomPad - bioHeight;
-      const carouselCenter = (navbarBottom + bioTop) / 2;
+      const navbarHeight = 80;
+      const bioHeight = mobileBioRef.current?.offsetHeight ?? 100;
+      const textTop = navbarHeight + 12;
+      const textBottom = textTop + bioHeight;
+      const bottomPad = 16;
+      const carouselCenter = (textBottom + vh - bottomPad) / 2;
       setMobileCarouselCenter(carouselCenter);
     };
     requestAnimationFrame(compute);
@@ -136,7 +137,7 @@ export default function HeroCarousel() {
   }, [globalRotation]);
 
   return (
-    <section ref={sectionRef} className="relative w-full h-screen overflow-hidden">
+    <section ref={sectionRef} className="relative w-full h-screen overflow-hidden" style={isMobile ? { height: '100dvh', overflowY: 'hidden' } : undefined}>
       <ProjectCursorPill visible={isHoveringWheel} />
 
       {/* ===== CAROUSEL — centered within the max-w container ===== */}
@@ -193,20 +194,20 @@ export default function HeroCarousel() {
         </div>
       </div>
 
-      {/* ===== MOBILE: Bio text at bottom, left-aligned (Marlay-style) ===== */}
+      {/* ===== MOBILE: Bio text above carousel, left-aligned, bigger ===== */}
       {isMobile && (
         <motion.div
           ref={mobileBioRef}
           className="absolute left-0 right-0 z-10 pointer-events-auto"
-          style={{ bottom: "clamp(20px, 3vh, 36px)", padding: "0 24px" }}
+          style={{ top: 92, padding: "0 24px" }}
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.4 }}
         >
-          <p className="text-base font-normal leading-snug tracking-tight text-[#1A1A1A] dark:text-[#f5f5f5]">
+          <p className="text-[17px] font-normal leading-snug tracking-tight text-[#1A1A1A] dark:text-[#f5f5f5]">
             {renderBold(t("hero.bio"), "text-[#0000ff]")}
           </p>
-          <p className="text-base font-light leading-snug tracking-tight text-[#9CA3AF] dark:text-[#71717a] mt-1.5">
+          <p className="text-[17px] font-light leading-snug tracking-tight text-[#9CA3AF] dark:text-[#71717a] mt-1.5">
             {t("hero.sub")}
           </p>
         </motion.div>
