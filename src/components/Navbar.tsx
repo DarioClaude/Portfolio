@@ -72,10 +72,10 @@ export default function Navbar() {
         >
           {/* Left side */}
           <div className="flex items-center" style={{ gap: "clamp(12px, 2vw, 24px)" }}>
-            {/* Mobile: Get in Touch button as "logo" */}
+            {/* Mobile: CTA button as "logo" — Home on about page */}
             <span className="md:hidden" data-cursor-noinvert>
-              <Button href="/about" variant="dark" size="sm">
-                {t("nav.cta")}
+              <Button href={pathname === "/about" ? "/" : "/about"} variant="dark" size="sm">
+                {pathname === "/about" ? t("nav.home") : t("nav.cta")}
               </Button>
             </span>
 
@@ -163,8 +163,8 @@ export default function Navbar() {
               style={{ padding }}
             >
               <span data-cursor-noinvert>
-                <Button href="/about" variant="dark" size="sm">
-                  {t("nav.cta")}
+                <Button href={pathname === "/about" ? "/" : "/about"} variant="dark" size="sm">
+                  {pathname === "/about" ? t("nav.home") : t("nav.cta")}
                 </Button>
               </span>
               <button
