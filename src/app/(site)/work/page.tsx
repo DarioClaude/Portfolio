@@ -25,7 +25,7 @@ export default function WorkPage() {
       </section>
 
       {/* Footer — copyright left, identity right */}
-      <div className="flex justify-between items-start" style={{ padding: "0 clamp(20px, 3vw, 40px) clamp(32px, 3vw, 48px)" }}>
+      <div className="flex justify-between items-end" style={{ padding: "0 clamp(20px, 3vw, 40px) clamp(32px, 3vw, 48px)" }}>
         <WorkCopyright />
         <WorkIdentity />
       </div>
