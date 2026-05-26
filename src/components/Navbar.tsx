@@ -60,7 +60,7 @@ export default function Navbar() {
         className="fixed top-0 left-0 right-0 z-50 backdrop-blur-sm transition-all duration-500"
         style={{
           borderBottom: "1px solid rgba(0, 0, 0, 0.06)",
-          background: isMobile && scrolled ? "rgba(255,255,255,0.6)" : "rgba(255,255,255,0.8)",
+          background: isMobile && scrolled ? "rgba(255,255,255,0.72)" : "rgba(255,255,255,0.8)",
         }}
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}

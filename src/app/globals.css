@@ -29,16 +29,11 @@ body {
 }
 
 @media (max-width: 767px) {
-  html, body {
-    overflow: hidden !important;
+  html:not(.mobile-scroll-allowed),
+  body:not(.mobile-scroll-allowed) {
+    overflow: hidden;
     overscroll-behavior: none;
     height: 100dvh;
-  }
-
-  body.mobile-scroll-allowed,
-  body.mobile-scroll-allowed html {
-    overflow: auto !important;
-    height: auto;
   }
 }
 
