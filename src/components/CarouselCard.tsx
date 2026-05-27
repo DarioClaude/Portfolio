@@ -75,7 +75,7 @@ export default function CarouselCard({ slug, title, imagePath, cardW }: Props) {
         data-protected
       >
         <Link
-          href={`/work/${slug}`}
+          href="/work"
           className="block w-full h-full relative select-none"
           draggable={false}
         >
