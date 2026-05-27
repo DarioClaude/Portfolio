@@ -9,7 +9,7 @@ export const translations: Record<Lang, Record<string, string>> = {
     "nav.cta": "Me contacter",
 
     // Hero
-    "hero.bio": "Salut, je suis <bold>Dario</bold>, photographe français\nbasé dans le Sud, <bold>disponible pour vos projets</bold>.",
+    "hero.bio": "<bold>Dario</bold>, photographe français\nbasé dans le Sud, <bold>disponible pour vos projets</bold>.",
     "hero.sub": "Tout part d'un clic. Discutons ensemble.",
 
     // About

@@ -17,7 +17,7 @@ function getFluidDims(containerW: number) {
   if (containerW < 768) {
     const t = Math.min(Math.max((containerW - 320) / 448, 0), 1);
     const cardW = Math.round(143 + t * 44);
-    const cardH = Math.round(cardW / 1.5);
+    const cardH = Math.round(cardW / 1.3);
     const radius = Math.round(cardW * 1.04);
     return { cardW, cardH, radius };
   }
@@ -59,7 +59,7 @@ export default function HeroCarousel() {
       const vh = window.innerHeight;
       const navbarHeight = 80;
       const bioHeight = mobileBioRef.current?.offsetHeight ?? 100;
-      const textTop = navbarHeight + 12;
+      const textTop = navbarHeight + 23;
       const textBottom = textTop + bioHeight;
       const bottomPad = 16;
       const carouselCenter = (textBottom + vh - bottomPad) / 2 - 70;
@@ -199,7 +199,7 @@ export default function HeroCarousel() {
         <motion.div
           ref={mobileBioRef}
           className="absolute left-0 right-0 z-10 pointer-events-auto"
-          style={{ top: 97, padding: "0 24px" }}
+          style={{ top: 103, padding: "0 24px" }}
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.4 }}
