@@ -11,7 +11,7 @@ interface Props {
   cardW: number;
 }
 
-export default function CarouselCard({ slug, title, imagePath, cardW }: Props) {
+export default function CarouselCard({ title, imagePath, cardW }: Props) {
   const wrapperRef = useRef<HTMLDivElement>(null);
   const innerRef = useRef<HTMLDivElement>(null);
   const tiltRef = useRef({ rotateX: 0, rotateY: 0 });
