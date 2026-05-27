@@ -142,7 +142,7 @@ export default function CylinderCarousel() {
 
   const handleTouchMove = useCallback((e: React.TouchEvent) => {
     const dx = e.touches[0].clientX - lastTouchX.current;
-    touchBoostRef.current += dx * 0.0004;
+    touchBoostRef.current -= dx * 0.0004;
     lastTouchX.current = e.touches[0].clientX;
   }, []);
 
