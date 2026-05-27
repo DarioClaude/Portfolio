@@ -16,7 +16,7 @@ const ANGLE_STEP = 360 / CARD_COUNT; // 60deg
 function getFluidDims(containerW: number) {
   if (containerW < 768) {
     const t = Math.min(Math.max((containerW - 320) / 448, 0), 1);
-    const cardW = Math.round(143 + t * 44);
+    const cardW = Math.round(149 + t * 44);
     const cardH = Math.round(cardW / 1.3);
     const radius = Math.round(cardW * 1.04);
     return { cardW, cardH, radius };
@@ -34,6 +34,7 @@ export default function HeroCarousel() {
   const [dims, setDims] = useState({ cardW: 380, cardH: 253, radius: 430 });
   const [isHoveringWheel, setIsHoveringWheel] = useState(false);
   const [mobileCarouselCenter, setMobileCarouselCenter] = useState(0);
+  const [mobileBioTop, setMobileBioTop] = useState(103);
   const autoRotateRef = useRef(true);
   const dragStartX = useRef(0);
   const dragStartRotation = useRef(0);
@@ -57,13 +58,20 @@ export default function HeroCarousel() {
     if (!isMobile) return;
     const compute = () => {
       const vh = window.innerHeight;
-      const navbarHeight = 80;
+      const navbarBottom = 80;
       const bioHeight = mobileBioRef.current?.offsetHeight ?? 100;
-      const textTop = navbarHeight + 23;
-      const textBottom = textTop + bioHeight;
-      const bottomPad = 16;
-      const carouselCenter = (textBottom + vh - bottomPad) / 2 - 70;
+      const pdpHeight = 90;
+      const bottomPad = 24;
+      const carouselH = dims.cardH;
+
+      const availableBelow = vh - navbarBottom - pdpHeight - bottomPad;
+      const carouselCenter = navbarBottom + (availableBelow / 2) + (carouselH * 0.05);
       setMobileCarouselCenter(carouselCenter);
+
+      const carouselTop = carouselCenter - carouselH / 2;
+      const gap = carouselTop - navbarBottom;
+      const textTop = navbarBottom + (gap - bioHeight) / 2;
+      setMobileBioTop(textTop);
     };
     requestAnimationFrame(compute);
     window.addEventListener("resize", compute);
@@ -199,7 +207,7 @@ export default function HeroCarousel() {
         <motion.div
           ref={mobileBioRef}
           className="absolute left-0 right-0 z-10 pointer-events-auto"
-          style={{ top: 103, padding: "0 24px" }}
+          style={{ top: mobileBioTop, padding: "0 24px" }}
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.4 }}
@@ -209,6 +217,24 @@ export default function HeroCarousel() {
             <br />
             <span className="text-[#6B7280] dark:text-[#a1a1aa]">{t("hero.sub")}</span>
           </p>
+        </motion.div>
+      )}
+
+      {/* ===== MOBILE: PDP block — bottom right ===== */}
+      {isMobile && (
+        <motion.div
+          className="absolute right-0 bottom-0 z-10 flex flex-col items-end gap-2 pointer-events-auto"
+          style={{ padding: "0 24px 24px" }}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.5 }}
+        >
+          <AvatarTilt />
+          <div className="flex flex-col items-end leading-none">
+            <p className="text-sm font-normal tracking-tight text-[#1A1A1A] leading-none">Dario Tonini</p>
+            <p className="text-xs tracking-[0.5px] text-[#9CA3AF] leading-none mt-0.5">@dariotni</p>
+          </div>
+          <SocialIcons />
         </motion.div>
       )}
 
