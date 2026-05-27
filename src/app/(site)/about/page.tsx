@@ -199,7 +199,7 @@ export default function AboutPage() {
       {/* TOP — Bio + Portrait */}
       <div className="relative z-20" style={{ paddingTop: "clamp(96px, 10vw, 120px)", paddingLeft: "clamp(20px, 3vw, 40px)", paddingRight: "clamp(20px, 3vw, 40px)", isolation: "isolate" }}>
         <div className="max-w-[1280px] mx-auto">
-          <div className="flex items-start" style={{ gap: "clamp(24px, 4vw, 56px)" }}>
+          <div className="flex items-start md:justify-center" style={{ gap: "clamp(24px, 4vw, 56px)" }}>
             {/* Left column — Bio */}
             <motion.div
               className="flex flex-col max-w-[560px]"
