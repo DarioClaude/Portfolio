@@ -152,7 +152,7 @@ export default function HeroCarousel() {
 
   return (
     <section ref={sectionRef} className="relative w-full h-screen overflow-hidden" style={isMobile ? { height: '100dvh', overflowY: 'hidden' } : undefined}>
-      <ProjectCursorPill visible={isHoveringWheel} />
+      <ProjectCursorPill visible={!isMobile && isHoveringWheel} />
 
       {/* ===== CAROUSEL — centered within the max-w container ===== */}
       <div
