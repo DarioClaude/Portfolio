@@ -35,6 +35,7 @@ export default function HeroCarousel() {
   const [isHoveringWheel, setIsHoveringWheel] = useState(false);
   const [mobileCarouselCenter, setMobileCarouselCenter] = useState(0);
   const [mobileBioTop, setMobileBioTop] = useState(103);
+  const [mobilePdpTop, setMobilePdpTop] = useState(0);
   const autoRotateRef = useRef(true);
   const dragStartX = useRef(0);
   const dragStartRotation = useRef(0);
@@ -61,17 +62,22 @@ export default function HeroCarousel() {
       const navbarBottom = 80;
       const bioHeight = mobileBioRef.current?.offsetHeight ?? 100;
       const pdpHeight = 90;
-      const bottomPad = 24;
       const carouselH = dims.cardH;
 
-      const availableBelow = vh - navbarBottom - pdpHeight - bottomPad;
-      const carouselCenter = navbarBottom + (availableBelow / 2) + (carouselH * 0.05);
+      // Carousel centered between navbarBottom and screen bottom
+      const carouselCenter = navbarBottom + (vh - navbarBottom) / 2;
       setMobileCarouselCenter(carouselCenter);
 
+      // Bio text centered between navbar and carousel top
       const carouselTop = carouselCenter - carouselH / 2;
-      const gap = carouselTop - navbarBottom;
-      const textTop = navbarBottom + (gap - bioHeight) / 2;
+      const gapAbove = carouselTop - navbarBottom;
+      const textTop = navbarBottom + (gapAbove - bioHeight) / 2;
       setMobileBioTop(textTop);
+
+      // PDP centered between carousel bottom and screen bottom
+      const carouselBottom = carouselCenter + carouselH / 2;
+      const pdpTop = carouselBottom + (vh - carouselBottom - pdpHeight) / 2;
+      setMobilePdpTop(pdpTop);
     };
     requestAnimationFrame(compute);
     window.addEventListener("resize", compute);
@@ -223,8 +229,8 @@ export default function HeroCarousel() {
       {/* ===== MOBILE: PDP block — bottom right ===== */}
       {isMobile && (
         <motion.div
-          className="absolute right-0 bottom-0 z-10 flex flex-col items-end gap-2 pointer-events-auto"
-          style={{ padding: "0 24px 24px" }}
+          className="absolute right-0 z-10 flex flex-col items-end gap-2 pointer-events-auto"
+          style={{ top: mobilePdpTop, right: 24 }}
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.5 }}
