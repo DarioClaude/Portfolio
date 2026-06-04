@@ -1,53 +1,62 @@
 "use client";
 
+import { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { useTranslation } from "@/context/LanguageContext";
 
 interface Props {
   title: string;
-  descriptionKey: string;
   category: string;
-  client: string;
-  year: number;
+  clients: string[];
 }
 
-export default function ProjectDetailContent({ title, descriptionKey, category, client, year }: Props) {
+export default function ProjectDetailContent({ title, category, clients }: Props) {
   const { t } = useTranslation();
+  const [clientIndex, setClientIndex] = useState(0);
+
+  useEffect(() => {
+    if (clients.length <= 1) return;
+    const interval = setInterval(() => {
+      setClientIndex((prev) => (prev + 1) % clients.length);
+    }, 2500);
+    return () => clearInterval(interval);
+  }, [clients]);
 
   return (
-    <div className="max-w-6xl mx-auto" style={{ padding: "0 clamp(16px, 3vw, 24px)" }}>
-      {/* ── Top Row: Title (left) + Description (right, offset down) ── */}
-      <div className="grid grid-cols-1 md:grid-cols-12" style={{ gap: "clamp(24px, 3vw, 40px)", marginBottom: "clamp(56px, 6vw, 80px)" }}>
-        <h1 className="md:col-span-7 font-bold text-[#1A1A1A] dark:text-[#f5f5f5] leading-[1.05] tracking-tight" style={{ fontSize: "clamp(2rem, 5vw, 4.5rem)" }}>
-          {title}
-        </h1>
-        <div className="md:col-span-5" style={{ paddingTop: "clamp(0px, 1vw, 24px)", paddingLeft: "clamp(0px, 1vw, 24px)" }}>
-          <p className="text-base text-[#6B7280] dark:text-[#a1a1aa] leading-relaxed max-w-[45ch]">
-            {t(descriptionKey)}
-          </p>
-        </div>
-      </div>
+    <div style={{ padding: "0 clamp(20px, 3vw, 40px)" }}>
+      <h1
+        className="font-bold text-[#1A1A1A] leading-[1.05] tracking-tight"
+        style={{ fontSize: "clamp(2rem, 5vw, 4.5rem)", marginBottom: "clamp(24px, 3vw, 40px)" }}
+      >
+        {title}
+      </h1>
 
-      {/* ── Second Row: 3-column metadata grid ── */}
-      <div className="grid grid-cols-1 md:grid-cols-12 pb-10 border-b border-[#E5E7EB] dark:border-[#262626]" style={{ gap: "clamp(24px, 3vw, 40px)" }}>
-        <div className="hidden md:block md:col-span-7" />
-        <div className="md:col-span-5 grid grid-cols-3" style={{ paddingLeft: "clamp(0px, 1vw, 24px)", gap: "clamp(16px, 2vw, 24px)" }}>
-          <div>
-            <p className="text-[10px] tracking-[1.5px] uppercase text-[#9CA3AF] dark:text-[#71717a] mb-2 font-medium">
-              {t("project.category")}
-            </p>
-            <p className="text-sm font-semibold text-[#1A1A1A] dark:text-[#f5f5f5]">{category}</p>
-          </div>
-          <div>
-            <p className="text-[10px] tracking-[1.5px] uppercase text-[#9CA3AF] dark:text-[#71717a] mb-2 font-medium">
-              {t("project.client")}
-            </p>
-            <p className="text-sm font-semibold text-[#1A1A1A] dark:text-[#f5f5f5]">{client}</p>
-          </div>
-          <div>
-            <p className="text-[10px] tracking-[1.5px] uppercase text-[#9CA3AF] dark:text-[#71717a] mb-2 font-medium">
-              {t("project.year")}
-            </p>
-            <p className="text-sm font-semibold text-[#1A1A1A] dark:text-[#f5f5f5]">{year}</p>
+      <div
+        className="flex gap-12 pb-10 border-b border-[#E5E7EB]"
+      >
+        <div>
+          <p className="text-[10px] tracking-[1.5px] uppercase text-[#9CA3AF] mb-2 font-medium">
+            {t("project.category")}
+          </p>
+          <p className="text-sm font-semibold text-[#1A1A1A]">{category}</p>
+        </div>
+        <div className="min-w-[140px]">
+          <p className="text-[10px] tracking-[1.5px] uppercase text-[#9CA3AF] mb-2 font-medium">
+            {t("project.client")}
+          </p>
+          <div className="relative h-5 overflow-hidden">
+            <AnimatePresence mode="wait">
+              <motion.p
+                key={clientIndex}
+                className="text-sm font-semibold text-[#1A1A1A] absolute"
+                initial={{ y: 16, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                exit={{ y: -16, opacity: 0 }}
+                transition={{ duration: 0.4, ease: "easeInOut" }}
+              >
+                {clients[clientIndex]}
+              </motion.p>
+            </AnimatePresence>
           </div>
         </div>
       </div>

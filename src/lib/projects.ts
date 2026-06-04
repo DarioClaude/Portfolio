@@ -15,7 +15,7 @@ export interface Project {
   textColor: string;
   descriptionKey: string;
   category: string;
-  client: string;
+  clients: string[];
   year: number;
   gallery: GalleryImage[];
 }
@@ -32,7 +32,7 @@ export const projects: Project[] = [
     textColor: "text-white",
     descriptionKey: "project.football.desc",
     category: "Sports",
-    client: "Dario Tonini",
+    clients: ["Dario Tonini"],
     year: 2024,
     gallery: [],
   },
@@ -47,7 +47,7 @@ export const projects: Project[] = [
     textColor: "text-white",
     descriptionKey: "project.travel.desc",
     category: "Travel",
-    client: "Dario Tonini",
+    clients: ["Dario Tonini"],
     year: 2024,
     gallery: [],
   },
@@ -62,7 +62,7 @@ export const projects: Project[] = [
     textColor: "text-white",
     descriptionKey: "project.rugby.desc",
     category: "Sports",
-    client: "Dario Tonini",
+    clients: ["Section Paloise", "Supersevens", "Stade Toulousain"],
     year: 2023,
     gallery: [],
   },
@@ -77,7 +77,7 @@ export const projects: Project[] = [
     textColor: "text-white",
     descriptionKey: "project.tourdefrance.desc",
     category: "Sports",
-    client: "Dario Tonini",
+    clients: ["Dario Tonini"],
     year: 2024,
     gallery: [],
   },
@@ -92,7 +92,7 @@ export const projects: Project[] = [
     textColor: "text-white",
     descriptionKey: "project.running.desc",
     category: "Sports",
-    client: "Dario Tonini",
+    clients: ["Dario Tonini"],
     year: 2023,
     gallery: [],
   },
@@ -107,7 +107,7 @@ export const projects: Project[] = [
     textColor: "text-white",
     descriptionKey: "project.otherssports.desc",
     category: "Sports",
-    client: "Dario Tonini",
+    clients: ["Dario Tonini"],
     year: 2024,
     gallery: [],
   },
@@ -122,7 +122,7 @@ export const projects: Project[] = [
     textColor: "text-white",
     descriptionKey: "project.artisanat.desc",
     category: "Artisanat",
-    client: "Dario Tonini",
+    clients: ["Dario Tonini"],
     year: 2024,
     gallery: [],
   },
