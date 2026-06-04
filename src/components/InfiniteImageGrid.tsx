@@ -19,7 +19,15 @@ function generateRows(images: GalleryImage[]) {
 }
 
 const offsets = [0, -10, 5];
-const speeds = [1, 0.7, 0.9];
+const speeds = [1, 0.95, 1.05];
+
+const sizeVariants = [
+  { lw: 220, lh: 147, pw: 130, ph: 183 },
+  { lw: 180, lh: 120, pw: 155, ph: 218 },
+  { lw: 250, lh: 167, pw: 120, ph: 169 },
+  { lw: 160, lh: 107, pw: 145, ph: 204 },
+  { lw: 200, lh: 133, pw: 170, ph: 240 },
+];
 
 function ScrollRow({
   images,
@@ -61,13 +69,14 @@ function ScrollRow({
       <div ref={stripRef} className="flex will-change-transform" style={{ width: "max-content", gap: "clamp(40px, 5vw, 80px)" }}>
         {doubled.map((img, i) => {
           const isLandscape = img.orientation === "landscape";
-          const w = isLandscape ? 200 : 140;
-          const h = isLandscape ? 133 : 187;
+          const variant = sizeVariants[i % sizeVariants.length];
+          const w = isLandscape ? variant.lw : variant.pw;
+          const h = isLandscape ? variant.lh : variant.ph;
 
           return (
             <div
               key={`${img.src}-${i}`}
-              className="flex-shrink-0 rounded-lg overflow-hidden shadow-md"
+              className="flex-shrink-0 rounded-[3px] overflow-hidden shadow-md"
               style={{ width: w, height: h }}
               data-protected
             >
@@ -103,7 +112,7 @@ export default function InfiniteImageGrid({ images }: Props) {
             return (
               <div
                 key={i}
-                className="rounded-lg bg-neutral-200 animate-pulse"
+                className="rounded-[3px] bg-neutral-200 animate-pulse"
                 style={{ width: w, height: h }}
               />
             );
@@ -114,7 +123,7 @@ export default function InfiniteImageGrid({ images }: Props) {
   }
 
   return (
-    <div className="flex flex-col gap-6 py-4 overflow-hidden">
+    <div className="flex flex-col gap-14 py-4 overflow-hidden">
       {rows.map((row, i) => (
         <ScrollRow
           key={i}
