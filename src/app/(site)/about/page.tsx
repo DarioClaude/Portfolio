@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useRef, Suspense } from "react";
+import { useEffect, useState, useRef, useCallback, Suspense } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import dynamic from "next/dynamic";
@@ -68,14 +68,14 @@ function MetaRow({ icon, text }: { icon: React.ReactNode; text: string }) {
 }
 
 function PortraitPhoto() {
-  const cardRef = useRef<HTMLDivElement>(null);
+  const ref = useRef<HTMLDivElement>(null);
+  const tiltRef = useRef({ rotateX: 0, rotateY: 0 });
+  const targetRef = useRef({ rotateX: 0, rotateY: 0 });
+  const rafRef = useRef<number>(0);
+  const idleRef = useRef<number>(0);
+  const isHoveringRef = useRef(false);
   const [portraitWidth, setPortraitWidth] = useState("clamp(100px, 13vw, 180px)");
   const [isMobilePortrait, setIsMobilePortrait] = useState(false);
-  const [flipY, setFlipY] = useState(0);
-  const [tiltZ, setTiltZ] = useState(0);
-  const springY = useRef(0);
-  const springZ = useRef(0);
-  const rafRef = useRef<number>(0);
 
   useEffect(() => {
     const check = () => {
@@ -88,34 +88,47 @@ function PortraitPhoto() {
     return () => window.removeEventListener("resize", check);
   }, []);
 
-  useEffect(() => {
-    if (isMobilePortrait) return;
+  const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
 
-    const onMove = (e: MouseEvent) => {
-      const ratio = e.clientX / window.innerWidth;
-      const targetY = ratio * 180;
-      const targetZ = Math.cos((ratio * Math.PI)) * 6;
-      setFlipY(targetY);
-      setTiltZ(targetZ);
-    };
+  const animateLoop = useCallback(() => {
+    tiltRef.current.rotateX = lerp(tiltRef.current.rotateX, targetRef.current.rotateX, 0.04);
+    tiltRef.current.rotateY = lerp(tiltRef.current.rotateY, targetRef.current.rotateY, 0.04);
 
-    window.addEventListener("mousemove", onMove, { passive: true });
-    return () => window.removeEventListener("mousemove", onMove);
-  }, [isMobilePortrait]);
+    if (ref.current) {
+      ref.current.style.transform = `rotateX(${tiltRef.current.rotateX}deg) rotateY(${tiltRef.current.rotateY}deg)`;
+    }
+
+    rafRef.current = requestAnimationFrame(animateLoop);
+  }, []);
 
   useEffect(() => {
-    const animate = () => {
-      springY.current += (flipY - springY.current) * 0.07;
-      springZ.current += (tiltZ - springZ.current) * 0.07;
+    rafRef.current = requestAnimationFrame(animateLoop);
 
-      if (cardRef.current) {
-        cardRef.current.style.transform = `rotateY(${springY.current}deg) rotateZ(${springZ.current}deg)`;
+    const idle = () => {
+      if (!isHoveringRef.current) {
+        const t = Date.now() / 1000;
+        targetRef.current = {
+          rotateX: Math.sin(t * 0.45) * 3,
+          rotateY: Math.cos(t * 0.35) * 4,
+        };
       }
-      rafRef.current = requestAnimationFrame(animate);
+      idleRef.current = requestAnimationFrame(idle);
     };
-    rafRef.current = requestAnimationFrame(animate);
-    return () => cancelAnimationFrame(rafRef.current);
-  }, [flipY, tiltZ]);
+    idleRef.current = requestAnimationFrame(idle);
+
+    return () => {
+      cancelAnimationFrame(rafRef.current);
+      cancelAnimationFrame(idleRef.current);
+    };
+  }, [animateLoop]);
+
+  const onMove = (e: React.MouseEvent) => {
+    if (!ref.current) return;
+    const rect = ref.current.getBoundingClientRect();
+    const x = (e.clientX - rect.left) / rect.width - 0.5;
+    const y = (e.clientY - rect.top) / rect.height - 0.5;
+    targetRef.current = { rotateX: -y * 24, rotateY: x * 24 };
+  };
 
   return (
     <motion.div
@@ -124,42 +137,30 @@ function PortraitPhoto() {
       transition={{ type: "spring", stiffness: 260, damping: 20, delay: 0.3 }}
       style={{ marginTop: isMobilePortrait ? 56 : "clamp(54px, 6vw, 80px)" }}
     >
-      <div style={{ perspective: "800px", width: portraitWidth }}>
+      <div style={{ perspective: "600px", width: portraitWidth }}>
         <div
-          ref={cardRef}
-          className="w-full aspect-[2/3] relative rounded-md"
-          style={{ transformStyle: "preserve-3d" }}
+          ref={ref}
+          className="w-full aspect-[2/3] overflow-hidden rounded-md relative"
+          style={{
+            transformStyle: "preserve-3d",
+          }}
+          onMouseMove={onMove}
+          onMouseEnter={() => { isHoveringRef.current = true; }}
+          onMouseLeave={() => {
+            isHoveringRef.current = false;
+            targetRef.current = { rotateX: 0, rotateY: 0 };
+          }}
           data-cursor-hover
         >
-          {/* Front face */}
-          <div
-            className="absolute inset-0 rounded-md overflow-hidden"
-            style={{ backfaceVisibility: "hidden" }}
-          >
-            <Image
-              src="/images/portrait.jpg"
-              alt="Dario Tonini"
-              fill
-              className="object-cover pointer-events-none"
-              sizes="180px"
-              quality={85}
-              priority
-            />
-          </div>
-          {/* Back face */}
-          <div
-            className="absolute inset-0 rounded-md overflow-hidden"
-            style={{ backfaceVisibility: "hidden", transform: "rotateY(180deg)" }}
-          >
-            <Image
-              src="/images/avatar.jpg"
-              alt="Dario Tonini"
-              fill
-              className="object-cover pointer-events-none"
-              sizes="180px"
-              quality={85}
-            />
-          </div>
+          <Image
+            src="/images/portrait.jpg"
+            alt="Dario Tonini"
+            fill
+            className="object-cover pointer-events-none"
+            sizes="180px"
+            quality={85}
+            priority
+          />
         </div>
       </div>
     </motion.div>
