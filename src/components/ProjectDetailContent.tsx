@@ -23,8 +23,8 @@ export default function ProjectDetailContent({ title, category, clients }: Props
   }, [clients]);
 
   return (
-    <div style={{ padding: "0 clamp(20px, 3vw, 40px)" }}>
-      <div className="flex items-start justify-between pb-8 border-b border-[#E5E7EB]">
+    <div>
+      <div className="flex items-end justify-between" style={{ padding: "0 clamp(20px, 3vw, 40px)", paddingBottom: "clamp(16px, 2vw, 24px)" }}>
         <h1
           className="font-bold text-[#1A1A1A] leading-[1.05] tracking-tight"
           style={{ fontSize: "clamp(2rem, 5vw, 4.5rem)" }}
@@ -32,7 +32,7 @@ export default function ProjectDetailContent({ title, category, clients }: Props
           {title}
         </h1>
 
-        <div className="flex gap-10 pt-2">
+        <div className="flex gap-10">
           <div>
             <p className="text-[10px] tracking-[1.5px] uppercase text-[#9CA3AF] mb-2 font-medium">
               {t("project.category")}
@@ -60,6 +60,7 @@ export default function ProjectDetailContent({ title, category, clients }: Props
           </div>
         </div>
       </div>
+      <div className="border-b border-[#E5E7EB] w-full" />
     </div>
   );
 }
