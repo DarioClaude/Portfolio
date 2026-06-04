@@ -18,7 +18,7 @@ function generateRows(images: GalleryImage[]) {
   return rows;
 }
 
-const offsets = [0, -20, 10];
+const offsets = [0, -10, 5];
 const speeds = [1, 0.7, 0.9];
 
 function ScrollRow({
@@ -58,11 +58,11 @@ function ScrollRow({
       className="relative overflow-hidden"
       style={{ transform: `translateY(${offsetY}px)` }}
     >
-      <div ref={stripRef} className="flex gap-8 will-change-transform" style={{ width: "max-content" }}>
+      <div ref={stripRef} className="flex will-change-transform" style={{ width: "max-content", gap: "clamp(40px, 5vw, 80px)" }}>
         {doubled.map((img, i) => {
           const isLandscape = img.orientation === "landscape";
-          const w = isLandscape ? 340 : 240;
-          const h = isLandscape ? 227 : 320;
+          const w = isLandscape ? 200 : 140;
+          const h = isLandscape ? 133 : 187;
 
           return (
             <div
@@ -95,11 +95,11 @@ export default function InfiniteImageGrid({ images }: Props) {
   if (images.length === 0) {
     return (
       <div className="flex items-center justify-center py-20">
-        <div className="grid grid-cols-4 gap-8">
+        <div className="grid grid-cols-4" style={{ gap: "clamp(40px, 5vw, 80px)" }}>
           {Array.from({ length: 12 }).map((_, i) => {
             const isLandscape = i % 3 !== 0;
-            const w = isLandscape ? 340 : 240;
-            const h = isLandscape ? 227 : 320;
+            const w = isLandscape ? 200 : 140;
+            const h = isLandscape ? 133 : 187;
             return (
               <div
                 key={i}
@@ -114,7 +114,7 @@ export default function InfiniteImageGrid({ images }: Props) {
   }
 
   return (
-    <div className="flex flex-col gap-12 py-8 overflow-hidden">
+    <div className="flex flex-col gap-6 py-4 overflow-hidden">
       {rows.map((row, i) => (
         <ScrollRow
           key={i}
