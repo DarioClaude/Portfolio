@@ -42,7 +42,6 @@ export default function ProjectDetailClient({ slug, title, category, clients, ga
 
       <RecentWork currentSlug={slug} />
 
-      <div className="border-t border-[#E5E7EB]" />
       <div className="flex justify-between items-end" style={{ padding: "clamp(24px, 3vw, 40px) clamp(20px, 3vw, 40px) clamp(32px, 3vw, 48px)" }}>
         <WorkCopyright />
         <WorkIdentity />

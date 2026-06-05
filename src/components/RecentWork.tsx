@@ -4,6 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { useTranslation } from "@/context/LanguageContext";
 import { projects } from "@/lib/projects";
+import Button from "./ui/Button";
 
 interface Props {
   currentSlug: string;
@@ -20,25 +21,16 @@ export default function RecentWork({ currentSlug }: Props) {
     <section style={{ padding: "clamp(48px, 6vw, 80px) clamp(20px, 3vw, 40px)" }}>
       {/* Header row */}
       <div className="flex items-end justify-between mb-8">
-        <div className="flex items-baseline gap-3">
-          <h2
-            className="font-bold text-[#1A1A1A] tracking-tight leading-none"
-            style={{ fontSize: "clamp(2rem, 4.5vw, 3.5rem)" }}
-          >
-            {t("recentWork.title")}
-          </h2>
-          <span className="text-[#9CA3AF] font-normal" style={{ fontSize: "clamp(0.75rem, 1.2vw, 1rem)" }}>
-            ©21 — 26
-          </span>
-        </div>
-
-        <Link
-          href="/work"
-          className="flex items-center gap-2 bg-[#1A1A1A] text-white text-sm font-medium px-5 py-2.5 rounded-full hover:bg-[#0000ff] transition-colors"
-          data-cursor-hover
+        <h2
+          className="font-bold text-[#1A1A1A] tracking-tight leading-none uppercase"
+          style={{ fontSize: "clamp(2rem, 4.5vw, 3.5rem)" }}
         >
+          {t("recentWork.title")}
+        </h2>
+
+        <Button href="/work" variant="dark" size="sm">
           {t("recentWork.viewAll")}
-        </Link>
+        </Button>
       </div>
 
       {/* Project cards grid */}
