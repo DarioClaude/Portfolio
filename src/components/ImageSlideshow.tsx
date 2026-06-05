@@ -18,13 +18,14 @@ function clamp(v: number, min: number, max: number) {
 }
 
 // ══════════════════════════════════════════════════
-//  DESKTOP: 3D depth carousel
+//  DESKTOP: 3D depth carousel — no slot recycling
 // ══════════════════════════════════════════════════
 
 const CARD_H = 420;
 const LANDSCAPE_RATIO = 3 / 2;
 const PORTRAIT_RATIO = 2 / 3;
-const VISIBLE_RANGE = 5;
+const VIS_RANGE = 3;
+const LAYOUT_RANGE = VIS_RANGE + 2;
 const EASE_FACTOR = 0.15;
 const SNAP_THRESHOLD = 0.001;
 const CARD_GAP = 22;
@@ -36,29 +37,24 @@ function getCardWidth(orientation: "landscape" | "portrait") {
 }
 
 function computeVisuals(offset: number) {
-  const absOffset = Math.abs(offset);
-
-  const scale =
-    absOffset <= 1
-      ? lerp(1, 0.3, absOffset)
-      : lerp(0.3, 0.18, clamp(absOffset - 1, 0, 3) / 3);
-
-  const blur =
-    absOffset <= 1
-      ? lerp(0, 7, absOffset)
-      : lerp(7, 16, clamp(absOffset - 1, 0, 2) / 2);
-
-  const opacity =
-    absOffset <= 1
-      ? lerp(1, 0.45, absOffset)
-      : lerp(0.45, 0.05, clamp(absOffset - 1, 0, 3) / 3);
-
+  const abs = Math.abs(offset);
+  const scale = abs <= 1
+    ? lerp(1, 0.3, abs)
+    : lerp(0.3, 0.18, clamp(abs - 1, 0, 3) / 3);
+  const blur = abs <= 1
+    ? lerp(0, 7, abs)
+    : lerp(7, 16, clamp(abs - 1, 0, 2) / 2);
+  const opacity = abs <= 1
+    ? lerp(1, 0.45, abs)
+    : lerp(0.45, 0.05, clamp(abs - 1, 0, 3) / 3);
   return { scale, blur, opacity };
 }
 
+type LayoutEntry = { x: number; scale: number; blur: number; opacity: number; offset: number };
+
 function DesktopCarousel({ images }: Props) {
   const len = images.length;
-  const canvasRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
   const posRef = useRef(0);
   const targetRef = useRef(0);
   const rafRef = useRef(0);
@@ -68,6 +64,50 @@ function DesktopCarousel({ images }: Props) {
   const hasDragged = useRef(false);
   const autoTimerRef = useRef<ReturnType<typeof setInterval>>();
   const counterRef = useRef<HTMLDivElement>(null);
+
+  const computeLayout = useCallback((centerPos: number): Map<number, LayoutEntry> => {
+    const result = new Map<number, LayoutEntry>();
+    const count = LAYOUT_RANGE * 2 + 1;
+
+    const vStart = centerPos - LAYOUT_RANGE;
+    const offsets: number[] = [];
+    const imgIndices: number[] = [];
+    for (let k = 0; k < count; k++) {
+      const v = vStart + k;
+      offsets.push(v - centerPos);
+      imgIndices.push(((v % len) + len) % len);
+    }
+
+    const vis = offsets.map(o => computeVisuals(o));
+    const scaledHalves = imgIndices.map((idx, k) =>
+      (getCardWidth(images[idx].orientation) * vis[k].scale) / 2
+    );
+
+    const centerK = LAYOUT_RANGE;
+    const positions: number[] = new Array(count).fill(0);
+
+    let rightEdge = scaledHalves[centerK];
+    for (let k = centerK + 1; k < count; k++) {
+      positions[k] = rightEdge + CARD_GAP + scaledHalves[k];
+      rightEdge = positions[k] + scaledHalves[k];
+    }
+    let leftEdge = -scaledHalves[centerK];
+    for (let k = centerK - 1; k >= 0; k--) {
+      positions[k] = leftEdge - CARD_GAP - scaledHalves[k];
+      leftEdge = positions[k] - scaledHalves[k];
+    }
+
+    for (let k = 0; k < count; k++) {
+      result.set(vStart + k, {
+        x: positions[k],
+        scale: vis[k].scale,
+        blur: vis[k].blur,
+        opacity: vis[k].opacity,
+        offset: offsets[k],
+      });
+    }
+    return result;
+  }, [len, images]);
 
   const resetAutoTimer = useCallback(() => {
     clearInterval(autoTimerRef.current);
@@ -79,82 +119,80 @@ function DesktopCarousel({ images }: Props) {
   }, []);
 
   const animate = useCallback(() => {
+    // Normalize when at rest to prevent unbounded growth
     if (!isDragging.current) {
       const delta = targetRef.current - posRef.current;
       if (Math.abs(delta) < SNAP_THRESHOLD) {
         posRef.current = targetRef.current;
+        if (posRef.current >= len || posRef.current < 0) {
+          const norm = ((posRef.current % len) + len) % len;
+          posRef.current = norm;
+          targetRef.current = norm;
+        }
       } else {
         posRef.current += delta * EASE_FACTOR;
       }
     }
 
-    const canvas = canvasRef.current;
-    if (!canvas) {
+    const container = containerRef.current;
+    if (!container) {
       rafRef.current = requestAnimationFrame(animate);
       return;
     }
 
-    const children = canvas.children as HTMLCollectionOf<HTMLElement>;
-    const totalSlots = children.length;
-    const fractional = posRef.current - Math.floor(posRef.current);
-    const baseIndex = Math.floor(posRef.current);
+    const children = container.children as HTMLCollectionOf<HTMLElement>;
+    const floorPos = Math.floor(posRef.current);
+    const frac = posRef.current - floorPos;
 
-    const slots: { scale: number; blur: number; opacity: number; w: number; offset: number; scaledHalf: number }[] = [];
-    for (let c = 0; c < totalSlots; c++) {
-      const slotOffset = c - VISIBLE_RANGE;
-      const offset = slotOffset - fractional;
-      const vis = computeVisuals(offset);
-      const imgIndex = ((baseIndex + slotOffset) % len + len) % len;
-      const w = getCardWidth(images[imgIndex]?.orientation ?? "landscape");
-      slots[c] = { ...vis, w, offset, scaledHalf: (w * vis.scale) / 2 };
-    }
+    const layoutA = computeLayout(floorPos);
+    const layoutB = computeLayout(floorPos + 1);
 
-    const ref = VISIBLE_RANGE;
-    const positions: number[] = new Array(totalSlots).fill(0);
-    positions[ref] = 0;
+    let elemIdx = 0;
+    for (let copy = -1; copy <= 1; copy++) {
+      for (let i = 0; i < len; i++) {
+        const child = children[elemIdx++];
+        if (!child) continue;
 
-    for (let c = ref + 1; c < totalSlots; c++) {
-      positions[c] = positions[c - 1] + slots[c - 1].scaledHalf + CARD_GAP + slots[c].scaledHalf;
-    }
-    for (let c = ref - 1; c >= 0; c--) {
-      positions[c] = positions[c + 1] - slots[c + 1].scaledHalf - CARD_GAP - slots[c].scaledHalf;
-    }
+        const vIdx = i + copy * len;
+        const a = layoutA.get(vIdx);
+        const b = layoutB.get(vIdx);
 
-    const nextSlot = ref + 1 < totalSlots ? ref + 1 : ref;
-    const shift = -(positions[ref] * (1 - fractional) + positions[nextSlot] * fractional);
-
-    for (let c = 0; c < totalSlots; c++) {
-      const child = children[c];
-      const s = slots[c];
-      const translateX = positions[c] + shift;
-
-      child.style.transform = `translateX(${translateX}px) scale(${s.scale})`;
-      child.style.filter = s.blur > 0.5 ? `blur(${s.blur}px)` : "none";
-      child.style.opacity = String(s.opacity);
-      child.style.zIndex = String(VISIBLE_RANGE * 10 - Math.round(Math.abs(s.offset) * 10));
-
-      const slotOffset = c - VISIBLE_RANGE;
-      const imgIndex = ((baseIndex + slotOffset) % len + len) % len;
-      const img = images[imgIndex];
-      if (img) {
-        child.style.width = `${s.w}px`;
-        const imgEl = child.querySelector("img") as HTMLImageElement | null;
-        const placeholder = child.querySelector("[data-placeholder]") as HTMLElement | null;
-        if (img.src) {
-          if (imgEl && !imgEl.src.endsWith(img.src)) {
-            imgEl.src = img.src;
-            imgEl.alt = img.alt;
-          }
-          if (imgEl) imgEl.style.display = "";
-          if (placeholder) placeholder.style.display = "none";
-        } else {
-          if (imgEl) imgEl.style.display = "none";
-          if (placeholder) {
-            placeholder.style.display = "";
-            const label = placeholder.querySelector("span");
-            if (label) label.textContent = img.orientation === "landscape" ? "3:2" : "2:3";
-          }
+        if (!a && !b) {
+          child.style.opacity = "0";
+          continue;
         }
+
+        let x: number, scale: number, blur: number, opacity: number, absOffset: number;
+
+        if (a && b) {
+          x = lerp(a.x, b.x, frac);
+          scale = lerp(a.scale, b.scale, frac);
+          blur = lerp(a.blur, b.blur, frac);
+          opacity = lerp(a.opacity, b.opacity, frac);
+          absOffset = Math.abs(lerp(a.offset, b.offset, frac));
+        } else if (a) {
+          x = a.x;
+          scale = a.scale;
+          blur = a.blur;
+          opacity = a.opacity * (1 - frac);
+          absOffset = Math.abs(a.offset);
+        } else {
+          x = b!.x;
+          scale = b!.scale;
+          blur = b!.blur;
+          opacity = b!.opacity * frac;
+          absOffset = Math.abs(b!.offset);
+        }
+
+        if (absOffset > VIS_RANGE + 1.5) {
+          child.style.opacity = "0";
+          continue;
+        }
+
+        child.style.transform = `translateX(${x}px) scale(${scale})`;
+        child.style.filter = blur > 0.5 ? `blur(${blur}px)` : "none";
+        child.style.opacity = String(opacity);
+        child.style.zIndex = String(100 - Math.round(absOffset * 10));
       }
     }
 
@@ -165,7 +203,7 @@ function DesktopCarousel({ images }: Props) {
     }
 
     rafRef.current = requestAnimationFrame(animate);
-  }, [len, images]);
+  }, [len, computeLayout]);
 
   useEffect(() => {
     rafRef.current = requestAnimationFrame(animate);
@@ -213,8 +251,6 @@ function DesktopCarousel({ images }: Props) {
     return () => window.removeEventListener("keydown", onKey);
   }, [resetAutoTimer]);
 
-  const totalSlots = VISIBLE_RANGE * 2 + 1;
-
   return (
     <div className="flex flex-col items-center select-none">
       <div
@@ -231,52 +267,47 @@ function DesktopCarousel({ images }: Props) {
         onPointerCancel={onPointerUp}
       >
         <div
-          ref={canvasRef}
+          ref={containerRef}
           className="absolute inset-0 flex items-center justify-center"
           style={{ pointerEvents: "none" }}
         >
-          {Array.from({ length: totalSlots }).map((_, i) => {
-            const slotOffset = i - VISIBLE_RANGE;
-            const imgIndex = ((slotOffset % len) + len) % len;
-            const img = images[imgIndex];
-            const w = getCardWidth(img.orientation);
-
-            return (
-              <div
-                key={i}
-                className="absolute will-change-transform"
-                style={{ width: w, height: CARD_H, transformOrigin: "center center" }}
-              >
+          {[-1, 0, 1].flatMap(copy =>
+            images.map((img, i) => {
+              const w = getCardWidth(img.orientation);
+              return (
                 <div
-                  className="w-full h-full rounded-[3px] overflow-hidden"
-                  style={{ boxShadow: "0 8px 30px rgba(0,0,0,0.15), 0 2px 8px rgba(0,0,0,0.1)" }}
-                  data-protected
+                  key={`${copy}_${i}`}
+                  className="absolute will-change-transform"
+                  style={{ width: w, height: CARD_H, transformOrigin: "center center", opacity: 0 }}
                 >
-                  {img.src ? (
-                    <Image
-                      src={img.src}
-                      alt={img.alt}
-                      width={w}
-                      height={CARD_H}
-                      className="object-cover w-full h-full pointer-events-none select-none"
-                      sizes={`${w}px`}
-                      quality={85}
-                      draggable={false}
-                    />
-                  ) : null}
                   <div
-                    data-placeholder
-                    className="w-full h-full bg-neutral-200 flex items-center justify-center absolute inset-0"
-                    style={{ display: img.src ? "none" : "" }}
+                    className="w-full h-full rounded-[3px] overflow-hidden"
+                    style={{ boxShadow: "0 8px 30px rgba(0,0,0,0.15), 0 2px 8px rgba(0,0,0,0.1)" }}
+                    data-protected
                   >
-                    <span className="text-sm text-neutral-400 font-medium select-none">
-                      {img.orientation === "landscape" ? "3:2" : "2:3"}
-                    </span>
+                    {img.src ? (
+                      <Image
+                        src={img.src}
+                        alt={img.alt}
+                        width={w}
+                        height={CARD_H}
+                        className="object-cover w-full h-full pointer-events-none select-none"
+                        sizes={`${w}px`}
+                        quality={85}
+                        draggable={false}
+                      />
+                    ) : (
+                      <div className="w-full h-full bg-neutral-200 flex items-center justify-center">
+                        <span className="text-sm text-neutral-400 font-medium select-none">
+                          {img.orientation === "landscape" ? "3:2" : "2:3"}
+                        </span>
+                      </div>
+                    )}
                   </div>
                 </div>
-              </div>
-            );
-          })}
+              );
+            })
+          )}
         </div>
       </div>
 
