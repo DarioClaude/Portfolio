@@ -20,10 +20,10 @@ export default function RecentWork({ currentSlug }: Props) {
   return (
     <section style={{ padding: "clamp(48px, 6vw, 80px) clamp(20px, 3vw, 40px) clamp(16px, 2vw, 24px)" }}>
       {/* Header row */}
-      <div className="flex items-end justify-between mb-8">
+      <div className="flex items-end justify-between mb-8 gap-4">
         <h2
-          className="font-bold text-[#1A1A1A] tracking-tight leading-none uppercase"
-          style={{ fontSize: "clamp(2rem, 4.5vw, 3.5rem)" }}
+          className="font-bold text-[#1A1A1A] tracking-tight leading-none uppercase whitespace-nowrap"
+          style={{ fontSize: "clamp(1.5rem, 4.5vw, 3.5rem)" }}
         >
           {t("recentWork.title")}
         </h2>
@@ -34,12 +34,12 @@ export default function RecentWork({ currentSlug }: Props) {
       </div>
 
       {/* Project cards grid */}
-      <div className="grid grid-cols-3 gap-4">
-        {others.map((project) => (
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        {others.map((project, i) => (
           <Link
             key={project.slug}
             href={`/work/${project.slug}`}
-            className="group relative overflow-hidden rounded-lg"
+            className={`group relative overflow-hidden rounded-lg${i > 0 ? " hidden md:block" : ""}`}
             style={{ aspectRatio: "4 / 3" }}
             data-cursor-hover
           >
