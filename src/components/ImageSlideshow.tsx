@@ -9,16 +9,14 @@ interface Props {
 }
 
 // ── Layout constants ──
-const CARD_H = 520;
+const CARD_H = 420;
 const LANDSCAPE_RATIO = 3 / 2;
 const PORTRAIT_RATIO = 2 / 3;
 const VISIBLE_RANGE = 5;
 const AUTO_INTERVAL = 5000;
 
-// ── Spring physics constants ──
-const SPRING_STIFFNESS = 0.08;
-const SPRING_DAMPING = 0.78;
-const DRAG_SENSITIVITY = 1;
+// ── Smooth interpolation (no spring overshoot) ──
+const EASE_FACTOR = 0.12;
 const SNAP_THRESHOLD = 0.001;
 
 // ── Depth interpolation ──
@@ -63,7 +61,7 @@ function computeCardStyle(offset: number) {
 
   // Horizontal compression: cards cluster closer to center
   // Active card spacing is wider, far cards compress together
-  const baseSpacing = 320;
+  const baseSpacing = 260;
   const compression = absOffset <= 1
     ? absOffset * baseSpacing
     : baseSpacing + (absOffset - 1) * baseSpacing * 0.45;
@@ -77,10 +75,8 @@ export default function ImageSlideshow({ images }: Props) {
   const containerRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLDivElement>(null);
 
-  // Continuous position (fractional index)
   const posRef = useRef(0);
   const targetRef = useRef(0);
-  const velocityRef = useRef(0);
   const rafRef = useRef(0);
 
   // Drag state
@@ -113,19 +109,12 @@ export default function ImageSlideshow({ images }: Props) {
     const pos = posRef.current;
     const target = targetRef.current;
 
-    if (isDragging.current) {
-      // During drag, position follows directly
-    } else {
-      // Spring toward target
+    if (!isDragging.current) {
       const delta = target - pos;
-      velocityRef.current += delta * SPRING_STIFFNESS;
-      velocityRef.current *= SPRING_DAMPING;
-      posRef.current += velocityRef.current;
-
-      // Snap when close enough
-      if (Math.abs(delta) < SNAP_THRESHOLD && Math.abs(velocityRef.current) < SNAP_THRESHOLD) {
+      if (Math.abs(delta) < SNAP_THRESHOLD) {
         posRef.current = target;
-        velocityRef.current = 0;
+      } else {
+        posRef.current += delta * EASE_FACTOR;
       }
     }
 
@@ -226,7 +215,6 @@ export default function ImageSlideshow({ images }: Props) {
     lastDragX.current = e.clientX;
     lastDragTime.current = Date.now();
     dragVelocity.current = 0;
-    velocityRef.current = 0;
     (e.target as HTMLElement).setPointerCapture?.(e.pointerId);
     clearInterval(autoTimerRef.current);
   }, []);
@@ -244,20 +232,14 @@ export default function ImageSlideshow({ images }: Props) {
     lastDragTime.current = now;
 
     // Map pixel drag to fractional position change
-    posRef.current = dragStartPos.current - (dx * DRAG_SENSITIVITY) / 300;
+    posRef.current = dragStartPos.current - dx / 300;
   }, []);
 
   const onPointerUp = useCallback(() => {
     if (!isDragging.current) return;
     isDragging.current = false;
 
-    // Apply momentum from drag velocity
-    const momentum = -dragVelocity.current * 300;
-    const projected = posRef.current + momentum * 0.3;
-
-    // Snap to nearest integer
-    targetRef.current = Math.round(projected);
-    velocityRef.current = momentum * 0.002;
+    targetRef.current = Math.round(posRef.current);
 
     resetAutoTimer();
   }, [resetAutoTimer]);
