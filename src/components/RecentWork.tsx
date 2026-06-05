@@ -18,7 +18,7 @@ export default function RecentWork({ currentSlug }: Props) {
     .slice(0, 3);
 
   return (
-    <section style={{ padding: "clamp(48px, 6vw, 80px) clamp(20px, 3vw, 40px)" }}>
+    <section style={{ padding: "clamp(48px, 6vw, 80px) clamp(20px, 3vw, 40px) clamp(16px, 2vw, 24px)" }}>
       {/* Header row */}
       <div className="flex items-end justify-between mb-8">
         <h2
