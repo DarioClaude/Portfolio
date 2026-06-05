@@ -7,7 +7,6 @@ interface Props {
   title: string;
   category: string;
   clients: string[];
-  toggleSlot?: React.ReactNode;
 }
 
 function RugbyBallIcon() {
@@ -30,7 +29,7 @@ function NetworkIcon() {
   );
 }
 
-export default function ProjectDetailContent({ title, category, clients, toggleSlot }: Props) {
+export default function ProjectDetailContent({ title, category, clients }: Props) {
   const [clientIndex, setClientIndex] = useState(0);
 
   useEffect(() => {
@@ -86,12 +85,6 @@ export default function ProjectDetailContent({ title, category, clients, toggleS
                 <span aria-hidden className="flex-1 ml-4" style={{ height: 1, background: "rgba(0, 0, 0, 0.1)", minWidth: 40 }} />
               </div>
             </div>
-
-            {toggleSlot && (
-              <div className="flex items-start pt-1">
-                {toggleSlot}
-              </div>
-            )}
           </div>
         </div>
       </div>

@@ -1,8 +1,7 @@
 "use client";
 
-import { useState } from "react";
 import ProjectDetailContent from "./ProjectDetailContent";
-import ProjectGallery, { GalleryToggle } from "./ProjectGallery";
+import ProjectGallery from "./ProjectGallery";
 import RecentWork from "./RecentWork";
 import WorkCopyright from "./WorkCopyright";
 import WorkIdentity from "./WorkIdentity";
@@ -18,8 +17,6 @@ interface Props {
 }
 
 export default function ProjectDetailClient({ slug, title, category, clients, gallery }: Props) {
-  const [mode, setMode] = useState<"grid" | "slideshow">("grid");
-
   return (
     <>
       <WorkMobileScroll />
@@ -28,15 +25,10 @@ export default function ProjectDetailClient({ slug, title, category, clients, ga
           title={title}
           category={category}
           clients={clients}
-          toggleSlot={
-            gallery.length > 0 ? (
-              <GalleryToggle mode={mode} setMode={setMode} />
-            ) : undefined
-          }
         />
 
         <div style={{ marginTop: "clamp(32px, 4vw, 48px)" }}>
-          <ProjectGallery images={gallery} mode={mode} />
+          <ProjectGallery images={gallery} />
         </div>
       </section>
 
