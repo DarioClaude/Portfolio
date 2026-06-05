@@ -179,12 +179,3 @@ body {
     text-wrap: balance;
   }
 }
-
-@keyframes scroll-up {
-  0% { transform: translateY(0); }
-  100% { transform: translateY(-50%); }
-}
-
-.infinite-scroll-col {
-  animation: scroll-up 35s linear infinite;
-}
