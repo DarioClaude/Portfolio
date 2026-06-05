@@ -11,6 +11,13 @@ interface Props {
 
 const AUTO_INTERVAL = 4500;
 
+// Landscape: 3:2 ratio — 900×600 optimal
+// Portrait: 2:3 ratio — 480×720 optimal
+const LANDSCAPE_W = 900;
+const LANDSCAPE_H = 600;
+const PORTRAIT_W = 480;
+const PORTRAIT_H = 720;
+
 export default function ImageSlideshow({ images }: Props) {
   const [index, setIndex] = useState(0);
   const [direction, setDirection] = useState(1);
@@ -56,7 +63,10 @@ export default function ImageSlideshow({ images }: Props) {
   const isLandscape = current.orientation === "landscape";
 
   return (
-    <div className="relative flex items-center justify-center" style={{ minHeight: "clamp(320px, 55vh, 620px)" }}>
+    <div
+      className="relative flex items-center justify-center"
+      style={{ height: "calc(100vh - 260px)", minHeight: "360px" }}
+    >
       {/* Left arrow */}
       <button
         onClick={goPrev}
@@ -69,11 +79,19 @@ export default function ImageSlideshow({ images }: Props) {
         </svg>
       </button>
 
-      {/* Image */}
-      <div className="relative overflow-hidden" style={{
-        width: isLandscape ? "clamp(340px, 60vw, 820px)" : "clamp(240px, 35vw, 460px)",
-        height: isLandscape ? "clamp(227px, 40vw, 547px)" : "clamp(320px, 50vw, 620px)",
-      }}>
+      {/* Image container — scales with viewport, stays sharp */}
+      <div
+        className="relative overflow-hidden"
+        style={{
+          width: isLandscape
+            ? "min(60vw, 900px)"
+            : "min(32vw, 480px)",
+          height: isLandscape
+            ? "min(40vw, 600px)"
+            : "min(48vw, 720px)",
+          maxHeight: "calc(100vh - 300px)",
+        }}
+      >
         <AnimatePresence mode="wait" custom={direction}>
           <motion.div
             key={`${current.src}-${index}`}
@@ -87,10 +105,11 @@ export default function ImageSlideshow({ images }: Props) {
             <Image
               src={current.src}
               alt={current.alt}
-              fill
-              className="object-cover rounded-[3px]"
-              sizes={isLandscape ? "60vw" : "35vw"}
-              quality={90}
+              width={isLandscape ? LANDSCAPE_W : PORTRAIT_W}
+              height={isLandscape ? LANDSCAPE_H : PORTRAIT_H}
+              className="object-cover w-full h-full rounded-[3px]"
+              sizes={isLandscape ? "(max-width: 768px) 85vw, 60vw" : "(max-width: 768px) 70vw, 32vw"}
+              quality={92}
               priority
               draggable={false}
               data-protected
