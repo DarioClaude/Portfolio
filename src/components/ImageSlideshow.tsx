@@ -20,7 +20,6 @@ const SPRING_STIFFNESS = 0.08;
 const SPRING_DAMPING = 0.78;
 const DRAG_SENSITIVITY = 1;
 const SNAP_THRESHOLD = 0.001;
-const WHEEL_COOLDOWN = 350;
 
 // ── Depth interpolation ──
 // Scale: center=1, adjacent=0.55, far=0.35
@@ -91,9 +90,6 @@ export default function ImageSlideshow({ images }: Props) {
   const lastDragX = useRef(0);
   const lastDragTime = useRef(0);
   const dragVelocity = useRef(0);
-
-  // Wheel debounce
-  const lastWheelTime = useRef(0);
 
   // Auto-advance
   const autoTimerRef = useRef<ReturnType<typeof setInterval>>();
@@ -264,23 +260,6 @@ export default function ImageSlideshow({ images }: Props) {
     velocityRef.current = momentum * 0.002;
 
     resetAutoTimer();
-  }, [resetAutoTimer]);
-
-  // ── Wheel ──
-  useEffect(() => {
-    const el = containerRef.current;
-    if (!el) return;
-    const onWheel = (e: WheelEvent) => {
-      e.preventDefault();
-      const now = Date.now();
-      if (now - lastWheelTime.current < WHEEL_COOLDOWN) return;
-      lastWheelTime.current = now;
-      const dir = Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY;
-      targetRef.current += dir > 0 ? 1 : -1;
-      resetAutoTimer();
-    };
-    el.addEventListener("wheel", onWheel, { passive: false });
-    return () => el.removeEventListener("wheel", onWheel);
   }, [resetAutoTimer]);
 
   // ── Keyboard ──
