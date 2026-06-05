@@ -35,7 +35,7 @@ export default function ProjectDetailContent({ title, category, clients, toggleS
               {title}
             </h1>
 
-            <div className="flex gap-8 mt-3">
+            <div className="flex gap-8 mt-5">
               <div>
                 <p className="text-[10px] tracking-[1.5px] uppercase text-[#9CA3AF] mb-1 font-medium">
                   {t("project.category")}
