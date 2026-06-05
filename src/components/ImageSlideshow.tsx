@@ -2,73 +2,108 @@
 
 import { useState, useEffect, useCallback, useRef } from "react";
 import Image from "next/image";
-import { motion, AnimatePresence } from "framer-motion";
 import type { GalleryImage } from "@/lib/projects";
 
 interface Props {
   images: GalleryImage[];
 }
 
-const AUTO_INTERVAL = 4500;
+const AUTO_INTERVAL = 5000;
+const CARD_H = 520;
+const LANDSCAPE_RATIO = 3 / 2;
+const PORTRAIT_RATIO = 2 / 3;
 
-const LANDSCAPE_W = 900;
-const LANDSCAPE_H = 600;
-const PORTRAIT_W = 480;
-const PORTRAIT_H = 720;
+function getCardWidth(orientation: "landscape" | "portrait") {
+  return orientation === "landscape"
+    ? Math.round(CARD_H * LANDSCAPE_RATIO)
+    : Math.round(CARD_H * PORTRAIT_RATIO);
+}
 
 export default function ImageSlideshow({ images }: Props) {
-  const [index, setIndex] = useState(0);
-  const [direction, setDirection] = useState(1);
+  const [active, setActive] = useState(0);
+  const [isDragging, setIsDragging] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const dragStartX = useRef(0);
+  const dragDelta = useRef(0);
   const timerRef = useRef<ReturnType<typeof setInterval>>();
+
+  const len = images.length;
+
+  const go = useCallback(
+    (dir: number) => {
+      setActive((prev) => ((prev + dir) % len + len) % len);
+    },
+    [len],
+  );
 
   const resetTimer = useCallback(() => {
     clearInterval(timerRef.current);
-    timerRef.current = setInterval(() => {
-      setDirection(1);
-      setIndex((prev) => (prev + 1) % images.length);
-    }, AUTO_INTERVAL);
-  }, [images.length]);
+    timerRef.current = setInterval(() => go(1), AUTO_INTERVAL);
+  }, [go]);
 
   useEffect(() => {
     resetTimer();
     return () => clearInterval(timerRef.current);
   }, [resetTimer]);
 
-  const goNext = useCallback(() => {
-    setDirection(1);
-    setIndex((prev) => (prev + 1) % images.length);
-    resetTimer();
-  }, [images.length, resetTimer]);
-
-  const goPrev = useCallback(() => {
-    setDirection(-1);
-    setIndex((prev) => (prev - 1 + images.length) % images.length);
-    resetTimer();
-  }, [images.length, resetTimer]);
-
   useEffect(() => {
     const handleKey = (e: KeyboardEvent) => {
-      if (e.key === "ArrowRight") goNext();
-      if (e.key === "ArrowLeft") goPrev();
+      if (e.key === "ArrowRight") { go(1); resetTimer(); }
+      if (e.key === "ArrowLeft") { go(-1); resetTimer(); }
     };
     window.addEventListener("keydown", handleKey);
     return () => window.removeEventListener("keydown", handleKey);
-  }, [goNext, goPrev]);
+  }, [go, resetTimer]);
 
-  if (images.length === 0) return null;
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+    const onWheel = (e: WheelEvent) => {
+      if (Math.abs(e.deltaX) < 5 && Math.abs(e.deltaY) < 5) return;
+      e.preventDefault();
+      const dir = Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY;
+      go(dir > 0 ? 1 : -1);
+      resetTimer();
+    };
+    el.addEventListener("wheel", onWheel, { passive: false });
+    return () => el.removeEventListener("wheel", onWheel);
+  }, [go, resetTimer]);
 
-  const current = images[index];
-  const isLandscape = current.orientation === "landscape";
+  const onPointerDown = (e: React.PointerEvent) => {
+    setIsDragging(true);
+    dragStartX.current = e.clientX;
+    dragDelta.current = 0;
+    (e.target as HTMLElement).setPointerCapture(e.pointerId);
+  };
 
-  const arrowBtn = "flex items-center justify-center rounded-full bg-white/80 backdrop-blur-sm border border-[#E5E7EB] text-[#1A1A1A] hover:bg-[#1A1A1A] hover:text-white transition-all duration-200";
+  const onPointerMove = (e: React.PointerEvent) => {
+    if (!isDragging) return;
+    dragDelta.current = e.clientX - dragStartX.current;
+  };
+
+  const onPointerUp = () => {
+    if (!isDragging) return;
+    setIsDragging(false);
+    const threshold = 60;
+    if (dragDelta.current < -threshold) { go(1); resetTimer(); }
+    else if (dragDelta.current > threshold) { go(-1); resetTimer(); }
+  };
+
+  if (len === 0) return null;
+
+  const visibleRange = 3;
+  const cards: { idx: number; offset: number }[] = [];
+  for (let d = -visibleRange; d <= visibleRange; d++) {
+    cards.push({ idx: ((active + d) % len + len) % len, offset: d });
+  }
 
   return (
-    <div className="flex flex-col items-center">
-      {/* Mobile: arrows + counter row above image */}
+    <div className="flex flex-col items-center select-none">
+      {/* Mobile controls */}
       <div className="flex md:hidden items-center justify-center gap-4 mb-4">
         <button
-          onClick={goPrev}
-          className={`${arrowBtn} w-9 h-9`}
+          onClick={() => { go(-1); resetTimer(); }}
+          className="flex items-center justify-center w-9 h-9 rounded-full bg-white/80 backdrop-blur-sm border border-[#E5E7EB] text-[#1A1A1A] transition-all duration-200"
           aria-label="Previous"
         >
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -76,11 +111,11 @@ export default function ImageSlideshow({ images }: Props) {
           </svg>
         </button>
         <span className="text-[11px] tracking-[1px] text-[#9CA3AF] font-medium tabular-nums">
-          {String(index + 1).padStart(2, "0")} / {String(images.length).padStart(2, "0")}
+          {String(active + 1).padStart(2, "0")} / {String(len).padStart(2, "0")}
         </span>
         <button
-          onClick={goNext}
-          className={`${arrowBtn} w-9 h-9`}
+          onClick={() => { go(1); resetTimer(); }}
+          className="flex items-center justify-center w-9 h-9 rounded-full bg-white/80 backdrop-blur-sm border border-[#E5E7EB] text-[#1A1A1A] transition-all duration-200"
           aria-label="Next"
         >
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -89,86 +124,83 @@ export default function ImageSlideshow({ images }: Props) {
         </button>
       </div>
 
-      {/* Image area */}
+      {/* 3D Carousel */}
       <div
-        className="relative flex items-center justify-center w-full"
-        style={{ height: "calc(100vh - 260px)", minHeight: "360px" }}
+        ref={containerRef}
+        className="relative w-full overflow-hidden"
+        style={{
+          height: `min(${CARD_H + 40}px, calc(100vh - 260px))`,
+          perspective: "1200px",
+          cursor: isDragging ? "grabbing" : "grab",
+        }}
+        onPointerDown={onPointerDown}
+        onPointerMove={onPointerMove}
+        onPointerUp={onPointerUp}
+        onPointerCancel={onPointerUp}
       >
-        {/* Desktop: side arrows */}
-        <button
-          onClick={goPrev}
-          className={`${arrowBtn} absolute left-8 z-10 w-12 h-12 hidden md:flex`}
-          data-cursor-hover
-          aria-label="Previous"
-        >
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <polyline points="15 18 9 12 15 6" />
-          </svg>
-        </button>
+        {cards.map(({ idx, offset }) => {
+          const img = images[idx];
+          const w = getCardWidth(img.orientation);
+          const absOffset = Math.abs(offset);
+          const scale = offset === 0 ? 1 : Math.max(0.55, 1 - absOffset * 0.15);
+          const translateX = offset * (w * 0.55 + 40);
+          const translateZ = offset === 0 ? 0 : -absOffset * 120;
+          const blur = offset === 0 ? 0 : Math.min(absOffset * 3, 8);
+          const opacity = offset === 0 ? 1 : Math.max(0.3, 1 - absOffset * 0.25);
+          const zIndex = visibleRange - absOffset;
 
-        {/* Image container */}
-        <div
-          className="relative overflow-hidden"
-          style={{
-            width: isLandscape
-              ? "min(90vw, 900px)"
-              : "min(65vw, 480px)",
-            height: isLandscape
-              ? "min(60vw, 600px)"
-              : "min(90vw, 720px)",
-            maxHeight: "calc(100vh - 300px)",
-          }}
-        >
-          <AnimatePresence mode="wait" custom={direction}>
-            <motion.div
-              key={`${current.alt}-${index}`}
-              custom={direction}
-              initial={{ opacity: 0, x: direction * 60 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: direction * -60 }}
-              transition={{ duration: 0.4, ease: [0.25, 0.1, 0.25, 1] }}
-              className="absolute inset-0"
+          return (
+            <div
+              key={`${idx}-${offset}`}
+              className="absolute top-1/2 left-1/2 transition-all duration-500 ease-out"
+              style={{
+                width: w,
+                height: CARD_H,
+                transform: `translate(-50%, -50%) translateX(${translateX}px) translateZ(${translateZ}px) scale(${scale})`,
+                zIndex,
+                filter: blur > 0 ? `blur(${blur}px)` : "none",
+                opacity,
+                pointerEvents: offset === 0 ? "auto" : "none",
+              }}
+              onClick={() => {
+                if (offset !== 0) {
+                  go(offset);
+                  resetTimer();
+                }
+              }}
             >
-              {current.src ? (
-                <Image
-                  src={current.src}
-                  alt={current.alt}
-                  width={isLandscape ? LANDSCAPE_W : PORTRAIT_W}
-                  height={isLandscape ? LANDSCAPE_H : PORTRAIT_H}
-                  className="object-cover w-full h-full rounded-[3px]"
-                  sizes={isLandscape ? "(max-width: 768px) 90vw, 60vw" : "(max-width: 768px) 65vw, 32vw"}
-                  quality={92}
-                  priority
-                  draggable={false}
-                  data-protected
-                />
-              ) : (
-                <div className="w-full h-full bg-neutral-200 rounded-[3px] flex items-center justify-center">
-                  <span className="text-sm text-neutral-400 font-medium">
-                    {isLandscape ? "3:2" : "2:3"}
-                  </span>
-                </div>
-              )}
-            </motion.div>
-          </AnimatePresence>
-        </div>
+              <div
+                className="w-full h-full rounded-[3px] overflow-hidden shadow-lg"
+                data-protected
+              >
+                {img.src ? (
+                  <Image
+                    src={img.src}
+                    alt={img.alt}
+                    width={w}
+                    height={CARD_H}
+                    className="object-cover w-full h-full pointer-events-none select-none"
+                    sizes={`${w}px`}
+                    quality={offset === 0 ? 92 : 75}
+                    priority={absOffset <= 1}
+                    draggable={false}
+                  />
+                ) : (
+                  <div className="w-full h-full bg-neutral-200 flex items-center justify-center">
+                    <span className="text-sm text-neutral-400 font-medium select-none">
+                      {img.orientation === "landscape" ? "3:2" : "2:3"}
+                    </span>
+                  </div>
+                )}
+              </div>
+            </div>
+          );
+        })}
+      </div>
 
-        {/* Desktop: side arrow right */}
-        <button
-          onClick={goNext}
-          className={`${arrowBtn} absolute right-8 z-10 w-12 h-12 hidden md:flex`}
-          data-cursor-hover
-          aria-label="Next"
-        >
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <polyline points="9 18 15 12 9 6" />
-          </svg>
-        </button>
-
-        {/* Desktop: counter */}
-        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 text-[11px] tracking-[1px] text-[#9CA3AF] font-medium tabular-nums hidden md:block">
-          {String(index + 1).padStart(2, "0")} / {String(images.length).padStart(2, "0")}
-        </div>
+      {/* Desktop counter */}
+      <div className="hidden md:block mt-4 text-[11px] tracking-[1px] text-[#9CA3AF] font-medium tabular-nums">
+        {String(active + 1).padStart(2, "0")} / {String(len).padStart(2, "0")}
       </div>
     </div>
   );
