@@ -58,10 +58,7 @@ export default function RecentWork({ currentSlug }: Props) {
             {/* Text overlay */}
             <div className="absolute bottom-0 left-0 right-0 p-4">
               <p className="text-white text-sm font-bold tracking-wide">
-                *{t(project.titleKey).toUpperCase()}
-              </p>
-              <p className="text-white/70 text-xs mt-0.5 line-clamp-1">
-                {t(project.descriptionKey)}
+                {t(project.titleKey).toUpperCase()}
               </p>
             </div>
           </Link>
