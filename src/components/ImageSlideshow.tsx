@@ -121,7 +121,7 @@ export default function ImageSlideshow({ images }: Props) {
         >
           <AnimatePresence mode="wait" custom={direction}>
             <motion.div
-              key={`${current.src}-${index}`}
+              key={`${current.alt}-${index}`}
               custom={direction}
               initial={{ opacity: 0, x: direction * 60 }}
               animate={{ opacity: 1, x: 0 }}
@@ -129,18 +129,26 @@ export default function ImageSlideshow({ images }: Props) {
               transition={{ duration: 0.4, ease: [0.25, 0.1, 0.25, 1] }}
               className="absolute inset-0"
             >
-              <Image
-                src={current.src}
-                alt={current.alt}
-                width={isLandscape ? LANDSCAPE_W : PORTRAIT_W}
-                height={isLandscape ? LANDSCAPE_H : PORTRAIT_H}
-                className="object-cover w-full h-full rounded-[3px]"
-                sizes={isLandscape ? "(max-width: 768px) 90vw, 60vw" : "(max-width: 768px) 65vw, 32vw"}
-                quality={92}
-                priority
-                draggable={false}
-                data-protected
-              />
+              {current.src ? (
+                <Image
+                  src={current.src}
+                  alt={current.alt}
+                  width={isLandscape ? LANDSCAPE_W : PORTRAIT_W}
+                  height={isLandscape ? LANDSCAPE_H : PORTRAIT_H}
+                  className="object-cover w-full h-full rounded-[3px]"
+                  sizes={isLandscape ? "(max-width: 768px) 90vw, 60vw" : "(max-width: 768px) 65vw, 32vw"}
+                  quality={92}
+                  priority
+                  draggable={false}
+                  data-protected
+                />
+              ) : (
+                <div className="w-full h-full bg-neutral-200 rounded-[3px] flex items-center justify-center">
+                  <span className="text-sm text-neutral-400 font-medium">
+                    {isLandscape ? "3:2" : "2:3"}
+                  </span>
+                </div>
+              )}
             </motion.div>
           </AnimatePresence>
         </div>

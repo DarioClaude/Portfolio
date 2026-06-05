@@ -75,21 +75,29 @@ function ScrollRow({
 
           return (
             <div
-              key={`${img.src}-${i}`}
+              key={`${img.alt}-${i}`}
               className="flex-shrink-0 rounded-[3px] overflow-hidden shadow-md"
               style={{ width: w, height: h }}
               data-protected
             >
-              <Image
-                src={img.src}
-                alt={img.alt}
-                width={w}
-                height={h}
-                className="object-cover w-full h-full pointer-events-none select-none"
-                sizes={`${w}px`}
-                quality={85}
-                draggable={false}
-              />
+              {img.src ? (
+                <Image
+                  src={img.src}
+                  alt={img.alt}
+                  width={w}
+                  height={h}
+                  className="object-cover w-full h-full pointer-events-none select-none"
+                  sizes={`${w}px`}
+                  quality={85}
+                  draggable={false}
+                />
+              ) : (
+                <div className="w-full h-full bg-neutral-200 flex items-center justify-center">
+                  <span className="text-[10px] text-neutral-400 font-medium">
+                    {isLandscape ? "3:2" : "2:3"}
+                  </span>
+                </div>
+              )}
             </div>
           );
         })}
