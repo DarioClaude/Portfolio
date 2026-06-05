@@ -22,6 +22,7 @@ export default function ProjectDetailPage({ params }: Props) {
 
   return (
     <ProjectDetailClient
+      slug={project.slug}
       title={project.title}
       category={project.category}
       clients={project.clients}

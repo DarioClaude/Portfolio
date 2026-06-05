@@ -3,19 +3,21 @@
 import { useState } from "react";
 import ProjectDetailContent from "./ProjectDetailContent";
 import ProjectGallery, { GalleryToggle } from "./ProjectGallery";
+import RecentWork from "./RecentWork";
 import WorkCopyright from "./WorkCopyright";
 import WorkIdentity from "./WorkIdentity";
 import WorkMobileScroll from "./WorkMobileScroll";
 import type { GalleryImage } from "@/lib/projects";
 
 interface Props {
+  slug: string;
   title: string;
   category: string;
   clients: string[];
   gallery: GalleryImage[];
 }
 
-export default function ProjectDetailClient({ title, category, clients, gallery }: Props) {
+export default function ProjectDetailClient({ slug, title, category, clients, gallery }: Props) {
   const [mode, setMode] = useState<"grid" | "slideshow">("grid");
 
   return (
@@ -37,6 +39,8 @@ export default function ProjectDetailClient({ title, category, clients, gallery 
           <ProjectGallery images={gallery} mode={mode} />
         </div>
       </section>
+
+      <RecentWork currentSlug={slug} />
 
       <div className="border-t border-[#E5E7EB]" />
       <div className="flex justify-between items-end" style={{ padding: "clamp(24px, 3vw, 40px) clamp(20px, 3vw, 40px) clamp(32px, 3vw, 48px)" }}>

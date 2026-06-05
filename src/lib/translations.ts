@@ -60,6 +60,10 @@ export const translations: Record<Lang, Record<string, string>> = {
     "avatar.name": "Dario Tonini",
     "avatar.role": "Photographe",
 
+    // Recent Work
+    "recentWork.title": "RECENT WORK",
+    "recentWork.viewAll": "Voir tous les projets",
+
     // Work
     "work.title": "WORK",
     "work.copyright": "Tous droits réservés. Toutes les photographies de ce site sont la propriété exclusive de Dario Tonini et ne peuvent être reproduites, distribuées ou utilisées sous quelque forme que ce soit sans consentement écrit préalable.",
@@ -188,6 +192,10 @@ export const translations: Record<Lang, Record<string, string>> = {
     "avatar.name": "Dario Tonini",
     "avatar.role": "Photographer",
 
+    // Recent Work
+    "recentWork.title": "RECENT WORK",
+    "recentWork.viewAll": "View all works",
+
     // Work
     "work.title": "WORK",
     "work.copyright": "All rights reserved. All photographs on this site are the exclusive property of Dario Tonini and may not be reproduced, distributed, or used in any form without prior written consent.",
@@ -315,6 +323,10 @@ export const translations: Record<Lang, Record<string, string>> = {
     // Avatar tooltip
     "avatar.name": "Dario Tonini",
     "avatar.role": "Fotógrafo",
+
+    // Recent Work
+    "recentWork.title": "RECENT WORK",
+    "recentWork.viewAll": "Ver todos los trabajos",
 
     // Work
     "work.title": "TRABAJO",
