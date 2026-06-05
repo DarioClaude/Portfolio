@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 import { projects } from "@/lib/projects";
 import ProjectDetailContent from "@/components/ProjectDetailContent";
-import InfiniteImageGrid from "@/components/InfiniteImageGrid";
+import ProjectGallery from "@/components/ProjectGallery";
 import NextProjectLink from "@/components/NextProjectLink";
 import WorkCopyright from "@/components/WorkCopyright";
 import WorkIdentity from "@/components/WorkIdentity";
@@ -37,7 +37,7 @@ export default function ProjectDetailPage({ params }: Props) {
         />
 
         <div style={{ marginTop: "clamp(56px, 6vw, 80px)" }}>
-          <InfiniteImageGrid images={project.gallery} />
+          <ProjectGallery images={project.gallery} />
         </div>
 
         <div className="max-w-5xl mx-auto">
