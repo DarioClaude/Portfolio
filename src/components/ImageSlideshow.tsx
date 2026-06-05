@@ -10,7 +10,6 @@ interface Props {
 
 const AUTO_INTERVAL = 5000;
 
-// ── Shared helpers ──
 function lerp(a: number, b: number, t: number) {
   return a + (b - a) * t;
 }
@@ -19,15 +18,16 @@ function clamp(v: number, min: number, max: number) {
 }
 
 // ══════════════════════════════════════════════════
-//  DESKTOP: 3D depth carousel with aggressive scale-down
+//  DESKTOP: 3D depth carousel
 // ══════════════════════════════════════════════════
 
 const CARD_H = 420;
 const LANDSCAPE_RATIO = 3 / 2;
 const PORTRAIT_RATIO = 2 / 3;
 const VISIBLE_RANGE = 5;
-const EASE_FACTOR = 0.12;
+const EASE_FACTOR = 0.15;
 const SNAP_THRESHOLD = 0.001;
+const CARD_GAP = 22;
 
 function getCardWidth(orientation: "landscape" | "portrait") {
   return orientation === "landscape"
@@ -35,7 +35,7 @@ function getCardWidth(orientation: "landscape" | "portrait") {
     : Math.round(CARD_H * PORTRAIT_RATIO);
 }
 
-function computeCardStyle(offset: number) {
+function computeVisuals(offset: number) {
   const absOffset = Math.abs(offset);
 
   const scale =
@@ -53,14 +53,7 @@ function computeCardStyle(offset: number) {
       ? lerp(1, 0.45, absOffset)
       : lerp(0.45, 0.05, clamp(absOffset - 1, 0, 3) / 3);
 
-  const baseSpacing = 440;
-  const compression =
-    absOffset <= 1
-      ? absOffset * baseSpacing
-      : baseSpacing + (absOffset - 1) * baseSpacing * 0.25;
-  const translateX = Math.sign(offset) * compression;
-
-  return { scale, blur, opacity, translateX };
+  return { scale, blur, opacity };
 }
 
 function DesktopCarousel({ images }: Props) {
@@ -72,28 +65,24 @@ function DesktopCarousel({ images }: Props) {
   const isDragging = useRef(false);
   const dragStartX = useRef(0);
   const dragStartPos = useRef(0);
-  const lastDragX = useRef(0);
-  const lastDragTime = useRef(0);
-  const dragVelocity = useRef(0);
+  const hasDragged = useRef(false);
   const autoTimerRef = useRef<ReturnType<typeof setInterval>>();
   const counterRef = useRef<HTMLDivElement>(null);
-  const reticleRef = useRef<HTMLDivElement>(null);
 
   const resetAutoTimer = useCallback(() => {
     clearInterval(autoTimerRef.current);
     autoTimerRef.current = setInterval(() => {
-      targetRef.current += 1;
+      if (Math.abs(posRef.current - targetRef.current) < 0.05) {
+        targetRef.current += 1;
+      }
     }, AUTO_INTERVAL);
   }, []);
 
   const animate = useCallback(() => {
-    const pos = posRef.current;
-    const target = targetRef.current;
-
     if (!isDragging.current) {
-      const delta = target - pos;
+      const delta = targetRef.current - posRef.current;
       if (Math.abs(delta) < SNAP_THRESHOLD) {
-        posRef.current = target;
+        posRef.current = targetRef.current;
       } else {
         posRef.current += delta * EASE_FACTOR;
       }
@@ -106,39 +95,57 @@ function DesktopCarousel({ images }: Props) {
     }
 
     const children = canvas.children as HTMLCollectionOf<HTMLElement>;
+    const totalSlots = children.length;
+    const fractional = posRef.current - Math.floor(posRef.current);
+    const baseIndex = Math.floor(posRef.current);
 
-    for (let c = 0; c < children.length; c++) {
-      const child = children[c];
+    const slots: { scale: number; blur: number; opacity: number; w: number; offset: number; scaledHalf: number }[] = [];
+    for (let c = 0; c < totalSlots; c++) {
       const slotOffset = c - VISIBLE_RANGE;
-      const baseIndex = Math.floor(posRef.current);
+      const offset = slotOffset - fractional;
+      const vis = computeVisuals(offset);
       const imgIndex = ((baseIndex + slotOffset) % len + len) % len;
+      const w = getCardWidth(images[imgIndex]?.orientation ?? "landscape");
+      slots[c] = { ...vis, w, offset, scaledHalf: (w * vis.scale) / 2 };
+    }
 
-      child.dataset.imgIndex = String(imgIndex);
+    const ref = VISIBLE_RANGE;
+    const positions: number[] = new Array(totalSlots).fill(0);
+    positions[ref] = 0;
 
-      const fractionalPos = posRef.current;
-      const offset = slotOffset - (fractionalPos - Math.floor(fractionalPos));
-      const style = computeCardStyle(offset);
+    for (let c = ref + 1; c < totalSlots; c++) {
+      positions[c] = positions[c - 1] + slots[c - 1].scaledHalf + CARD_GAP + slots[c].scaledHalf;
+    }
+    for (let c = ref - 1; c >= 0; c--) {
+      positions[c] = positions[c + 1] - slots[c + 1].scaledHalf - CARD_GAP - slots[c].scaledHalf;
+    }
 
-      child.style.transform = `translateX(${style.translateX}px) scale(${style.scale})`;
-      child.style.filter = style.blur > 0.5 ? `blur(${style.blur}px)` : "none";
-      child.style.opacity = String(style.opacity);
-      child.style.zIndex = String(VISIBLE_RANGE * 10 - Math.round(Math.abs(offset) * 10));
+    const nextSlot = ref + 1 < totalSlots ? ref + 1 : ref;
+    const shift = -(positions[ref] * (1 - fractional) + positions[nextSlot] * fractional);
 
+    for (let c = 0; c < totalSlots; c++) {
+      const child = children[c];
+      const s = slots[c];
+      const translateX = positions[c] + shift;
+
+      child.style.transform = `translateX(${translateX}px) scale(${s.scale})`;
+      child.style.filter = s.blur > 0.5 ? `blur(${s.blur}px)` : "none";
+      child.style.opacity = String(s.opacity);
+      child.style.zIndex = String(VISIBLE_RANGE * 10 - Math.round(Math.abs(s.offset) * 10));
+
+      const slotOffset = c - VISIBLE_RANGE;
+      const imgIndex = ((baseIndex + slotOffset) % len + len) % len;
       const img = images[imgIndex];
       if (img) {
+        child.style.width = `${s.w}px`;
         const imgEl = child.querySelector("img") as HTMLImageElement | null;
         const placeholder = child.querySelector("[data-placeholder]") as HTMLElement | null;
-        const w = getCardWidth(img.orientation);
-        child.style.width = `${w}px`;
-
         if (img.src) {
-          if (imgEl) {
-            if (!imgEl.src.endsWith(img.src)) {
-              imgEl.src = img.src;
-              imgEl.alt = img.alt;
-            }
-            imgEl.style.display = "";
+          if (imgEl && !imgEl.src.endsWith(img.src)) {
+            imgEl.src = img.src;
+            imgEl.alt = img.alt;
           }
+          if (imgEl) imgEl.style.display = "";
           if (placeholder) placeholder.style.display = "none";
         } else {
           if (imgEl) imgEl.style.display = "none";
@@ -151,24 +158,11 @@ function DesktopCarousel({ images }: Props) {
       }
     }
 
-    const reticle = reticleRef.current;
-    if (reticle) {
-      const fractional = posRef.current - Math.floor(posRef.current);
-      const centerStyle = computeCardStyle(-fractional);
-      const activeImgIndex = (Math.floor(posRef.current) % len + len) % len;
-      const activeW = getCardWidth(images[activeImgIndex]?.orientation ?? "landscape");
-      const rPad = 16;
-      reticle.style.transform = `translateX(${centerStyle.translateX}px)`;
-      reticle.style.width = `${activeW + rPad * 2}px`;
-      reticle.style.height = `${CARD_H + rPad * 2}px`;
-      const reticleOpacity = 1 - Math.abs(fractional) * 2;
-      reticle.style.opacity = String(clamp(reticleOpacity, 0, 1));
-    }
-
     const rounded = Math.round(posRef.current);
     const displayIndex = ((rounded % len) + len) % len;
-    const counterText = `${String(displayIndex + 1).padStart(2, "0")} / ${String(len).padStart(2, "0")}`;
-    if (counterRef.current) counterRef.current.textContent = counterText;
+    if (counterRef.current) {
+      counterRef.current.textContent = `${String(displayIndex + 1).padStart(2, "0")} / ${String(len).padStart(2, "0")}`;
+    }
 
     rafRef.current = requestAnimationFrame(animate);
   }, [len, images]);
@@ -184,11 +178,9 @@ function DesktopCarousel({ images }: Props) {
 
   const onPointerDown = useCallback((e: React.PointerEvent) => {
     isDragging.current = true;
+    hasDragged.current = false;
     dragStartX.current = e.clientX;
     dragStartPos.current = posRef.current;
-    lastDragX.current = e.clientX;
-    lastDragTime.current = Date.now();
-    dragVelocity.current = 0;
     (e.target as HTMLElement).setPointerCapture?.(e.pointerId);
     clearInterval(autoTimerRef.current);
   }, []);
@@ -196,20 +188,19 @@ function DesktopCarousel({ images }: Props) {
   const onPointerMove = useCallback((e: React.PointerEvent) => {
     if (!isDragging.current) return;
     const dx = e.clientX - dragStartX.current;
-    const now = Date.now();
-    const dt = now - lastDragTime.current;
-    if (dt > 0) {
-      dragVelocity.current = (e.clientX - lastDragX.current) / dt;
-    }
-    lastDragX.current = e.clientX;
-    lastDragTime.current = now;
+    if (Math.abs(dx) > 5) hasDragged.current = true;
+    if (!hasDragged.current) return;
     posRef.current = dragStartPos.current - dx / 300;
   }, []);
 
   const onPointerUp = useCallback(() => {
     if (!isDragging.current) return;
     isDragging.current = false;
-    targetRef.current = Math.round(posRef.current);
+    if (!hasDragged.current) {
+      targetRef.current = Math.round(dragStartPos.current);
+    } else {
+      targetRef.current = Math.round(posRef.current);
+    }
     resetAutoTimer();
   }, [resetAutoTimer]);
 
@@ -231,7 +222,7 @@ function DesktopCarousel({ images }: Props) {
         style={{
           height: `${CARD_H + 80}px`,
           maxHeight: "calc(100vh - 240px)",
-          cursor: isDragging.current ? "grabbing" : "grab",
+          cursor: "grab",
           touchAction: "pan-y",
         }}
         onPointerDown={onPointerDown}
@@ -287,23 +278,6 @@ function DesktopCarousel({ images }: Props) {
             );
           })}
         </div>
-
-        <div
-          ref={reticleRef}
-          className="absolute top-1/2 left-1/2 pointer-events-none"
-          style={{
-            transform: "translate(-50%, -50%)",
-            marginTop: `-${(CARD_H + 32) / 2}px`,
-            width: getCardWidth(images[0]?.orientation ?? "landscape") + 32,
-            height: CARD_H + 32,
-            zIndex: 100,
-          }}
-        >
-          <div className="absolute top-0 left-0 w-6 h-6 border-t-[1.5px] border-l-[1.5px] border-[#1A1A1A]/30" />
-          <div className="absolute top-0 right-0 w-6 h-6 border-t-[1.5px] border-r-[1.5px] border-[#1A1A1A]/30" />
-          <div className="absolute bottom-0 left-0 w-6 h-6 border-b-[1.5px] border-l-[1.5px] border-[#1A1A1A]/30" />
-          <div className="absolute bottom-0 right-0 w-6 h-6 border-b-[1.5px] border-r-[1.5px] border-[#1A1A1A]/30" />
-        </div>
       </div>
 
       <div
@@ -323,7 +297,7 @@ function DesktopCarousel({ images }: Props) {
 const M_CARD_W = 200;
 const M_CARD_H = 280;
 const M_PERSPECTIVE = 1200;
-const M_EASE = 0.1;
+const M_EASE = 0.12;
 
 function MobileCylinder({ images }: Props) {
   const len = images.length;
@@ -341,11 +315,14 @@ function MobileCylinder({ images }: Props) {
   const isDragging = useRef(false);
   const touchStartX = useRef(0);
   const touchStartAngle = useRef(0);
+  const hasTouchMoved = useRef(false);
 
   const resetAutoTimer = useCallback(() => {
     clearInterval(autoTimerRef.current);
     autoTimerRef.current = setInterval(() => {
-      targetAngleRef.current -= ANGLE_STEP;
+      if (Math.abs(angleRef.current - targetAngleRef.current) < 0.5) {
+        targetAngleRef.current -= ANGLE_STEP;
+      }
     }, AUTO_INTERVAL);
   }, [ANGLE_STEP]);
 
@@ -393,6 +370,7 @@ function MobileCylinder({ images }: Props) {
 
   const onTouchStart = useCallback((e: React.TouchEvent) => {
     isDragging.current = true;
+    hasTouchMoved.current = false;
     touchStartX.current = e.touches[0].clientX;
     touchStartAngle.current = angleRef.current;
     clearInterval(autoTimerRef.current);
@@ -401,6 +379,8 @@ function MobileCylinder({ images }: Props) {
   const onTouchMove = useCallback((e: React.TouchEvent) => {
     if (!isDragging.current) return;
     const dx = e.touches[0].clientX - touchStartX.current;
+    if (Math.abs(dx) > 8) hasTouchMoved.current = true;
+    if (!hasTouchMoved.current) return;
     angleRef.current = touchStartAngle.current + dx * 0.4;
     targetAngleRef.current = angleRef.current;
   }, []);
@@ -408,8 +388,11 @@ function MobileCylinder({ images }: Props) {
   const onTouchEnd = useCallback(() => {
     if (!isDragging.current) return;
     isDragging.current = false;
-    const snapAngle = Math.round(angleRef.current / ANGLE_STEP) * ANGLE_STEP;
-    targetAngleRef.current = snapAngle;
+    if (!hasTouchMoved.current) {
+      targetAngleRef.current = Math.round(touchStartAngle.current / ANGLE_STEP) * ANGLE_STEP;
+    } else {
+      targetAngleRef.current = Math.round(angleRef.current / ANGLE_STEP) * ANGLE_STEP;
+    }
     resetAutoTimer();
   }, [ANGLE_STEP, resetAutoTimer]);
 
@@ -450,12 +433,7 @@ function MobileCylinder({ images }: Props) {
       >
         <div
           className="absolute flex items-center justify-center"
-          style={{
-            left: "50%",
-            top: "50%",
-            width: 0,
-            height: 0,
-          }}
+          style={{ left: "50%", top: "50%", width: 0, height: 0 }}
         >
           <div
             ref={groupRef}
@@ -509,7 +487,7 @@ function MobileCylinder({ images }: Props) {
 }
 
 // ══════════════════════════════════════════════════
-//  MAIN EXPORT: picks desktop or mobile
+//  MAIN EXPORT
 // ══════════════════════════════════════════════════
 
 export default function ImageSlideshow({ images }: Props) {
