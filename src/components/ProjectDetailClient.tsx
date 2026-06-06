@@ -29,9 +29,9 @@ function GalleryIcon() {
 function CarouselIcon() {
   return (
     <svg width="13" height="13" viewBox="0 0 16 16" fill="none">
-      <rect x="0.5" y="3" width="4" height="10" rx="0.5" fill="currentColor" opacity="0.35" />
-      <rect x="11.5" y="3" width="4" height="10" rx="0.5" fill="currentColor" opacity="0.35" />
-      <rect x="4.5" y="0" width="7" height="16" rx="0.5" fill="currentColor" />
+      <rect x="0" y="5" width="3" height="6" rx="0.5" fill="currentColor" opacity="0.35" />
+      <rect x="13" y="5" width="3" height="6" rx="0.5" fill="currentColor" opacity="0.35" />
+      <rect x="3.5" y="3.5" width="9" height="9" rx="0.5" fill="currentColor" />
     </svg>
   );
 }
@@ -71,7 +71,7 @@ function ViewToggle({ mode, onChange }: { mode: ViewMode; onChange: (m: ViewMode
           <CarouselIcon />
         </span>
       </span>
-      <span className="relative overflow-hidden" style={{ width: 52, height: "1.1em" }}>
+      <span className="relative overflow-hidden" style={{ width: 60, height: "1.1em" }}>
         <span
           className="absolute inset-0 flex items-center"
           style={{
