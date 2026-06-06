@@ -193,6 +193,12 @@ function DesktopCarousel({ images }: Props) {
         child.style.filter = blur > 0.5 ? `blur(${blur}px)` : "none";
         child.style.opacity = String(opacity);
         child.style.zIndex = String(100 - Math.round(absOffset * 10));
+
+        const bracket = child.querySelector(".bracket-overlay") as HTMLElement;
+        if (bracket) {
+          const bracketOpacity = absOffset < 0.5 ? lerp(1, 0, absOffset * 2) : 0;
+          bracket.style.opacity = String(bracketOpacity);
+        }
       }
     }
 
@@ -274,6 +280,8 @@ function DesktopCarousel({ images }: Props) {
           {[-1, 0, 1].flatMap(copy =>
             images.map((img, i) => {
               const w = getCardWidth(img.orientation);
+              const bracketSize = 18;
+              const bracketGap = 10;
               return (
                 <div
                   key={`${copy}_${i}`}
@@ -303,6 +311,13 @@ function DesktopCarousel({ images }: Props) {
                         </span>
                       </div>
                     )}
+                  </div>
+                  {/* Corner brackets */}
+                  <div className="bracket-overlay absolute pointer-events-none" style={{ inset: -bracketGap, opacity: 0, transition: "opacity 0.3s ease" }}>
+                    <span style={{ position: "absolute", top: 0, left: 0, width: bracketSize, height: bracketSize, borderTop: "1.5px solid #1A1A1A", borderLeft: "1.5px solid #1A1A1A" }} />
+                    <span style={{ position: "absolute", top: 0, right: 0, width: bracketSize, height: bracketSize, borderTop: "1.5px solid #1A1A1A", borderRight: "1.5px solid #1A1A1A" }} />
+                    <span style={{ position: "absolute", bottom: 0, left: 0, width: bracketSize, height: bracketSize, borderBottom: "1.5px solid #1A1A1A", borderLeft: "1.5px solid #1A1A1A" }} />
+                    <span style={{ position: "absolute", bottom: 0, right: 0, width: bracketSize, height: bracketSize, borderBottom: "1.5px solid #1A1A1A", borderRight: "1.5px solid #1A1A1A" }} />
                   </div>
                 </div>
               );
