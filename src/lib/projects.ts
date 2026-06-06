@@ -10,6 +10,7 @@ export interface Project {
   title: string;
   titleKey: string;
   imagePath: string;
+  coverPath?: string;
   bg: string;
   accent: "white" | "black";
   textColor: string;
@@ -56,7 +57,8 @@ export const projects: Project[] = [
     slug: "rugby",
     title: "Rugby",
     titleKey: "project.rugby.title",
-    imagePath: "/images/work-rugby.jpg",
+    imagePath: "/images/gallery/rugby/6.jpg",
+    coverPath: "/images/gallery/rugby/2.jpg",
     bg: "bg-neutral-800",
     accent: "white",
     textColor: "text-white",
@@ -67,10 +69,10 @@ export const projects: Project[] = [
     gallery: [
       { src: "/images/gallery/rugby/1.jpg", alt: "Rugby 1", orientation: "landscape" },
       { src: "/images/gallery/rugby/2.jpg", alt: "Rugby 2", orientation: "portrait" },
-      { src: "/images/gallery/rugby/3.jpg", alt: "Rugby 3", orientation: "landscape" },
+      { src: "/images/gallery/rugby/6.jpg", alt: "Rugby 6", orientation: "landscape" },
       { src: "/images/gallery/rugby/4.jpg", alt: "Rugby 4", orientation: "portrait" },
       { src: "/images/gallery/rugby/5.jpg", alt: "Rugby 5", orientation: "portrait" },
-      { src: "/images/gallery/rugby/6.jpg", alt: "Rugby 6", orientation: "landscape" },
+      { src: "/images/gallery/rugby/3.jpg", alt: "Rugby 3", orientation: "landscape" },
     ],
   },
   {

@@ -37,9 +37,9 @@ export default function ProjectCard({ project, index }: Props) {
         style={{ WebkitTapHighlightColor: "transparent", WebkitTouchCallout: "none" } as React.CSSProperties}
       >
         <div className="relative rounded overflow-hidden aspect-[3/4] border border-black/10">
-          {project.imagePath ? (
+          {(project.coverPath || project.imagePath) ? (
             <Image
-              src={project.imagePath}
+              src={project.coverPath || project.imagePath}
               alt={project.title}
               fill
               className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
