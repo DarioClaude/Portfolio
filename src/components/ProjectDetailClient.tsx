@@ -17,73 +17,77 @@ interface Props {
 
 function GalleryIcon() {
   return (
-    <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
-      <rect x="0.5" y="0.5" width="7" height="5" rx="0.5" fill="currentColor" />
-      <rect x="8.5" y="0.5" width="7" height="5" rx="0.5" fill="currentColor" />
-      <rect x="0.5" y="6.5" width="5" height="7" rx="0.5" fill="currentColor" />
-      <rect x="6.5" y="6.5" width="9" height="7" rx="0.5" fill="currentColor" />
+    <svg width="13" height="13" viewBox="0 0 16 16" fill="none">
+      <rect x="0" y="0" width="7.5" height="5" rx="0.5" fill="currentColor" />
+      <rect x="8.5" y="0" width="7.5" height="5" rx="0.5" fill="currentColor" />
+      <rect x="0" y="6" width="5" height="10" rx="0.5" fill="currentColor" />
+      <rect x="6" y="6" width="10" height="10" rx="0.5" fill="currentColor" />
     </svg>
   );
 }
 
 function CarouselIcon() {
   return (
-    <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
-      <rect x="1" y="3.5" width="3.5" height="9" rx="0.5" fill="currentColor" opacity="0.4" />
-      <rect x="11.5" y="3.5" width="3.5" height="9" rx="0.5" fill="currentColor" opacity="0.4" />
-      <rect x="5" y="1" width="6" height="14" rx="0.5" fill="currentColor" />
+    <svg width="13" height="13" viewBox="0 0 16 16" fill="none">
+      <rect x="0.5" y="3" width="4" height="10" rx="0.5" fill="currentColor" opacity="0.35" />
+      <rect x="11.5" y="3" width="4" height="10" rx="0.5" fill="currentColor" opacity="0.35" />
+      <rect x="4.5" y="0" width="7" height="16" rx="0.5" fill="currentColor" />
     </svg>
   );
 }
 
 type ViewMode = "gallery" | "carousel";
 
+const TOGGLE_TRANSITION = "transform 0.6s cubic-bezier(0.4,0,0.2,1), opacity 0.6s cubic-bezier(0.4,0,0.2,1)";
+
 function ViewToggle({ mode, onChange }: { mode: ViewMode; onChange: (m: ViewMode) => void }) {
   const next = mode === "gallery" ? "carousel" : "gallery";
+  const isGallery = mode === "gallery";
   return (
     <button
       onClick={() => onChange(next)}
-      className="group relative inline-flex items-center gap-2 rounded overflow-hidden bg-[#1A1A1A] text-white font-sans font-normal tracking-normal text-[11px] md:text-[13px] px-3.5 py-1.5 md:px-5 md:py-2 transition-all duration-500 ease-out active:scale-[0.97] active:translate-y-[1px]"
+      className="group relative inline-flex items-center gap-2.5 rounded overflow-hidden bg-[#1A1A1A] text-white font-sans font-normal tracking-normal text-[11px] md:text-[13px] px-3.5 py-1.5 md:px-5 md:py-2 active:scale-[0.97] active:translate-y-[1px]"
       data-cursor-hover
     >
-      <span className="relative w-[14px] h-[14px] overflow-hidden flex-shrink-0">
+      <span className="relative flex-shrink-0" style={{ width: 13, height: 13 }}>
         <span
-          className="absolute inset-0 transition-all duration-400 ease-out"
+          className="absolute inset-0 flex items-center justify-center"
           style={{
-            transform: mode === "gallery" ? "translateY(0)" : "translateY(-100%)",
-            opacity: mode === "gallery" ? 1 : 0,
+            transition: TOGGLE_TRANSITION,
+            transform: isGallery ? "translateY(0)" : "translateY(-120%)",
+            opacity: isGallery ? 1 : 0,
           }}
         >
           <GalleryIcon />
         </span>
         <span
-          className="absolute inset-0 transition-all duration-400 ease-out"
+          className="absolute inset-0 flex items-center justify-center"
           style={{
-            transform: mode === "carousel" ? "translateY(0)" : "translateY(100%)",
-            opacity: mode === "carousel" ? 1 : 0,
+            transition: TOGGLE_TRANSITION,
+            transform: isGallery ? "translateY(120%)" : "translateY(0)",
+            opacity: isGallery ? 0 : 1,
           }}
         >
           <CarouselIcon />
         </span>
       </span>
-      <span className="relative h-[16px] overflow-hidden">
+      <span className="relative overflow-hidden" style={{ width: 52, height: "1.1em" }}>
         <span
-          className="block transition-all duration-400 ease-out"
+          className="absolute inset-0 flex items-center"
           style={{
-            transform: mode === "gallery" ? "translateY(0)" : "translateY(-100%)",
-            opacity: mode === "gallery" ? 1 : 0,
+            transition: TOGGLE_TRANSITION,
+            transform: isGallery ? "translateY(0)" : "translateY(-120%)",
+            opacity: isGallery ? 1 : 0,
           }}
         >
           Gallery
         </span>
         <span
-          className="block transition-all duration-400 ease-out"
+          className="absolute inset-0 flex items-center"
           style={{
-            transform: mode === "carousel" ? "translateY(0)" : "translateY(100%)",
-            opacity: mode === "carousel" ? 1 : 0,
-            position: "absolute",
-            top: 0,
-            left: 0,
+            transition: TOGGLE_TRANSITION,
+            transform: isGallery ? "translateY(120%)" : "translateY(0)",
+            opacity: isGallery ? 0 : 1,
           }}
         >
           Carousel
