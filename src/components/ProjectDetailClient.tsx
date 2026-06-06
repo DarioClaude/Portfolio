@@ -11,19 +11,17 @@ import type { GalleryImage } from "@/lib/projects";
 interface Props {
   slug: string;
   title: string;
-  category: string;
   clients: string[];
   gallery: GalleryImage[];
 }
 
-export default function ProjectDetailClient({ slug, title, category, clients, gallery }: Props) {
+export default function ProjectDetailClient({ slug, title, clients, gallery }: Props) {
   return (
     <>
       <WorkMobileScroll />
-      <section style={{ paddingTop: "clamp(78px, 8.4vw, 100px)", paddingBottom: "80px" }}>
+      <section style={{ paddingTop: "clamp(96px, 10vw, 120px)", paddingBottom: "80px" }}>
         <ProjectDetailContent
           title={title}
-          category={category}
           clients={clients}
         />
 

@@ -24,7 +24,6 @@ export default function ProjectDetailPage({ params }: Props) {
     <ProjectDetailClient
       slug={project.slug}
       title={project.title}
-      category={project.category}
       clients={project.clients}
       gallery={project.gallery}
     />
