@@ -279,7 +279,7 @@ function DesktopCarousel({ images }: Props) {
           {[-1, 0, 1].flatMap(copy =>
             images.map((img, i) => {
               const w = getCardWidth(img.orientation);
-              const bracketSize = 18;
+              const bracketSize = 10;
               const bracketGap = 10;
               return (
                 <div
