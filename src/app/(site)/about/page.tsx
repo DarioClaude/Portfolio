@@ -140,7 +140,7 @@ function PortraitPhoto() {
       <div style={{ perspective: "600px", width: portraitWidth }}>
         <div
           ref={ref}
-          className="w-full aspect-[2/3] overflow-hidden rounded-md relative"
+          className="w-full aspect-[2/3] overflow-hidden rounded-sm relative"
           style={{
             transformStyle: "preserve-3d",
           }}

@@ -147,8 +147,8 @@ function Lightbox({ images, index, onClose, onNavigate }: LightboxProps) {
     const rect = e.currentTarget.getBoundingClientRect();
     const x = (e.clientX - rect.left) / rect.width; // 0..1
     const y = (e.clientY - rect.top) / rect.height; // 0..1
-    targetX.current = (x - 0.5) * 20; // -10..+10 deg
-    targetY.current = -(y - 0.5) * 20; // -10..+10 deg
+    targetX.current = (x - 0.5) * 6;
+    targetY.current = -(y - 0.5) * 6;
   }, []);
 
   const handleMouseLeave = useCallback(() => {
