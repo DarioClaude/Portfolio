@@ -65,11 +65,12 @@ export const projects: Project[] = [
     clients: ["Section Paloise", "Supersevens", "Stade Toulousain", "Union Bordeaux Bègles"],
     year: 2023,
     gallery: [
-      { src: "/images/gallery/rugby/rugby-01.jpg", alt: "Rugby 1", orientation: "landscape" },
-      { src: "/images/gallery/rugby/rugby-02.jpg", alt: "Rugby 2", orientation: "landscape" },
-      { src: "/images/gallery/rugby/rugby-03.jpg", alt: "Rugby 3", orientation: "portrait" },
-      { src: "/images/gallery/rugby/rugby-04.jpg", alt: "Rugby 4", orientation: "portrait" },
-      { src: "/images/gallery/rugby/rugby-05.jpg", alt: "Rugby 5", orientation: "portrait" },
+      { src: "/images/gallery/rugby/1.jpg", alt: "Rugby 1", orientation: "landscape" },
+      { src: "/images/gallery/rugby/2.jpg", alt: "Rugby 2", orientation: "portrait" },
+      { src: "/images/gallery/rugby/3.jpg", alt: "Rugby 3", orientation: "landscape" },
+      { src: "/images/gallery/rugby/4.jpg", alt: "Rugby 4", orientation: "portrait" },
+      { src: "/images/gallery/rugby/5.jpg", alt: "Rugby 5", orientation: "portrait" },
+      { src: "/images/gallery/rugby/6.jpg", alt: "Rugby 6", orientation: "landscape" },
     ],
   },
   {
