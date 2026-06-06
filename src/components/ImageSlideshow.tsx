@@ -288,7 +288,7 @@ function DesktopCarousel({ images }: Props) {
                   style={{ width: w, height: CARD_H, transformOrigin: "center center", opacity: 0 }}
                 >
                   <div
-                    className="w-full h-full rounded-[3px] overflow-hidden"
+                    className="w-full h-full overflow-hidden"
                     style={{ boxShadow: "0 8px 30px rgba(0,0,0,0.15), 0 2px 8px rgba(0,0,0,0.1)" }}
                     data-protected
                   >
@@ -492,7 +492,7 @@ function MobileCylinder({ images }: Props) {
             {images.map((img, i) => (
               <div
                 key={i}
-                className="absolute rounded-[4px] overflow-hidden"
+                className="absolute overflow-hidden"
                 style={{
                   width: M_CARD_W,
                   height: M_CARD_H,
