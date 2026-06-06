@@ -62,7 +62,7 @@ export const projects: Project[] = [
     textColor: "text-white",
     descriptionKey: "project.rugby.desc",
     category: "Sports",
-    clients: ["Section Paloise", "Supersevens", "Stade Toulousain"],
+    clients: ["Section Paloise", "Supersevens", "Stade Toulousain", "Union Bordeaux Bègles"],
     year: 2023,
     gallery: [
       { src: "/images/gallery/rugby/rugby-01.jpg", alt: "Rugby 1", orientation: "landscape" },

@@ -30,13 +30,13 @@ export default function ProjectDetailContent({ title, clients }: Props) {
 
       {clients.length > 0 && (
         <div
-          className="relative overflow-hidden"
-          style={{ height: 22, marginTop: "clamp(10px, 1.2vw, 16px)" }}
+          className="relative overflow-hidden w-full"
+          style={{ height: 20, marginTop: "clamp(10px, 1.2vw, 16px)" }}
         >
           <AnimatePresence mode="wait">
-            <motion.span
+            <motion.div
               key={clientIndex}
-              className="absolute left-1/2 -translate-x-1/2 whitespace-nowrap"
+              className="absolute inset-x-0 text-center whitespace-nowrap"
               style={{ fontSize: 13, fontWeight: 400, color: "#9CA3AF", letterSpacing: "0.02em" }}
               initial={{ y: 16, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
@@ -44,7 +44,7 @@ export default function ProjectDetailContent({ title, clients }: Props) {
               transition={{ duration: 0.4, ease: "easeInOut" }}
             >
               {clients[clientIndex]}
-            </motion.span>
+            </motion.div>
           </AnimatePresence>
         </div>
       )}
