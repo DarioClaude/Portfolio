@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef, useState, useEffect, useCallback } from "react";
+import { createPortal } from "react-dom";
 import Image from "next/image";
 import type { GalleryImage } from "@/lib/projects";
 
@@ -330,13 +331,14 @@ export default function ProjectPhotoGallery({ images }: Props) {
         )}
       </div>
 
-      {lightboxIndex !== null && (
+      {lightboxIndex !== null && createPortal(
         <Lightbox
           images={images}
           index={lightboxIndex}
           onClose={handleClose}
           onNavigate={handleNavigate}
-        />
+        />,
+        document.body,
       )}
     </>
   );
