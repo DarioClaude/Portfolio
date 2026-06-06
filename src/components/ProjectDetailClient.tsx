@@ -17,21 +17,21 @@ interface Props {
 
 function GalleryIcon() {
   return (
-    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-      <rect x="1" y="1" width="6" height="4" rx="0.5" fill="currentColor" />
-      <rect x="9" y="1" width="6" height="4" rx="0.5" fill="currentColor" />
-      <rect x="1" y="7" width="6" height="4" rx="0.5" fill="currentColor" />
-      <rect x="9" y="7" width="6" height="4" rx="0.5" fill="currentColor" />
+    <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+      <rect x="0.5" y="0.5" width="7" height="5" rx="0.5" fill="currentColor" />
+      <rect x="8.5" y="0.5" width="7" height="5" rx="0.5" fill="currentColor" />
+      <rect x="0.5" y="6.5" width="5" height="7" rx="0.5" fill="currentColor" />
+      <rect x="6.5" y="6.5" width="9" height="7" rx="0.5" fill="currentColor" />
     </svg>
   );
 }
 
 function CarouselIcon() {
   return (
-    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-      <rect x="1.5" y="3" width="4" height="10" rx="0.5" fill="currentColor" opacity="0.35" />
-      <rect x="10.5" y="3" width="4" height="10" rx="0.5" fill="currentColor" opacity="0.35" />
-      <rect x="4.5" y="1.5" width="7" height="13" rx="0.5" fill="currentColor" />
+    <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+      <rect x="1" y="3.5" width="3.5" height="9" rx="0.5" fill="currentColor" opacity="0.4" />
+      <rect x="11.5" y="3.5" width="3.5" height="9" rx="0.5" fill="currentColor" opacity="0.4" />
+      <rect x="5" y="1" width="6" height="14" rx="0.5" fill="currentColor" />
     </svg>
   );
 }
@@ -39,36 +39,57 @@ function CarouselIcon() {
 type ViewMode = "gallery" | "carousel";
 
 function ViewToggle({ mode, onChange }: { mode: ViewMode; onChange: (m: ViewMode) => void }) {
+  const next = mode === "gallery" ? "carousel" : "gallery";
   return (
-    <div
-      className="relative inline-flex items-center rounded bg-[#F3F4F6] p-[3px]"
-      style={{ height: 32 }}
+    <button
+      onClick={() => onChange(next)}
+      className="group relative inline-flex items-center gap-2 rounded overflow-hidden bg-[#1A1A1A] text-white font-sans font-normal tracking-normal text-[11px] md:text-[13px] px-3.5 py-1.5 md:px-5 md:py-2 transition-all duration-500 ease-out active:scale-[0.97] active:translate-y-[1px]"
+      data-cursor-hover
     >
-      <div
-        className="absolute top-[3px] bottom-[3px] rounded bg-[#1A1A1A] transition-transform duration-300 ease-out"
-        style={{
-          width: "calc(50% - 3px)",
-          left: 3,
-          transform: mode === "carousel" ? "translateX(100%)" : "translateX(0)",
-        }}
-      />
-      <button
-        onClick={() => onChange("gallery")}
-        className={`relative z-10 flex items-center justify-center gap-1.5 px-3 h-full rounded text-[11px] font-medium tracking-wide transition-colors duration-300 ${
-          mode === "gallery" ? "text-white" : "text-[#9CA3AF]"
-        }`}
-      >
-        <GalleryIcon />
-      </button>
-      <button
-        onClick={() => onChange("carousel")}
-        className={`relative z-10 flex items-center justify-center gap-1.5 px-3 h-full rounded text-[11px] font-medium tracking-wide transition-colors duration-300 ${
-          mode === "carousel" ? "text-white" : "text-[#9CA3AF]"
-        }`}
-      >
-        <CarouselIcon />
-      </button>
-    </div>
+      <span className="relative w-[14px] h-[14px] overflow-hidden flex-shrink-0">
+        <span
+          className="absolute inset-0 transition-all duration-400 ease-out"
+          style={{
+            transform: mode === "gallery" ? "translateY(0)" : "translateY(-100%)",
+            opacity: mode === "gallery" ? 1 : 0,
+          }}
+        >
+          <GalleryIcon />
+        </span>
+        <span
+          className="absolute inset-0 transition-all duration-400 ease-out"
+          style={{
+            transform: mode === "carousel" ? "translateY(0)" : "translateY(100%)",
+            opacity: mode === "carousel" ? 1 : 0,
+          }}
+        >
+          <CarouselIcon />
+        </span>
+      </span>
+      <span className="relative h-[16px] overflow-hidden">
+        <span
+          className="block transition-all duration-400 ease-out"
+          style={{
+            transform: mode === "gallery" ? "translateY(0)" : "translateY(-100%)",
+            opacity: mode === "gallery" ? 1 : 0,
+          }}
+        >
+          Gallery
+        </span>
+        <span
+          className="block transition-all duration-400 ease-out"
+          style={{
+            transform: mode === "carousel" ? "translateY(0)" : "translateY(100%)",
+            opacity: mode === "carousel" ? 1 : 0,
+            position: "absolute",
+            top: 0,
+            left: 0,
+          }}
+        >
+          Carousel
+        </span>
+      </span>
+    </button>
   );
 }
 
