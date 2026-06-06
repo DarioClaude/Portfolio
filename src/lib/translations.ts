@@ -227,7 +227,7 @@ export const translations: Record<Lang, Record<string, string>> = {
     "project.rugby.title": "Rugby",
     "project.tourdefrance.title": "Tour de France",
     "project.running.title": "Running",
-    "project.otherssports.title": "Others Sports",
+    "project.otherssports.title": "Other Sports",
     "project.artisanat.title": "Craftsmanship",
 
     // Project descriptions

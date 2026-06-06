@@ -105,7 +105,7 @@ export const projects: Project[] = [
   {
     id: 6,
     slug: "others-sports",
-    title: "Others Sports",
+    title: "Other Sports",
     titleKey: "project.otherssports.title",
     imagePath: "/images/work-others sports.jpg",
     bg: "bg-neutral-700",
