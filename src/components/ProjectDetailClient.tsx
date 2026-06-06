@@ -11,6 +11,7 @@ import type { GalleryImage } from "@/lib/projects";
 
 interface Props {
   slug: string;
+  title: string;
   gallery: GalleryImage[];
 }
 
@@ -71,7 +72,7 @@ function ViewToggle({ mode, onChange }: { mode: ViewMode; onChange: (m: ViewMode
   );
 }
 
-export default function ProjectDetailClient({ slug, gallery }: Props) {
+export default function ProjectDetailClient({ slug, title, gallery }: Props) {
   const [mode, setMode] = useState<ViewMode>("gallery");
   const [isMobile, setIsMobile] = useState(false);
 
@@ -85,9 +86,23 @@ export default function ProjectDetailClient({ slug, gallery }: Props) {
   return (
     <>
       <WorkMobileScroll />
-      <section style={{ padding: "clamp(96px, 10vw, 120px) clamp(20px, 3vw, 40px) 80px" }}>
+      <section
+        style={{
+          position: "relative",
+          zIndex: 0,
+          padding: isMobile
+            ? "clamp(96px, 10vw, 120px) clamp(20px, 3vw, 40px) 40px"
+            : "clamp(96px, 10vw, 120px) clamp(20px, 3vw, 40px) 80px",
+        }}
+      >
         {!isMobile && gallery.length > 0 && (
-          <div className="flex justify-end" style={{ marginBottom: 16 }}>
+          <div className="flex items-end justify-between mb-8">
+            <h2
+              className="font-bold text-[#1A1A1A] tracking-tight leading-none uppercase whitespace-nowrap"
+              style={{ fontSize: "clamp(1.5rem, 4.5vw, 3.5rem)" }}
+            >
+              {title}
+            </h2>
             <ViewToggle mode={mode} onChange={setMode} />
           </div>
         )}
@@ -101,7 +116,13 @@ export default function ProjectDetailClient({ slug, gallery }: Props) {
 
       <RecentWork currentSlug={slug} />
 
-      <div className="flex justify-between items-end" style={{ padding: "clamp(24px, 3vw, 40px) clamp(20px, 3vw, 40px) clamp(32px, 3vw, 48px)" }}>
+      <div
+        className="flex justify-between items-end"
+        style={{
+          padding:
+            "clamp(24px, 3vw, 40px) clamp(20px, 3vw, 40px) clamp(32px, 3vw, 48px)",
+        }}
+      >
         <WorkCopyright />
         <WorkIdentity />
       </div>

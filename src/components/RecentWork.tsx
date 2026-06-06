@@ -34,12 +34,12 @@ export default function RecentWork({ currentSlug }: Props) {
       </div>
 
       {/* Project cards grid */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div className="grid grid-cols-2 md:grid-cols-3 gap-2 md:gap-4">
         {others.map((project, i) => (
           <Link
             key={project.slug}
             href={`/work/${project.slug}`}
-            className={`group relative overflow-hidden rounded-lg${i > 0 ? " hidden md:block" : ""}`}
+            className={`group relative overflow-hidden rounded-lg${i > 1 ? " hidden md:block" : ""}`}
             style={{ aspectRatio: "4 / 3" }}
             data-cursor-hover
           >
