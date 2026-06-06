@@ -1,7 +1,6 @@
 import ProjectGrid from "@/components/ProjectGrid";
 import WorkTitle from "@/components/WorkTitle";
-import WorkIdentity from "@/components/WorkIdentity";
-import WorkCopyright from "@/components/WorkCopyright";
+import WorkFooter from "@/components/WorkFooter";
 import WorkMobileScroll from "@/components/WorkMobileScroll";
 
 export const metadata = {
@@ -24,11 +23,7 @@ export default function WorkPage() {
         </div>
       </section>
 
-      {/* Footer — copyright left, identity right */}
-      <div className="flex justify-between items-end" style={{ padding: "0 clamp(20px, 3vw, 40px) clamp(32px, 3vw, 48px)" }}>
-        <WorkCopyright />
-        <WorkIdentity />
-      </div>
+      <WorkFooter />
     </>
   );
 }

@@ -4,8 +4,7 @@ import { useState, useEffect } from "react";
 import ProjectPhotoGallery from "./ProjectPhotoGallery";
 import ProjectGallery from "./ProjectGallery";
 import RecentWork from "./RecentWork";
-import WorkCopyright from "./WorkCopyright";
-import WorkIdentity from "./WorkIdentity";
+import WorkFooter from "./WorkFooter";
 import WorkMobileScroll from "./WorkMobileScroll";
 import type { GalleryImage } from "@/lib/projects";
 
@@ -141,19 +140,7 @@ export default function ProjectDetailClient({ slug, title, gallery }: Props) {
 
       <RecentWork currentSlug={slug} />
 
-      <div
-        className={`flex justify-between ${isMobile ? "items-start" : "items-end"}`}
-        style={{
-          padding: isMobile
-            ? "26px clamp(20px, 3vw, 40px) clamp(32px, 3vw, 48px)"
-            : "0 clamp(20px, 3vw, 40px) clamp(32px, 3vw, 48px)",
-        }}
-      >
-        <WorkCopyright />
-        <div style={isMobile ? { transform: "scale(0.85)", transformOrigin: "top right" } : undefined}>
-          <WorkIdentity />
-        </div>
-      </div>
+      <WorkFooter />
     </>
   );
 }
