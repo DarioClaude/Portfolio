@@ -43,6 +43,7 @@ export default function ProjectCard({ project, index }: Props) {
               alt={project.title}
               fill
               className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+              style={project.coverPath ? { objectPosition: "top" } : undefined}
               sizes="(max-width: 768px) 50vw, 25vw"
             />
           ) : (
