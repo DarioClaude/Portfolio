@@ -260,10 +260,9 @@ function DesktopCarousel({ images }: Props) {
   return (
     <div className="flex flex-col items-center select-none">
       <div
-        className="relative w-full overflow-hidden"
+        className="relative w-full overflow-x-hidden overflow-y-visible"
         style={{
           height: `${CARD_H + 80}px`,
-          maxHeight: "calc(100vh - 240px)",
           cursor: "grab",
           touchAction: "pan-y",
         }}
@@ -299,7 +298,7 @@ function DesktopCarousel({ images }: Props) {
                         alt={img.alt}
                         width={w}
                         height={CARD_H}
-                        className="object-contain w-full h-full pointer-events-none select-none"
+                        className="object-cover w-full h-full pointer-events-none select-none"
                         sizes={`${w}px`}
                         quality={85}
                         draggable={false}
@@ -511,7 +510,7 @@ function MobileCylinder({ images }: Props) {
                     alt={img.alt}
                     width={M_CARD_W}
                     height={M_CARD_H}
-                    className="object-contain w-full h-full pointer-events-none select-none"
+                    className="object-cover w-full h-full pointer-events-none select-none"
                     sizes={`${M_CARD_W}px`}
                     quality={80}
                     draggable={false}
