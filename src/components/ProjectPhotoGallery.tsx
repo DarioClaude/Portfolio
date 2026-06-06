@@ -101,6 +101,14 @@ function Lightbox({ images, index, onClose, onNavigate }: LightboxProps) {
   const currentY = useRef(0);
   const rafId = useRef<number>(0);
   const isTouch = useRef(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768);
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, []);
 
   const LERP = 0.08;
 
@@ -167,12 +175,12 @@ function Lightbox({ images, index, onClose, onNavigate }: LightboxProps) {
   // Portrait:  height = min(75vh, 720px), width from ratio
   const sizeStyle: React.CSSProperties = isLandscape
     ? {
-        width: "min(80vw, 900px)",
+        width: isMobile ? "min(88vw, 900px)" : "min(80vw, 900px)",
         aspectRatio: `${L_RATIO}`,
         maxHeight: "75vh",
       }
     : {
-        height: "min(75vh, 720px)",
+        height: isMobile ? "min(71vh, 684px)" : "min(75vh, 720px)",
         aspectRatio: `${P_RATIO}`,
         maxWidth: "80vw",
       };
