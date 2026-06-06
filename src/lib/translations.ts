@@ -61,8 +61,8 @@ export const translations: Record<Lang, Record<string, string>> = {
     "avatar.role": "Photographe",
 
     // Other Projects
-    "recentWork.title": "AUTRES PROJETS",
-    "recentWork.viewAll": "Voir tous les projets",
+    "recentWork.title": "See more",
+    "recentWork.viewAll": "Tout voir",
 
     // Work
     "work.title": "WORK",
@@ -193,8 +193,8 @@ export const translations: Record<Lang, Record<string, string>> = {
     "avatar.role": "Photographer",
 
     // Other Projects
-    "recentWork.title": "OTHER PROJECTS",
-    "recentWork.viewAll": "View all projects",
+    "recentWork.title": "See more",
+    "recentWork.viewAll": "All work",
 
     // Work
     "work.title": "WORK",
@@ -325,8 +325,8 @@ export const translations: Record<Lang, Record<string, string>> = {
     "avatar.role": "Fotógrafo",
 
     // Other Projects
-    "recentWork.title": "OTROS PROYECTOS",
-    "recentWork.viewAll": "Ver todos los proyectos",
+    "recentWork.title": "See more",
+    "recentWork.viewAll": "Ver todo",
 
     // Work
     "work.title": "TRABAJO",
