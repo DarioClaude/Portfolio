@@ -120,7 +120,7 @@ export default function ProjectDetailClient({ slug, title, gallery }: Props) {
             : "clamp(96px, 10vw, 120px) clamp(20px, 3vw, 40px) 80px",
         }}
       >
-        {!isMobile && gallery.length > 0 && (
+        {gallery.length > 0 && (
           <div className="flex items-end justify-between mb-8">
             <h2
               className="font-bold text-[#1A1A1A] tracking-tight leading-none uppercase whitespace-nowrap"
@@ -128,7 +128,7 @@ export default function ProjectDetailClient({ slug, title, gallery }: Props) {
             >
               {title}
             </h2>
-            <ViewToggle mode={mode} onChange={setMode} />
+            {!isMobile && <ViewToggle mode={mode} onChange={setMode} />}
           </div>
         )}
 
@@ -145,6 +145,7 @@ export default function ProjectDetailClient({ slug, title, gallery }: Props) {
         className="flex justify-between items-end"
         style={{
           padding: "0 clamp(20px, 3vw, 40px) clamp(32px, 3vw, 48px)",
+          ...(isMobile ? { transform: "scale(0.7)", transformOrigin: "bottom center" } : {}),
         }}
       >
         <WorkCopyright />
