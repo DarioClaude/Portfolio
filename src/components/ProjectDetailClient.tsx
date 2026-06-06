@@ -29,11 +29,9 @@ function GalleryIcon() {
 function CarouselIcon() {
   return (
     <svg width="13" height="13" viewBox="0 0 16 16" fill="none">
-      <rect x="0" y="4" width="2" height="8" rx="0.5" fill="currentColor" opacity="0.2" />
-      <rect x="2.5" y="2.5" width="3" height="11" rx="0.5" fill="currentColor" opacity="0.35" />
-      <rect x="6" y="0.5" width="4" height="15" rx="0.5" fill="currentColor" />
-      <rect x="10.5" y="2.5" width="3" height="11" rx="0.5" fill="currentColor" opacity="0.35" />
-      <rect x="14" y="4" width="2" height="8" rx="0.5" fill="currentColor" opacity="0.2" />
+      <rect x="0" y="4" width="4" height="8" rx="0.5" fill="currentColor" opacity="0.3" />
+      <rect x="4.5" y="2.5" width="7" height="11" rx="0.5" fill="currentColor" />
+      <rect x="12" y="4" width="4" height="8" rx="0.5" fill="currentColor" opacity="0.3" />
     </svg>
   );
 }
