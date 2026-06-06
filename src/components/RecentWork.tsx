@@ -20,7 +20,7 @@ export default function RecentWork({ currentSlug }: Props) {
   return (
     <section style={{ padding: "clamp(48px, 6vw, 80px) clamp(20px, 3vw, 40px) 32px" }}>
       {/* Header row */}
-      <div className="flex items-end justify-between mb-8 gap-4">
+      <div className="flex items-end justify-between gap-4" style={{ marginBottom: 21 }}>
         <h2
           className="font-bold text-[#1A1A1A] tracking-tight leading-none uppercase whitespace-nowrap"
           style={{ fontSize: "clamp(1.5rem, 4.5vw, 3.5rem)" }}

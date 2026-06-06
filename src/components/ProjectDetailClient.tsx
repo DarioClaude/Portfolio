@@ -121,7 +121,7 @@ export default function ProjectDetailClient({ slug, title, gallery }: Props) {
         }}
       >
         {gallery.length > 0 && (
-          <div className="flex items-end justify-between mb-8">
+          <div className="flex items-end justify-between" style={{ marginBottom: 21 }}>
             <h2
               className="font-bold text-[#1A1A1A] tracking-tight leading-none uppercase whitespace-nowrap"
               style={{ fontSize: "clamp(1.5rem, 4.5vw, 3.5rem)" }}
