@@ -291,7 +291,7 @@ function DesktopCarousel({ images }: Props) {
                         alt={img.alt}
                         width={w}
                         height={CARD_H}
-                        className="object-cover w-full h-full pointer-events-none select-none"
+                        className="object-contain w-full h-full pointer-events-none select-none"
                         sizes={`${w}px`}
                         quality={85}
                         draggable={false}
@@ -496,7 +496,7 @@ function MobileCylinder({ images }: Props) {
                     alt={img.alt}
                     width={M_CARD_W}
                     height={M_CARD_H}
-                    className="object-cover w-full h-full pointer-events-none select-none"
+                    className="object-contain w-full h-full pointer-events-none select-none"
                     sizes={`${M_CARD_W}px`}
                     quality={80}
                     draggable={false}
