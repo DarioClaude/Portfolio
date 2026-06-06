@@ -119,8 +119,7 @@ export default function ProjectDetailClient({ slug, title, gallery }: Props) {
       <div
         className="flex justify-between items-end"
         style={{
-          padding:
-            "clamp(24px, 3vw, 40px) clamp(20px, 3vw, 40px) clamp(32px, 3vw, 48px)",
+          padding: "0 clamp(20px, 3vw, 40px) clamp(32px, 3vw, 48px)",
         }}
       >
         <WorkCopyright />
