@@ -142,15 +142,15 @@ export default function ProjectDetailClient({ slug, title, gallery }: Props) {
       <RecentWork currentSlug={slug} />
 
       <div
-        className="flex justify-between items-end"
+        className={`flex justify-between ${isMobile ? "items-start" : "items-end"}`}
         style={{
           padding: isMobile
-            ? "32px clamp(20px, 3vw, 40px) clamp(32px, 3vw, 48px)"
+            ? "26px clamp(20px, 3vw, 40px) clamp(32px, 3vw, 48px)"
             : "0 clamp(20px, 3vw, 40px) clamp(32px, 3vw, 48px)",
         }}
       >
         <WorkCopyright />
-        <div style={isMobile ? { transform: "scale(0.85)", transformOrigin: "bottom right" } : undefined}>
+        <div style={isMobile ? { transform: "scale(0.85)", transformOrigin: "top right" } : undefined}>
           <WorkIdentity />
         </div>
       </div>
