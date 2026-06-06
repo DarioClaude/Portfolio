@@ -1,7 +1,6 @@
 "use client";
 
-import ProjectDetailContent from "./ProjectDetailContent";
-import ProjectGallery from "./ProjectGallery";
+import ProjectPhotoGallery from "./ProjectPhotoGallery";
 import RecentWork from "./RecentWork";
 import WorkCopyright from "./WorkCopyright";
 import WorkIdentity from "./WorkIdentity";
@@ -10,24 +9,15 @@ import type { GalleryImage } from "@/lib/projects";
 
 interface Props {
   slug: string;
-  title: string;
-  clients: string[];
   gallery: GalleryImage[];
 }
 
-export default function ProjectDetailClient({ slug, title, clients, gallery }: Props) {
+export default function ProjectDetailClient({ slug, gallery }: Props) {
   return (
     <>
       <WorkMobileScroll />
-      <section style={{ paddingTop: "clamp(96px, 10vw, 120px)", paddingBottom: "80px" }}>
-        <ProjectDetailContent
-          title={title}
-          clients={clients}
-        />
-
-        <div style={{ marginTop: "clamp(32px, 4vw, 48px)" }}>
-          <ProjectGallery images={gallery} />
-        </div>
+      <section style={{ paddingTop: "clamp(96px, 10vw, 120px)", padding: "clamp(96px, 10vw, 120px) clamp(20px, 3vw, 40px) 80px" }}>
+        <ProjectPhotoGallery images={gallery} />
       </section>
 
       <RecentWork currentSlug={slug} />
