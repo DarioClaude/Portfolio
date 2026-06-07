@@ -176,13 +176,15 @@ function Lightbox({ images, index, onClose, onNavigate }: LightboxProps) {
   const sizeStyle: React.CSSProperties = isLandscape
     ? {
         width: isMobile ? "min(88vw, 900px)" : "min(80vw, 900px)",
-        aspectRatio: `${L_RATIO}`,
+        height: "auto",
         maxHeight: "75vh",
+        aspectRatio: "auto",
       }
     : {
         height: isMobile ? "min(71vh, 684px)" : "min(75vh, 720px)",
-        aspectRatio: `${P_RATIO}`,
+        width: "auto",
         maxWidth: "80vw",
+        aspectRatio: "auto",
       };
 
   return (
@@ -205,8 +207,9 @@ function Lightbox({ images, index, onClose, onNavigate }: LightboxProps) {
           <Image
             src={image.src}
             alt={image.alt}
-            fill
-            className="object-cover"
+            width={isLandscape ? 1800 : 800}
+            height={isLandscape ? 1200 : 1200}
+            className="w-full h-full object-contain"
             sizes="min(80vw, 900px)"
             quality={90}
             draggable={false}
