@@ -10,10 +10,10 @@ function Flag({ code }: { code: Lang }) {
   const h = 14;
   if (code === "fr")
     return (
-      <svg width={w} height={h} viewBox="0 0 30 20" className="rounded-[2px] block shrink-0">
-        <rect width="10" height="20" fill="#002395" />
-        <rect x="10" width="10" height="20" fill="#fff" />
-        <rect x="20" width="10" height="20" fill="#ED2939" />
+      <svg width={w} height={h} viewBox="0 0 60 30" className="rounded-[2px] block shrink-0">
+        <rect width="20" height="30" fill="#002395" />
+        <rect x="20" width="20" height="30" fill="#fff" />
+        <rect x="40" width="20" height="30" fill="#ED2939" />
       </svg>
     );
   if (code === "en")
@@ -31,12 +31,10 @@ function Flag({ code }: { code: Lang }) {
     );
   // es
   return (
-    <svg width={w} height={h} viewBox="0 0 30 20" className="rounded-[2px] block shrink-0">
-      <rect width="30" height="5" fill="#AA151B" />
-      <rect y="5" width="30" height="10" fill="#F1BF00" />
-      <rect y="15" width="30" height="5" fill="#AA151B" />
-      {/* Coat of arms hint */}
-      <rect x="8" y="7" width="4" height="6" rx="1" fill="#AA151B" opacity="0.5" />
+    <svg width={w} height={h} viewBox="0 0 60 30" className="rounded-[2px] block shrink-0">
+      <rect width="60" height="7.5" fill="#AA151B" />
+      <rect y="7.5" width="60" height="15" fill="#F1BF00" />
+      <rect y="22.5" width="60" height="7.5" fill="#AA151B" />
     </svg>
   );
 }
