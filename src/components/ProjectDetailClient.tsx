@@ -97,7 +97,7 @@ function ViewToggle({ mode, onChange }: { mode: ViewMode; onChange: (m: ViewMode
 }
 
 export default function ProjectDetailClient({ slug, title, gallery }: Props) {
-  const [mode, setMode] = useState<ViewMode>("gallery");
+  const [mode, setMode] = useState<ViewMode>("carousel");
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
