@@ -245,19 +245,11 @@ export default function AboutPage() {
 
       {/* 3D Cylindrical Carousel — WebGL */}
       <div className="fixed inset-0 z-0 pointer-events-none">
-        {isMobile ? (
-          <div className="absolute inset-0 pointer-events-auto">
-            <Suspense fallback={null}>
-              <CylinderCarousel />
-            </Suspense>
-          </div>
-        ) : (
-          <Link href="/work" className="absolute inset-0 pointer-events-auto">
-            <Suspense fallback={null}>
-              <CylinderCarousel />
-            </Suspense>
-          </Link>
-        )}
+        <Link href="/work" className="absolute inset-0 pointer-events-auto">
+          <Suspense fallback={null}>
+            <CylinderCarousel />
+          </Suspense>
+        </Link>
       </div>
     </section>
   );
