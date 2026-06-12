@@ -42,7 +42,7 @@ export const projects: Project[] = [
     slug: "travel",
     title: "Travel",
     titleKey: "project.travel.title",
-    imagePath: "/images/gallery/travel/1.jpg",
+    imagePath: "/images/work-travel.jpg",
     bg: "bg-neutral-700",
     accent: "white",
     textColor: "text-white",
