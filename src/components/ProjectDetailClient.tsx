@@ -41,7 +41,7 @@ const TOGGLE_TRANSITION = "transform 0.6s cubic-bezier(0.4,0,0.2,1), opacity 0.6
 
 function ViewToggle({ mode, onChange }: { mode: ViewMode; onChange: (m: ViewMode) => void }) {
   const next = mode === "gallery" ? "carousel" : "gallery";
-  const isGallery = mode === "gallery";
+  const showGallery = mode !== "gallery";
   return (
     <button
       onClick={() => onChange(next)}
@@ -53,8 +53,8 @@ function ViewToggle({ mode, onChange }: { mode: ViewMode; onChange: (m: ViewMode
           className="absolute inset-0 flex items-center justify-center"
           style={{
             transition: TOGGLE_TRANSITION,
-            transform: isGallery ? "translateY(0)" : "translateY(-120%)",
-            opacity: isGallery ? 1 : 0,
+            transform: showGallery ? "translateY(0)" : "translateY(-120%)",
+            opacity: showGallery ? 1 : 0,
           }}
         >
           <GalleryIcon />
@@ -63,8 +63,8 @@ function ViewToggle({ mode, onChange }: { mode: ViewMode; onChange: (m: ViewMode
           className="absolute inset-0 flex items-center justify-center"
           style={{
             transition: TOGGLE_TRANSITION,
-            transform: isGallery ? "translateY(120%)" : "translateY(0)",
-            opacity: isGallery ? 0 : 1,
+            transform: showGallery ? "translateY(120%)" : "translateY(0)",
+            opacity: showGallery ? 0 : 1,
           }}
         >
           <CarouselIcon />
@@ -75,8 +75,8 @@ function ViewToggle({ mode, onChange }: { mode: ViewMode; onChange: (m: ViewMode
           className="absolute inset-0 flex items-center"
           style={{
             transition: TOGGLE_TRANSITION,
-            transform: isGallery ? "translateY(0)" : "translateY(-120%)",
-            opacity: isGallery ? 1 : 0,
+            transform: showGallery ? "translateY(0)" : "translateY(-120%)",
+            opacity: showGallery ? 1 : 0,
           }}
         >
           Gallery
@@ -85,8 +85,8 @@ function ViewToggle({ mode, onChange }: { mode: ViewMode; onChange: (m: ViewMode
           className="absolute inset-0 flex items-center"
           style={{
             transition: TOGGLE_TRANSITION,
-            transform: isGallery ? "translateY(120%)" : "translateY(0)",
-            opacity: isGallery ? 0 : 1,
+            transform: showGallery ? "translateY(120%)" : "translateY(0)",
+            opacity: showGallery ? 0 : 1,
           }}
         >
           Carousel
