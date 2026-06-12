@@ -63,7 +63,7 @@ export default function LanguageSelector() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [handleClickOutside]);
 
-  const currentLabel = languages.find((l) => l.code === lang)?.label;
+  const suggested = languages.find((l) => l.code !== lang) || languages[0];
 
   return (
     <div ref={ref} className="relative">
@@ -76,8 +76,8 @@ export default function LanguageSelector() {
         data-cursor-noinvert
         aria-label={t("aria.language")}
       >
-        <Flag code={lang} />
-        <span className="text-xs font-medium text-[#1A1A1A] leading-none hidden md:inline">{currentLabel}</span>
+        <Flag code={suggested.code} />
+        <span className="text-xs font-medium text-[#1A1A1A] leading-none hidden md:inline">{suggested.label}</span>
         <svg
           width="8"
           height="5"
