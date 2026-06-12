@@ -75,7 +75,7 @@ export default function LanguageSelector() {
         aria-label={t("aria.language")}
       >
         <Flag code={suggested.code} />
-        <span className="text-xs font-medium text-[#1A1A1A] leading-none hidden md:inline">{suggested.label}</span>
+        <span className="text-xs font-medium text-[#1A1A1A] leading-none hidden md:inline">{suggested.code.toUpperCase()}</span>
         <svg
           width="8"
           height="5"
