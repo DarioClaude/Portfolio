@@ -114,7 +114,16 @@ export const projects: Project[] = [
     category: "Sports",
     clients: ["Dario Tonini"],
     year: 2024,
-    gallery: [],
+    gallery: [
+      { src: "/images/gallery/tour-de-france/1.jpg", alt: "Tour de France 1", orientation: "portrait" },
+      { src: "/images/gallery/tour-de-france/2.jpg", alt: "Tour de France 2", orientation: "portrait" },
+      { src: "/images/gallery/tour-de-france/3.jpg", alt: "Tour de France 3", orientation: "portrait" },
+      { src: "/images/gallery/tour-de-france/4.jpg", alt: "Tour de France 4", orientation: "portrait" },
+      { src: "/images/gallery/tour-de-france/5.jpg", alt: "Tour de France 5", orientation: "portrait" },
+      { src: "/images/gallery/tour-de-france/6.jpg", alt: "Tour de France 6", orientation: "portrait" },
+      { src: "/images/gallery/tour-de-france/7.jpg", alt: "Tour de France 7", orientation: "portrait" },
+      { src: "/images/gallery/tour-de-france/8.jpg", alt: "Tour de France 8", orientation: "portrait" },
+    ],
   },
   {
     id: 5,
