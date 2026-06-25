@@ -121,6 +121,9 @@ export const projects: Project[] = [
       { src: "/images/gallery/rugby/3.jpg", alt: "Rugby 3", orientation: "landscape" },
       { src: "/images/gallery/rugby/7.jpg", alt: "Rugby 7", orientation: "landscape" },
       { src: "/images/gallery/rugby/8.jpg", alt: "Rugby 8", orientation: "portrait" },
+      { src: "/images/gallery/rugby/9.jpg", alt: "Rugby 9", orientation: "portrait" },
+      { src: "/images/gallery/rugby/10.jpg", alt: "Rugby 10", orientation: "portrait" },
+      { src: "/images/gallery/rugby/11.jpg", alt: "Rugby 11", orientation: "portrait" },
     ],
   },
   {
