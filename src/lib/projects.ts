@@ -167,6 +167,8 @@ export const projects: Project[] = [
       { src: "/images/gallery/running/5.jpg", alt: "Running 5", orientation: "portrait" },
       { src: "/images/gallery/running/6.jpg", alt: "Running 6", orientation: "portrait" },
       { src: "/images/gallery/running/7.jpg", alt: "Running 7", orientation: "portrait" },
+      { src: "/images/gallery/running/8.jpg", alt: "Running 8", orientation: "portrait" },
+      { src: "/images/gallery/running/9.jpg", alt: "Running 9", orientation: "portrait" },
     ],
   },
   {
