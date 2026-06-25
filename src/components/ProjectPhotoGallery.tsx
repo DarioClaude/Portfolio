@@ -309,7 +309,15 @@ export default function ProjectPhotoGallery({ images }: Props) {
                   (cell.img.orientation === "landscape" ? L_RATIO : P_RATIO),
                 0,
               );
-              const h = (width - (row.length - 1) * GAP) / ratioSum;
+              const fullCols = rows[0].length;
+              const fullRatioSum = rows[0].reduce(
+                (s, cell) =>
+                  s +
+                  (cell.img.orientation === "landscape" ? L_RATIO : P_RATIO),
+                0,
+              );
+              const maxH = (width - (fullCols - 1) * GAP) / fullRatioSum;
+              const h = Math.min((width - (row.length - 1) * GAP) / ratioSum, maxH);
 
               return (
                 <div key={ri} style={{ display: "flex", gap: GAP }}>
