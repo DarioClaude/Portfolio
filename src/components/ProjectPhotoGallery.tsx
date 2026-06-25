@@ -43,8 +43,8 @@ function buildRows(
   images: GalleryImage[],
   patterns: string[][],
 ): Cell[][] {
-  const landscapes: { img: GalleryImage; srcIndex: number }[] = [];
-  const portraits: { img: GalleryImage; srcIndex: number }[] = [];
+  const landscapes: Cell[] = [];
+  const portraits: Cell[] = [];
 
   images.forEach((img, i) => {
     if (img.orientation === "landscape") {
@@ -54,32 +54,51 @@ function buildRows(
     }
   });
 
-  // Fallback if one pool is empty: use all images for every slot
+  // All same orientation: chunk into rows, no duplicates
   if (landscapes.length === 0 || portraits.length === 0) {
+    const pool: Cell[] = images.map((img, i) => ({ img, srcIndex: i }));
     const cols = patterns[0].length;
-    return patterns.map((_, r) =>
-      Array.from({ length: cols }, (_, c) => {
-        const idx = (r * cols + c) % images.length;
-        return { img: images[idx], srcIndex: idx };
-      }),
-    );
+    const rows: Cell[][] = [];
+    for (let i = 0; i < pool.length; i += cols) {
+      rows.push(pool.slice(i, i + cols));
+    }
+    return rows;
   }
 
+  // Mixed: cycle patterns, stop when all photos used
   let li = 0;
   let pi = 0;
+  let used = 0;
+  const total = images.length;
+  const rows: Cell[][] = [];
+  let patIdx = 0;
 
-  return patterns.map((pattern) =>
-    pattern.map((type) => {
-      if (type === "L") {
-        const entry = landscapes[li % landscapes.length];
-        li++;
-        return { img: entry.img, srcIndex: entry.srcIndex };
+  while (used < total) {
+    const pattern = patterns[patIdx % patterns.length];
+    const row: Cell[] = [];
+
+    for (const type of pattern) {
+      if (used >= total) break;
+      if (type === "L" && li < landscapes.length) {
+        row.push(landscapes[li++]);
+        used++;
+      } else if (type === "P" && pi < portraits.length) {
+        row.push(portraits[pi++]);
+        used++;
+      } else if (li < landscapes.length) {
+        row.push(landscapes[li++]);
+        used++;
+      } else if (pi < portraits.length) {
+        row.push(portraits[pi++]);
+        used++;
       }
-      const entry = portraits[pi % portraits.length];
-      pi++;
-      return { img: entry.img, srcIndex: entry.srcIndex };
-    }),
-  );
+    }
+
+    if (row.length > 0) rows.push(row);
+    patIdx++;
+  }
+
+  return rows;
 }
 
 /* ------------------------------------------------------------------ */
