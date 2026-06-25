@@ -236,24 +236,24 @@ export default function ProjectPhotoGallery({ images }: Props) {
       <div ref={containerRef} className="w-full">
         {width > 0 && (
           <div style={{ display: "flex", flexDirection: "column", gap: GAP }}>
-            {(() => {
-              const fullCols = rows[0].length;
-              const fullRows = rows.filter((r) => r.length === fullCols);
-              const refH = Math.min(
-                ...fullRows.map((r) => {
-                  const rs = r.reduce(
-                    (s, cell) =>
-                      s +
-                      (cell.img.orientation === "landscape"
-                        ? L_RATIO
-                        : P_RATIO),
-                    0,
-                  );
-                  return (width - (r.length - 1) * GAP) / rs;
-                }),
+            {rows.map((row, ri) => {
+              const ratioSum = row.reduce(
+                (s, cell) =>
+                  s +
+                  (cell.img.orientation === "landscape" ? L_RATIO : P_RATIO),
+                0,
               );
-              return rows.map((row, ri) => {
-              const h = refH;
+              let h = (width - (row.length - 1) * GAP) / ratioSum;
+              const fullCols = rows[0].length;
+              if (row.length < fullCols) {
+                const firstFullRatioSum = rows[0].reduce(
+                  (s, cell) =>
+                    s +
+                    (cell.img.orientation === "landscape" ? L_RATIO : P_RATIO),
+                  0,
+                );
+                h = Math.min(h, (width - (fullCols - 1) * GAP) / firstFullRatioSum);
+              }
 
               return (
                 <div key={ri} style={{ display: "flex", gap: GAP }}>
@@ -300,8 +300,7 @@ export default function ProjectPhotoGallery({ images }: Props) {
                   })}
                 </div>
               );
-            });
-            })()}
+            })}
           </div>
         )}
       </div>
