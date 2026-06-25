@@ -191,21 +191,6 @@ export const projects: Project[] = [
     year: 2024,
     gallery: [],
   },
-  {
-    id: 7,
-    slug: "artisanat",
-    title: "Artisanat",
-    titleKey: "project.artisanat.title",
-    imagePath: "/images/gallery/volumaker/1.jpg",
-    bg: "bg-neutral-800",
-    accent: "white",
-    textColor: "text-white",
-    descriptionKey: "project.artisanat.desc",
-    category: "Artisanat",
-    clients: ["Dario Tonini"],
-    year: 2024,
-    gallery: [],
-  },
 ];
 
 export const carouselProjects = [
