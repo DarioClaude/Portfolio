@@ -159,7 +159,15 @@ export const projects: Project[] = [
     category: "Sports",
     clients: ["Dario Tonini"],
     year: 2023,
-    gallery: [],
+    gallery: [
+      { src: "/images/gallery/running/1.jpg", alt: "Running 1", orientation: "portrait" },
+      { src: "/images/gallery/running/2.jpg", alt: "Running 2", orientation: "landscape" },
+      { src: "/images/gallery/running/3.jpg", alt: "Running 3", orientation: "portrait" },
+      { src: "/images/gallery/running/4.jpg", alt: "Running 4", orientation: "portrait" },
+      { src: "/images/gallery/running/5.jpg", alt: "Running 5", orientation: "portrait" },
+      { src: "/images/gallery/running/6.jpg", alt: "Running 6", orientation: "portrait" },
+      { src: "/images/gallery/running/7.jpg", alt: "Running 7", orientation: "portrait" },
+    ],
   },
   {
     id: 6,
