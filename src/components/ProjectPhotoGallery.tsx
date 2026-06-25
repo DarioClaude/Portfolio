@@ -17,21 +17,8 @@ const GAP = 6;
 const L_RATIO = 3 / 2;
 const P_RATIO = 2 / 3;
 
-const DESKTOP_PATTERNS = [
-  ["L", "P", "L", "P"],
-  ["P", "L", "P", "L"],
-  ["L", "P", "P", "L"],
-  ["P", "L", "L", "P"],
-];
-
-const MOBILE_PATTERNS = [
-  ["L", "P", "P"],
-  ["P", "L", "P"],
-  ["P", "P", "L"],
-  ["L", "P", "P"],
-  ["P", "L", "P"],
-  ["P", "P", "L"],
-];
+const DESKTOP_COLS = 4;
+const MOBILE_COLS = 3;
 
 /* ------------------------------------------------------------------ */
 /*  Build rows with source-image tracking                             */
@@ -39,65 +26,12 @@ const MOBILE_PATTERNS = [
 
 type Cell = { img: GalleryImage; srcIndex: number };
 
-function buildRows(
-  images: GalleryImage[],
-  patterns: string[][],
-): Cell[][] {
-  const landscapes: Cell[] = [];
-  const portraits: Cell[] = [];
-
-  images.forEach((img, i) => {
-    if (img.orientation === "landscape") {
-      landscapes.push({ img, srcIndex: i });
-    } else {
-      portraits.push({ img, srcIndex: i });
-    }
-  });
-
-  // All same orientation: chunk into rows, no duplicates
-  if (landscapes.length === 0 || portraits.length === 0) {
-    const pool: Cell[] = images.map((img, i) => ({ img, srcIndex: i }));
-    const cols = patterns[0].length;
-    const rows: Cell[][] = [];
-    for (let i = 0; i < pool.length; i += cols) {
-      rows.push(pool.slice(i, i + cols));
-    }
-    return rows;
-  }
-
-  // Mixed: cycle patterns, stop when all photos used
-  let li = 0;
-  let pi = 0;
-  let used = 0;
-  const total = images.length;
+function buildRows(images: GalleryImage[], cols: number): Cell[][] {
+  const pool: Cell[] = images.map((img, i) => ({ img, srcIndex: i }));
   const rows: Cell[][] = [];
-  let patIdx = 0;
-
-  while (used < total) {
-    const pattern = patterns[patIdx % patterns.length];
-    const row: Cell[] = [];
-
-    for (const type of pattern) {
-      if (used >= total) break;
-      if (type === "L" && li < landscapes.length) {
-        row.push(landscapes[li++]);
-        used++;
-      } else if (type === "P" && pi < portraits.length) {
-        row.push(portraits[pi++]);
-        used++;
-      } else if (li < landscapes.length) {
-        row.push(landscapes[li++]);
-        used++;
-      } else if (pi < portraits.length) {
-        row.push(portraits[pi++]);
-        used++;
-      }
-    }
-
-    if (row.length > 0) rows.push(row);
-    patIdx++;
+  for (let i = 0; i < pool.length; i += cols) {
+    rows.push(pool.slice(i, i + cols));
   }
-
   return rows;
 }
 
@@ -294,33 +228,32 @@ export default function ProjectPhotoGallery({ images }: Props) {
 
   if (images.length === 0) return null;
 
-  const patterns = isMobile ? MOBILE_PATTERNS : DESKTOP_PATTERNS;
-  const rows = buildRows(images, patterns);
+  const cols = isMobile ? MOBILE_COLS : DESKTOP_COLS;
+  const rows = buildRows(images, cols);
 
   return (
     <>
       <div ref={containerRef} className="w-full">
         {width > 0 && (
           <div style={{ display: "flex", flexDirection: "column", gap: GAP }}>
-            {rows.map((row, ri) => {
-              const ratioSum = row.reduce(
-                (s, cell) =>
-                  s +
-                  (cell.img.orientation === "landscape" ? L_RATIO : P_RATIO),
-                0,
-              );
-              const rawH = (width - (row.length - 1) * GAP) / ratioSum;
+            {(() => {
               const fullCols = rows[0].length;
-              let h = rawH;
-              if (row.length < fullCols) {
-                const fullRatioSum = rows[0].reduce(
-                  (s, cell) =>
-                    s +
-                    (cell.img.orientation === "landscape" ? L_RATIO : P_RATIO),
-                  0,
-                );
-                h = Math.min(rawH, (width - (fullCols - 1) * GAP) / fullRatioSum);
-              }
+              const fullRows = rows.filter((r) => r.length === fullCols);
+              const refH = Math.min(
+                ...fullRows.map((r) => {
+                  const rs = r.reduce(
+                    (s, cell) =>
+                      s +
+                      (cell.img.orientation === "landscape"
+                        ? L_RATIO
+                        : P_RATIO),
+                    0,
+                  );
+                  return (width - (r.length - 1) * GAP) / rs;
+                }),
+              );
+              return rows.map((row, ri) => {
+              const h = refH;
 
               return (
                 <div key={ri} style={{ display: "flex", gap: GAP }}>
@@ -367,7 +300,8 @@ export default function ProjectPhotoGallery({ images }: Props) {
                   })}
                 </div>
               );
-            })}
+            });
+            })()}
           </div>
         )}
       </div>
