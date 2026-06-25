@@ -62,6 +62,7 @@ export const projects: Project[] = [
     title: "Travel",
     titleKey: "project.travel.title",
     imagePath: "/images/work-travel.jpg",
+    coverPath: "/images/gallery/travel/7.jpg",
     bg: "bg-neutral-700",
     accent: "white",
     textColor: "text-white",
