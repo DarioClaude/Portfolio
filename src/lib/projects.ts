@@ -202,7 +202,13 @@ export const projects: Project[] = [
     category: "Sports",
     clients: ["Dario Tonini"],
     year: 2024,
-    gallery: [],
+    gallery: [
+      { src: "/images/gallery/others-sports/1.jpg", alt: "Others Sports 1", orientation: "landscape" },
+      { src: "/images/gallery/others-sports/2.jpg", alt: "Others Sports 2", orientation: "landscape" },
+      { src: "/images/gallery/others-sports/3.jpg", alt: "Others Sports 3", orientation: "landscape" },
+      { src: "/images/gallery/others-sports/4.jpg", alt: "Others Sports 4", orientation: "landscape" },
+      { src: "/images/gallery/others-sports/5.jpg", alt: "Others Sports 5", orientation: "landscape" },
+    ],
   },
   {
     id: 7,
