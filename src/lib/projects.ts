@@ -204,6 +204,21 @@ export const projects: Project[] = [
     year: 2024,
     gallery: [],
   },
+  {
+    id: 7,
+    slug: "collaborations",
+    title: "Collaborations",
+    titleKey: "project.collaborations.title",
+    imagePath: "/images/work-collaborations.jpg",
+    bg: "bg-neutral-800",
+    accent: "white",
+    textColor: "text-white",
+    descriptionKey: "project.collaborations.desc",
+    category: "Collaborations",
+    clients: ["Dario Tonini"],
+    year: 2024,
+    gallery: [],
+  },
 ];
 
 export const carouselProjects = [
@@ -213,4 +228,5 @@ export const carouselProjects = [
   { slug: "tour-de-france", title: "KORA", imagePath: "/images/photo4.jpg" },
   { slug: "running", title: "STUDIO 17", imagePath: "/images/photo5.jpg" },
   { slug: "others-sports", title: "SHIP STUDIO", imagePath: "/images/photo6.jpg" },
+  { slug: "collaborations", title: "COLLABORATIONS", imagePath: "/images/photo7.jpg" },
 ];

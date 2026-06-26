@@ -96,6 +96,7 @@ export const translations: Record<Lang, Record<string, string>> = {
     "project.tourdefrance.title": "Tour de France",
     "project.running.title": "Course",
     "project.otherssports.title": "Autres Sports",
+    "project.collaborations.title": "Collaborations",
     "project.artisanat.title": "Artisanat",
 
     // Project descriptions
@@ -105,6 +106,7 @@ export const translations: Record<Lang, Record<string, string>> = {
     "project.tourdefrance.desc": "Le Tour de France immortalisé à travers l'effort et l'asphalte.",
     "project.running.desc": "L'athlétisme en mouvement — sprint, fond et courses de rue.",
     "project.otherssports.desc": "Une sélection éclectique de sports variés, du basket au surf.",
+    "project.collaborations.desc": "Projets réalisés en collaboration avec des marques, athlètes et créatifs.",
     "project.artisanat.desc": "L'artisanat sous un regard photographique — matières, gestes et savoir-faire.",
 
     // Privacy Policy
@@ -228,6 +230,7 @@ export const translations: Record<Lang, Record<string, string>> = {
     "project.tourdefrance.title": "Tour de France",
     "project.running.title": "Running",
     "project.otherssports.title": "Other Sports",
+    "project.collaborations.title": "Collaborations",
     "project.artisanat.title": "Craftsmanship",
 
     // Project descriptions
@@ -237,6 +240,7 @@ export const translations: Record<Lang, Record<string, string>> = {
     "project.tourdefrance.desc": "The Tour de France immortalized through effort and tarmac.",
     "project.running.desc": "Athletics in motion — sprints, distance, and street races.",
     "project.otherssports.desc": "An eclectic selection of various sports, from basketball to surfing.",
+    "project.collaborations.desc": "Projects made in collaboration with brands, athletes and creatives.",
     "project.artisanat.desc": "Craftsmanship through a photographic lens — materials, gestures and know-how.",
 
     // Privacy Policy
@@ -360,6 +364,7 @@ export const translations: Record<Lang, Record<string, string>> = {
     "project.tourdefrance.title": "Tour de Francia",
     "project.running.title": "Running",
     "project.otherssports.title": "Otros Deportes",
+    "project.collaborations.title": "Colaboraciones",
     "project.artisanat.title": "Artesanía",
 
     // Project descriptions
@@ -369,6 +374,7 @@ export const translations: Record<Lang, Record<string, string>> = {
     "project.tourdefrance.desc": "El Tour de Francia inmortalizado a través del esfuerzo y el asfalto.",
     "project.running.desc": "Atletismo en movimiento — sprints, fondo y carreras callejeras.",
     "project.otherssports.desc": "Una selección ecléctica de deportes variados, del baloncesto al surf.",
+    "project.collaborations.desc": "Proyectos realizados en colaboración con marcas, atletas y creativos.",
     "project.artisanat.desc": "La artesanía bajo una mirada fotográfica — materiales, gestos y saber hacer.",
 
     // Privacy Policy
